@@ -8,5 +8,5 @@ with open(file_path, 'w') as file:
     file.write("Admin Name, Admin Password, Admin Email\n")
     file.write("HOW YONG-HENG, helloworld13, howyongheng@admin.com\n")
 
-print(f"File '{file_path}' cretad successfully.")
+print(f"File '{file_path}' creatad successfully.")
 
