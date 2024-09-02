@@ -1,0 +1,1 @@
+Develop a library management system for the Brickfields Kuala Lumpur Community Library. The library management system should be able to manage the library's book catalogue, book loan records, library member and librarian information.
