@@ -74,3 +74,7 @@ def library_member_page():
           )
     librarian_member_choice = input("Enter your choice: ")
     
+
+user_type()
+          
+
