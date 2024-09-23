@@ -90,12 +90,12 @@ def search_book_from_catalogue():
     # CLEAR TERMINAL HISTORY
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    # CHECK IS THE FILE EXISTS
+    # CHECK IF THE FILE EXISTS
     if not os.path.exists('catalogue.txt'): 
         print('Catalogue does not exist.')
         return
 
-    # CHECK IS THE FILE EMPTY
+    # CHECK IF THE FILE IS EMPTY
     elif os.path.getsize('catalogue.txt') == 0:
         print('Catalogue is empty.')
         return
@@ -103,10 +103,10 @@ def search_book_from_catalogue():
     else:
         try:
             print("Welcome to search page:")
-            search_term = input(("Please Enter Your Search Term:")).lower().strip()
+            search_term = input("Please Enter Your Search Term: ").lower().strip()
 
             # READ ALL LINES IN CATALOGUE.TXT
-            with open('catalogue.txt','r') as catalogue:
+            with open('catalogue.txt', 'r') as catalogue:
                 lines = catalogue.readlines()
                 header = lines[0].strip()
 
@@ -114,10 +114,7 @@ def search_book_from_catalogue():
             for line in lines[1:]:
                 book_dtl = line.strip()
                 book_details = line.strip().lower()
-                for word in search_term:
-                    if word not in book_details:
-                        break
-                else:
+                if search_term in book_details:
                     found_books.append(book_dtl)
                 
             print(f"Found {len(found_books)} result(s)")
@@ -126,113 +123,16 @@ def search_book_from_catalogue():
 
             for book in found_books:
                 print(book)
-                
+
+            return [header] + found_books  # Return the header and found books
 
         except FileNotFoundError:
             print("No catalogue found!")
         except Exception as e:
             print("Error reading catalogue file:", e)
 
-search_book_from_catalogue()
-
-
-
-
-
-import os 
-def edit_book_information(): 
-    # CLEAR TERMINAL HSITORY  
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-    # CHECK IS THE FILE EXISTS
-    if not os.path.exists('catalogue.txt'): 
-        print('Catalogue does not exist.')
-        return
-
-    # CHECK IS THE FILE EMPTY
-    elif os.path.getsize('catalogue.txt') == 0:
-        print('Catalogue is empty.')
-        return
-
-    else:
-        try:
-            # SEARCH THE BOOK THAT WANT TO EDIT (search_book_from_catalogue)
-            lines = search_book_from_catalogue()
-
-            if not lines:
-                return
-
-            # DISPLAY THE BOOKS WITH IDs STARTING FROM 1
-            print('Books in Catalogue')
-            for index, line in enumerate(lines[1:], start = 1):
-                print(f'{index}.{line.strip()}')
-
-            while True:
-                book_id_input = input("Based on your search term, please enter the book ID you want to edit: ")
-                
-                if not book_id_input.isdigit():
-                    print("Invalid input. Please enter a valid book ID.")
-                    continue
-                
-                book_id = int(book_id_input)-1
-
-                if book_id < 0 or book_id >= len(lines)-1:
-                    print("Invalid book ID")
-                else:
-                    break
-
-                book_details = lines[book_id + 1].strip().split()
-                print('Current Details:')
-                print('|'.join(book_details))
-
-                new_title = input("Enter new title (leave blank to keep current): ").strip()
-                new_author = input("Enter new author (leave blank to keep current): ").strip()
-                new_publisher = input("Enter new publisher (leave blank to keep current): ").strip()
-                new_publication_date = input("Enter new publication date (leave blank to keep current): ").strip()
-                new_isbn = input("Enter new ISBN (leave blank to keep current): ").strip()
-                new_genre = input("Enter new genre (leave blank to keep current): ").strip()
-
-                if new_title:
-                    book_details[0] = new_title
-                if new_author:
-                    book_details[1] = new_author
-                if new_publisher:
-                    book_details[2] = new_publisher
-                if new_publication_date:
-                    book_details[3] = new_publication_date
-                if new_isbn:
-                    book_details[4] = new_isbn
-                if new_genre:
-                    book_details[5] = new_genre
-
-                lines[book_id + 1] = ':'.join(book_details)+ "\n"
-
-                with open('catalogue.txt','w' ) as catalogue:
-                    catalogue.writelines(lines)
-
-                print('Book Information Update Successfully')
-
-        except Exception as e:
-            print("Error reading catalogue file:", e)
-
-edit_book_information()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import os
+# EDIT BOOK INFORMATION
 def edit_book_information(): 
     # CLEAR TERMINAL HISTORY  
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -249,63 +149,72 @@ def edit_book_information():
 
     else:
         try:
-            # READ THE BOOKS FROM THE CATALOGUE
+            # SEARCH THE BOOK THAT WANTS TO BE EDITED
             lines = search_book_from_catalogue()
 
-            # DISPLAY BOOKS WITH IDs STARTING FROM 1
-            print("Books in Catalogue:")
-            for index, line in enumerate(lines[1:], start=1):  # Start from 1
-                print(f"{index}. {line.strip()}")  # Display ID starting from 1
+            if not lines:
+                return
+
+            # DISPLAY THE BOOKS WITH IDs
+            print('Books in Catalogue')
+            for index, line in enumerate(lines[1:], start=1):
+                print(f'{index}. {line.strip()}')
 
             while True:
+                # GET BOOK ID FROM USER
                 book_id_input = input("Based on your search term, please enter the book ID you want to edit: ")
-                
-                # Check if input is a digit
+
                 if not book_id_input.isdigit():
-                    print("Please enter a valid numeric book ID.")
+                    print("Invalid input. Please enter a valid book ID.")
                     continue
                 
-                book_id = int(book_id_input) - 1  # Adjust for 0-based indexing
-                
-                if book_id < 0 or book_id >= len(lines) - 1:  # -1 because of header
-                    print("Invalid book ID. Please try again.")
+                book_id = int(book_id_input) - 1
+
+                if book_id < 0 or book_id >= len(lines) - 1:
+                    print("Book ID doesn't exist.")
                 else:
-                    break  # Exit the loop if the ID is valid
+                    break
 
-            book_details = lines[book_id + 1].strip().split(':')  # Get book details, +1 for header
-            
-            # Display current book details for editing
-            print("Current details:")
-            print("|".join(book_details))
-            
-            # Prompt for new details
-            new_title = input("Enter new title (leave blank to keep current): ").strip()
-            new_author = input("Enter new author (leave blank to keep current): ").strip()
-            new_publisher = input("Enter new publisher (leave blank to keep current): ").strip()
-            new_publication_date = input("Enter new publication date (leave blank to keep current): ").strip()
-            new_isbn = input("Enter new ISBN (leave blank to keep current): ").strip()
-            new_genre = input("Enter new genre (leave blank to keep current): ").strip()
+            # GET CURRENT DETAILS OF SELECTED BOOK
+            book_details = lines[book_id + 1].strip().split(":")
+            print('Current Details:')
+            print('|'.join(book_details))
 
-            # Update the book details
-            if new_title: book_details[0] = new_title
-            if new_author: book_details[1] = new_author
-            if new_publisher: book_details[2] = new_publisher
-            if new_publication_date: book_details[3] = new_publication_date
-            if new_isbn: book_details[4] = new_isbn
-            if new_genre: book_details[5] = new_genre
+            valid_entities = ["title", "author", "publisher", "publication date", "isbn", "genre"]
 
-            # Write the updated details back to the file
-            lines[book_id + 1] = ":".join(book_details) + "\n"  # +1 for header
+            while True:
+                # ASK WHICH ENTITY TO CHANGE
+                Change = input("Which entity do you want to change (title, author, publisher, publication date, isbn, genre)? ").strip().lower()
 
+                if Change not in valid_entities:
+                    print("Invalid entity. Please enter a valid entity.")
+                    continue
+                else:
+                    break
+
+            # MAP THE ENTITY TO ITS CORRESPONDING INDEX
+            entity_index = valid_entities.index(Change)
+
+            # ASK FOR THE CHANGES
+            edit = input(f"Enter the new {Change}: ").strip()
+
+            # UPDATE
+            book_details[entity_index] = edit
+
+            # UPDATE TO ORIGINAL LIST
+            lines[book_id + 1] = ':'.join(book_details) + "\n"
+
+            # WRITE BACK TO THE FILE
             with open('catalogue.txt', 'w') as catalogue:
                 catalogue.writelines(lines)
 
-            print("Book information updated successfully!")
+            print('Book Information Updated Successfully')
 
         except Exception as e:
             print("Error reading catalogue file:", e)
 
 edit_book_information()
+
 
 
             
@@ -314,7 +223,7 @@ edit_book_information()
 import os
 def clear_txt_file():
     # CLEAR TERMINAL HISTORY
-    os.system('cls' if os.name == 'nt' else 'clear')
+    os.system('cls' if os.name == 'nt' else 'clehar')
 
     with open('catalogue.txt','r') as catalogue:
         headers = catalogue.readline()
