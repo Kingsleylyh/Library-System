@@ -7,16 +7,28 @@ def add_book_to_catalogue():
 
     # PRINT SENTENCES  
     print('Please Enter the Book Details:')
+<<<<<<< HEAD
     print('-'*40)
 
     # HEADER SETTINGS
     headers = ['Title', 'Author', 'Publisher', 'Publication Date', 'ISBN', 'Genre'] # DEFINE COLUMN HEADERS
     header_line = ':'.join(headers) # JOIN HEADER WITH ":"
+=======
+    print('='*40)
+
+    # HEADER SETTINGS
+    headers = ("Title: Author: Publisher: Publication Date: ISBN: Genre") # DEFINE COLUMN HEADERS
+>>>>>>> origin/YongHeng
 
     # CHECK IF THE FILE EXISTS OR IT IS EMPTY
     if not os.path.exists('catalogue.txt') or os.path.getsize('catalogue.txt') == 0: 
         with open('catalogue.txt', 'w') as catalogue:
+<<<<<<< HEAD
             catalogue.write(header_line + '\n')
+=======
+            catalogue.write(f"{headers}\n")
+
+>>>>>>> origin/YongHeng
 
     # GET BOOK DETAILS FROM USERS
     book_title = input("Enter the book's title: ").strip()
@@ -26,6 +38,7 @@ def add_book_to_catalogue():
     book_isbn = input("Enter the book's ISBN: ").strip()
     book_genre = input("Enter the book's genre: ").strip()
 
+<<<<<<< HEAD
     # JOIN BOOK DETAILS WITH ":"
     book_line = ':'.join([book_title,
                           book_author,
@@ -37,6 +50,11 @@ def add_book_to_catalogue():
     # ADD BOOK INFORMATIONS GIVEN BY LIBRARIAN INTO FILE
     with open('catalogue.txt','a') as catalogue:
         catalogue.write(book_line + "\n") 
+=======
+    # ADD BOOK INFORMATIONS GIVEN BY LIBRARIAN INTO FILE
+    with open('catalogue.txt','a') as catalogue:
+        catalogue.write(f"{book_title}:{book_author}:{book_publisher}:{book_publication_date}:{book_isbn}:{book_genre}\n")
+>>>>>>> origin/YongHeng
     
     print("Book added to catalogue successfully!")
 
@@ -66,6 +84,7 @@ def view_book_in_catalogue():
             with open('catalogue.txt', 'r') as catalogue:
                 lines = catalogue.readlines()
                 
+<<<<<<< HEAD
                 headers = lines[0].strip().split(':')
                 print("|".join(headers))
                 print("-"*50)
@@ -80,6 +99,24 @@ def view_book_in_catalogue():
                     if genre != current_genre:
                         current_genre = genre
                     print("|".join(book_details))
+=======
+                print('Catalogue List:')
+                longest_line = max(lines, key=len)
+                length_of_longest_line = len(longest_line)
+                print('=' * length_of_longest_line)
+
+                # SORT BOOKS BY GENRE
+                sorted_book = sorted(lines[1:], key = lambda x: x.strip().split(":")[-1].lower())
+                current_genre = ""
+                for line in sorted_book:
+                    book_details = line.strip()
+                    genre = book_details.split(':')[-1]
+                    
+                    if genre != current_genre:
+                        current_genre = genre
+
+                    print(f"{book_details}")
+>>>>>>> origin/YongHeng
 
         except Exception as e:
             print("Error reading catalogue file:", e)
@@ -99,11 +136,16 @@ def search_book_from_catalogue():
     # CHECK IS THE FILE EXISTS
     if not os.path.exists('catalogue.txt'): 
         print('Catalogue does not exist.')
+<<<<<<< HEAD
         return None
+=======
+        return
+>>>>>>> origin/YongHeng
 
     # CHECK IS THE FILE EMPTY
     elif os.path.getsize('catalogue.txt') == 0:
         print('Catalogue is empty.')
+<<<<<<< HEAD
         return None
     
     else:
@@ -142,6 +184,37 @@ def search_book_from_catalogue():
                     print("No results found for", search_term)
                 
                 return lines
+=======
+        return
+    
+    else:
+        try:
+            print("Welcome to search page:")
+            search_term = input(("Please Enter Your Search Term:")).lower().strip()
+
+            # READ ALL LINES IN CATALOGUE.TXT
+            with open('catalogue.txt','r') as catalogue:
+                lines = catalogue.readlines()
+                header = lines[0].strip()
+
+            found_books = []
+            for line in lines[1:]:
+                book_dtl = line.strip()
+                book_details = line.strip().lower()
+                for word in search_term:
+                    if word not in book_details:
+                        break
+                else:
+                    found_books.append(book_dtl)
+                
+            print(f"Found {len(found_books)} result(s)")
+            print(header)
+            print('=' * 50)
+
+            for book in found_books:
+                print(book)
+                
+>>>>>>> origin/YongHeng
 
         except FileNotFoundError:
             print("No catalogue found!")
@@ -151,6 +224,12 @@ def search_book_from_catalogue():
 search_book_from_catalogue()
 
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> origin/YongHeng
 import os 
 def edit_book_information(): 
     # CLEAR TERMINAL HSITORY  
@@ -171,6 +250,12 @@ def edit_book_information():
             # SEARCH THE BOOK THAT WANT TO EDIT (search_book_from_catalogue)
             lines = search_book_from_catalogue()
 
+<<<<<<< HEAD
+=======
+            if not lines:
+                return
+
+>>>>>>> origin/YongHeng
             # DISPLAY THE BOOKS WITH IDs STARTING FROM 1
             print('Books in Catalogue')
             for index, line in enumerate(lines[1:], start = 1):
@@ -185,7 +270,11 @@ def edit_book_information():
                 
                 book_id = int(book_id_input)-1
 
+<<<<<<< HEAD
                 if book_id < 1 or book_id >= len(lines)-1:
+=======
+                if book_id < 0 or book_id >= len(lines)-1:
+>>>>>>> origin/YongHeng
                     print("Invalid book ID")
                 else:
                     break
@@ -224,11 +313,31 @@ def edit_book_information():
         except Exception as e:
             print("Error reading catalogue file:", e)
 
+<<<<<<< HEAD
     pass
 
 edit_book_information()
 
 
+=======
+edit_book_information()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> origin/YongHeng
 import os
 def edit_book_information(): 
     # CLEAR TERMINAL HISTORY  
