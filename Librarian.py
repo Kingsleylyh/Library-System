@@ -7,16 +7,16 @@ def add_book_to_catalogue():
 
     # PRINT SENTENCES  
     print('Please Enter the Book Details:')
-    print('-'*40)
+    print('='*40)
 
     # HEADER SETTINGS
-    headers = ['Title', 'Author', 'Publisher', 'Publication Date', 'ISBN', 'Genre'] # DEFINE COLUMN HEADERS
-    header_line = ':'.join(headers) # JOIN HEADER WITH ":"
+    headers = ("Title: Author: Publisher: Publication Date: ISBN: Genre") # DEFINE COLUMN HEADERS
 
     # CHECK IF THE FILE EXISTS OR IT IS EMPTY
     if not os.path.exists('catalogue.txt') or os.path.getsize('catalogue.txt') == 0: 
         with open('catalogue.txt', 'w') as catalogue:
-            catalogue.write(header_line + '\n')
+            catalogue.write(f"{headers}\n")
+
 
     # GET BOOK DETAILS FROM USERS
     book_title = input("Enter the book's title: ").strip()
@@ -26,17 +26,9 @@ def add_book_to_catalogue():
     book_isbn = input("Enter the book's ISBN: ").strip()
     book_genre = input("Enter the book's genre: ").strip()
 
-    # JOIN BOOK DETAILS WITH ":"
-    book_line = ':'.join([book_title,
-                          book_author,
-                          book_publisher,
-                          book_publication_date,
-                          book_isbn,
-                          book_genre])
-
     # ADD BOOK INFORMATIONS GIVEN BY LIBRARIAN INTO FILE
     with open('catalogue.txt','a') as catalogue:
-        catalogue.write(book_line + "\n") 
+        catalogue.write(f"{book_title}:{book_author}:{book_publisher}:{book_publication_date}:{book_isbn}:{book_genre}\n")
     
     print("Book added to catalogue successfully!")
 
@@ -66,20 +58,22 @@ def view_book_in_catalogue():
             with open('catalogue.txt', 'r') as catalogue:
                 lines = catalogue.readlines()
                 
-                headers = lines[0].strip().split(':')
-                print("|".join(headers))
-                print("-"*50)
+                print('Catalogue List:')
+                longest_line = max(lines, key=len)
+                length_of_longest_line = len(longest_line)
+                print('=' * length_of_longest_line)
 
                 # SORT BOOKS BY GENRE
-                sorted_book = sorted(lines[1:], key = lambda x: x.strip().split(':')[-1].lower())
+                sorted_book = sorted(lines[1:], key = lambda x: x.strip().split(":")[-1].lower())
                 current_genre = ""
                 for line in sorted_book:
-                    book_details = line.strip().split(':')
-                    genre = book_details[-1]
+                    book_details = line.strip()
+                    genre = book_details.split(':')[-1]
                     
                     if genre != current_genre:
                         current_genre = genre
-                    print("|".join(book_details))
+
+                    print(f"{book_details}")
 
         except Exception as e:
             print("Error reading catalogue file:", e)
@@ -99,49 +93,40 @@ def search_book_from_catalogue():
     # CHECK IS THE FILE EXISTS
     if not os.path.exists('catalogue.txt'): 
         print('Catalogue does not exist.')
-        return None
+        return
 
     # CHECK IS THE FILE EMPTY
     elif os.path.getsize('catalogue.txt') == 0:
         print('Catalogue is empty.')
-        return None
+        return
     
     else:
         try:
+            print("Welcome to search page:")
+            search_term = input(("Please Enter Your Search Term:")).lower().strip()
+
             # READ ALL LINES IN CATALOGUE.TXT
             with open('catalogue.txt','r') as catalogue:
                 lines = catalogue.readlines()
-                headers = lines[0].strip().split(':')
+                header = lines[0].strip()
 
-                # GET SEARCH TERM FROM LIBRARIAN
-                search_term = input('Enter the search term: ').strip().lower()
-                search_words = search_term.split()
-                print('Searching for results related to', search_term,'....')
-                print('-'*50)
-
-                # SEARCH FOR BOOKS MATCHING SEARCH TERM
-                found_books = []
-                for line in lines[1:]:
-                    book_details = line.strip().split(':')
-                    combined_details = ' '.join(book_details).lower()
-
-                    for word in search_words:
-                        if word not in combined_details:
-                            break
-                    else:
-                        found_books.append(book_details)
-                
-                # DISPLAY SEARCH RESULTS
-                if found_books:
-                    print(f"Found {len(found_books)} result(s)")
-                    print('|'.join(headers))
-                    print('-'*50)
-                    for book in found_books:
-                        print('|'.join(book))
+            found_books = []
+            for line in lines[1:]:
+                book_dtl = line.strip()
+                book_details = line.strip().lower()
+                for word in search_term:
+                    if word not in book_details:
+                        break
                 else:
-                    print("No results found for", search_term)
+                    found_books.append(book_dtl)
                 
-                return lines
+            print(f"Found {len(found_books)} result(s)")
+            print(header)
+            print('=' * 50)
+
+            for book in found_books:
+                print(book)
+                
 
         except FileNotFoundError:
             print("No catalogue found!")
@@ -149,6 +134,9 @@ def search_book_from_catalogue():
             print("Error reading catalogue file:", e)
 
 search_book_from_catalogue()
+
+
+
 
 
 import os 
@@ -171,6 +159,9 @@ def edit_book_information():
             # SEARCH THE BOOK THAT WANT TO EDIT (search_book_from_catalogue)
             lines = search_book_from_catalogue()
 
+            if not lines:
+                return
+
             # DISPLAY THE BOOKS WITH IDs STARTING FROM 1
             print('Books in Catalogue')
             for index, line in enumerate(lines[1:], start = 1):
@@ -185,7 +176,7 @@ def edit_book_information():
                 
                 book_id = int(book_id_input)-1
 
-                if book_id < 1 or book_id >= len(lines)-1:
+                if book_id < 0 or book_id >= len(lines)-1:
                     print("Invalid book ID")
                 else:
                     break
@@ -224,9 +215,21 @@ def edit_book_information():
         except Exception as e:
             print("Error reading catalogue file:", e)
 
-    pass
-
 edit_book_information()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 import os

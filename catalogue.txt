@@ -1,6 +1,7 @@
-Title:Author:Publisher:Publication Date:ISBN:Genre
-Gordan:Gordan Ramsay:TheStar:2020-01-19:12345-67890:Cooking
-Harry Poter:JK Rowlin:TheSun:2019-07-06:89734-23122:Magic
-Gordan 2:Gordan Ramsay:TheStar:2021-06-18:12654-89123:Cooking
-Gordan 3:Gordan Ramsay:ThStar:2024-05-16:12345-67890:Cooking
-Gordan 2:Gordan Ramsay:TheStar:2021-01-18:65789-1329:Cooking
+Title: Author: Publisher: Publication Date: ISBN: Genre
+Hell Kitchen:Gordan Ramsay:TheSatr:2024-08-19:12345-67890:Cooking
+Molly Fantasy:Tan.D.M:TheSun:2024-08-24:67589-43567:Fantasy
+Hell Kitchen 2:Gordan Ramsay:TheStar:2024-03-12:56478-98675:Cookings
+Steve Jobs:Waltor Isaacson:TheRiver:2017-08-09:1213323-93778:Biography
+Hell Kitchen 3:Gordan Ramsay:ThStar:2021-08-09:378893-99733:Cooking
+1:1:1:1:1:1
