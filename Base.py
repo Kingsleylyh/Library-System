@@ -62,6 +62,7 @@ def librarian_page():
     librarian_choice = input("Enter your choice: ")
 
 
+
 # LIBRARY MEMBER PAGE
 def library_member_page():
     os.system('cls' if os.name == 'nt' else 'clear') # CLEAR THE TERMINAL HISTORY
@@ -73,8 +74,5 @@ def library_member_page():
           " 4. Logout\n"
           )
     librarian_member_choice = input("Enter your choice: ")
-    
 
 user_type()
-          
-
