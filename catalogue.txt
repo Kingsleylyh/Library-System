@@ -1,6 +1,1 @@
-Title:Author:Publisher:Publication Date:ISBN:Genre
-Gordan:Gordan Ramsay:TheStar:2020-01-19:12345-67890:Cooking
-Harry Poter:JK Rowlin:TheSun:2019-07-06:89734-23122:Magic
-Gordan 2:Gordan Ramsay:TheStar:2021-06-18:12654-89123:Cooking
-Gordan 3:Gordan Ramsay:ThStar:2024-05-16:12345-67890:Cooking
-Gordan 2:Gordan Ramsay:TheStar:2021-01-18:65789-1329:Cooking
+Title: Author: Publisher: Publication Date: ISBN: Genre
