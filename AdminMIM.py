@@ -5,8 +5,7 @@ def add_member_to_database():
     
     # CLEAR TERMINAL HISTORY
     os.system('cls' if os.name == 'nt' else 'clear')
-
-    # PRINT SENTENCES  
+ 
     print('Please Enter the Member Details:')
     print('='*40)
 
