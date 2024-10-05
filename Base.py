@@ -23,6 +23,7 @@ def user_type():
 
 
 import os
+from AdminMIM import *
 # SYSTEM ADMIN PAGE
 def system_admin_page():
     os.system('cls' if os.name == 'nt' else 'clear') # CLEAR THE TERMINAL HISTORY
@@ -42,9 +43,20 @@ def system_admin_page():
           " 10. Remove Librarian\n"
           " 11. Logout"
           )
-    admin_choice = input("Enter your choice: ")
+    librarian_choice = input("Enter the index of your choice: ")
+    if librarian_choice == 1:
+        add_member_to_database()
+    elif librarian_choice == 2:
+        view_member_in_database()
+    elif librarian_choice == 3:
+        search_member_from_database()
+    elif librarian_choice == 4:
+        edit_member_information()
+    elif librarian_choice == 5:
+        remove_member_from_database()
 
 
+from Librarian import *
 # LIBRARIAN PAGE
 def librarian_page():
     os.system('cls' if os.name == 'nt' else 'clear') # CLEAR THE TERMINAL HISTORY
@@ -60,7 +72,14 @@ def librarian_page():
           " 7. Logout\n"
           )
     librarian_choice = input("Enter your choice: ")
-
+    if librarian_choice == 1:
+        add_book_to_catalogue()
+    elif librarian_choice == 2:
+        view_book_in_catalogue()
+    elif librarian_choice == 3:
+        search_book_from_catalogue()
+    elif librarian_choice == 4:
+        edit_book_information()
 
 
 # LIBRARY MEMBER PAGE
