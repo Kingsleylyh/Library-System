@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 # ADD NEW MEMBER FUCNTION()
 def add_member_to_database():
     
@@ -19,11 +20,42 @@ def add_member_to_database():
 
 
     # GET MEMBER DETAILS FROM USERS
-    Member_Name = input("Enter the member's name: ").strip()
-    Member_Age = input("Enter the member's age: ").strip()
-    Member_DOB = input("Enter the member's date of birth (YYYY-MM-DD): ").strip()
-    Member_Register_Date = input("Enter the member's registration date (YYYY-MM-DD): ").strip()
-    Member_IC = input("Enter the member's IC: ").strip()
+    while True:
+        Member_Name = input("Enter the member's name: ").strip()
+        if all(x.isalpha() or x.isspace() for x in Member_Name):
+            break
+        else:
+            print("Please enter a valid name.")
+
+    while True:
+        Member_Age = input("Enter the member's age: ").strip()
+        if Member_Age.isdigit() and int(Member_Age) > 0:
+            break
+        else:
+            print("Please enter a valid age.")
+
+    while True:
+        Member_DOB = input("Enter the member's date of birth (YYYY-MM-DD): ").strip()
+        try:
+            datetime.strptime(Member_DOB, "%Y-%m-%d")
+            break
+        except ValueError:
+            print("Please enter the date according to the format.")
+
+    while True:
+        Member_Register_Date = input("Enter the member's registration date (YYYY-MM-DD): ").strip()
+        try:
+            datetime.strptime(Member_Register_Date, "%Y-%m-%d")
+            break
+        except ValueError:
+            print("Please enter the date according to the format.")
+
+    while True:
+        Member_IC = input("Enter the member's IC: ").strip()
+        if Member_IC.isdigit():
+            break
+        else:
+            print("Please enter a valid 12 digit IC number.")
 
     # ADD BOOK INFORMATIONS GIVEN BY LIBRARIAN INTO FILE
     with open('memberdatabase.txt','a') as database:
