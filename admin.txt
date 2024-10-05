@@ -1,6 +1,4 @@
-Admin User
-Admin Name, Admin Password, Admin Email
-HOW YONG-HENG, helloworld13, howyongheng@admin.com
-Admin User
-Admin Name, Admin Password, Admin Email
-HOW YONG-HENG, helloworld13, howyongheng@admin.com
+Super Admin Account Info:
+Admin Name: How Yong Heng
+Admin Username: howyh@admin
+Password: lengzai666
