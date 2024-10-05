@@ -156,6 +156,7 @@ def edit_book_information():
                 return
 
             # DISPLAY THE BOOKS WITH IDs
+            print('='*40)
             print('Books in Catalogue')
             for index, line in enumerate(lines[1:], start=1):
                 print(f'{index}. {line.strip()}')
@@ -179,6 +180,7 @@ def edit_book_information():
             book_details = lines[book_id + 1].strip().split(":")
             print('Current Details:')
             print('|'.join(book_details))
+            print('='*40)
 
             valid_entities = ["title", "author", "publisher", "publication date", "isbn", "genre"]
 

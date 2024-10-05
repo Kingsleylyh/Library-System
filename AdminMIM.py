@@ -1,46 +1,37 @@
 import os
 # ADD NEW MEMBER FUCNTION()
-def add_new_member_to_database():
+def add_member_to_database():
     
     # CLEAR TERMINAL HISTORY
     os.system('cls' if os.name == 'nt' else 'clear')
 
     # PRINT SENTENCES  
     print('Please Enter the Member Details:')
-    print('-'*40)
+    print('='*40)
 
     # HEADER SETTINGS
-    headers = ['Name', 'Age', 'Contact Number', 'Registration Date', 'ID', 'Date Of Birth'] # DEFINE COLUMN HEADERS
-    header_line = ':'.join(headers) # JOIN HEADER WITH ":"
+    headers = ("Name: Age: Date Of Birth: Registration Date: IC") # DEFINE COLUMN HEADERS
 
     # CHECK IF THE FILE EXISTS OR IT IS EMPTY
     if not os.path.exists('memberdatabase.txt') or os.path.getsize('memberdatabase.txt') == 0: 
-        with open('memberdatabase.txt', 'w') as catalogue:
-            catalogue.write(header_line + '\n')
+        with open('memberdatabase.txt', 'w') as database:
+            database.write(f"{headers}\n")
+
 
     # GET MEMBER DETAILS FROM USERS
     Member_Name = input("Enter the member's name: ").strip()
     Member_Age = input("Enter the member's age: ").strip()
-    Member_Contact_Number = input("Enter the member's contact number: ").strip()
-    Registration_Date = input("Enter the member's registration date (YYYY-MM-DD): ").strip()
-    Member_ID = input("Enter the member's ID: ").strip()
-    Member_DOB = input("Enter the member's date of birth: ").strip()
-
-    # JOIN MEMBER DETAILS WITH ":"
-    member_line = ':'.join([Member_Name,
-                          Member_Age,
-                          Member_Contact_Number,
-                          Registration_Date,
-                          Member_ID,
-                          Member_DOB])
+    Member_DOB = input("Enter the member's date of birth (YYYY-MM-DD): ").strip()
+    Member_Register_Date = input("Enter the member's registration date (YYYY-MM-DD): ").strip()
+    Member_IC = input("Enter the member's IC: ").strip()
 
     # ADD BOOK INFORMATIONS GIVEN BY LIBRARIAN INTO FILE
-    with open('catalogue.txt','a') as catalogue:
-        catalogue.write(member_line + "\n") 
+    with open('memberdatabase.txt','a') as database:
+        database.write(f"{Member_Name}:{Member_Age}:{Member_DOB}:{Member_Register_Date}:{Member_IC}\n")
     
-    print("Member added to database successfully!")
+    print("Member successfully registered!")
 
-add_new_member_to_database()
+add_member_to_database()
 
 
 
