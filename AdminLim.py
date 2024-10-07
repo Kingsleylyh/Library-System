@@ -112,7 +112,7 @@ view_librarian_in_catalogue()
 
 import os
 # SEARCH LIBRARIAN FROM CATALOGUE
-def search_librarian_from_catalogue():
+def search_librarian_from_database():
     # CLEAR TERMINAL HISTORY
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -168,7 +168,7 @@ def search_librarian_from_catalogue():
         except Exception as e:
             print("Error reading catalogue file:", e)
 
-search_librarian_from_catalogue()
+search_librarian_from_database()
 
 
 import os 
@@ -188,8 +188,8 @@ def edit_librarian_information():
 
     else:
         try:
-            # SEARCH THE LIBRARIAN THAT WANT TO EDIT (search_librarian_from_catalogue)
-            lines = search_librarian_from_catalogue()
+            # SEARCH THE LIBRARIAN THAT WANT TO EDIT (search_librarian_from_database)
+            lines = search_librarian_from_database()
 
             # DISPLAY THE BOOKS WITH IDs STARTING FROM 1
             print('Librarian in Catalogue')
@@ -231,7 +231,7 @@ def edit_librarian_information():
                 if new_librarian_ic:
                     librarian_details[4] = new_librarian_ic
 
-                lines[book_id + 1] = ':'.join(librarian_details)+ "\n"
+                lines[librarian_details + 1] = ':'.join(librarian_details)+ "\n"
 
                 with open('catalogue.txt','w' ) as catalogue:
                     catalogue.writelines(lines)
@@ -242,3 +242,43 @@ def edit_librarian_information():
             print("Error reading catalogue file:", e)
 
     pass
+
+
+def remove_librarian_from_database():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    if not os.path.exists('librariandatabase.txt'): 
+        print('Librarian Is Not Registered.')
+        return
+    elif os.path.getsize('librariandatabase.txt') == 0:
+        print('Record Is Empty.')
+        return
+    else:
+        found_librarian = search_librarian_from_database()
+        if found_librarian is None:
+            return
+
+
+        while True:
+            try:
+                remove_index = int(input('\nPlease Enter The Index Of Librarian To Remove: '))
+                librarian_id = remove_index - 1
+                if 0 <= librarian_id < len(found_librarian):
+                    break
+                else:
+                    print("Invalid Index. Please Try Again.")
+            except ValueError:
+                print("Invalid Input. Please Enter a Number.")
+
+        librarian_to_remove = found_librarian[librarian_id]
+
+        with open('librariandatabase.txt', 'r') as database:
+            lines = database.readlines()
+                    
+        # REMOVE THE SELECTED MEMBER
+        lines = [line for line in lines if line.strip() != librarian_to_remove]
+
+        # WRITE BACK THE UPDATED LINES IN THE DATABASE
+        with open('librariandatabase.txt', 'w') as database:
+            database.writelines(lines)
+
+        print(f"Librarian '{librarian_to_remove.split(':')[0]}' has been removed from the database.")
