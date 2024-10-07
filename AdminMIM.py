@@ -62,8 +62,6 @@ def add_member_to_database():
     
     print("Member successfully registered!")
 
-add_member_to_database()
-
 
 
 import os
@@ -106,8 +104,6 @@ def view_member_in_database():
         except Exception as e:
             print("Error Reading Database File:", e)
     
-view_member_in_database()
-
 
 
 import os
@@ -152,7 +148,6 @@ def search_member_from_database():
                 print(f"{index}. {member}")
             return found_member
 
-search_member_from_database()
 
 
 
@@ -247,8 +242,6 @@ def edit_member_information():
 
         print('Member Information Updated Successfully!')
 
-edit_member_information()
-
 
 
 import os
@@ -292,4 +285,3 @@ def remove_member_from_database():
 
         print(f"Member '{member_to_remove.split(':')[0]}' has been removed from the database.")
 
-remove_member_from_database()
