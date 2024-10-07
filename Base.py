@@ -1,7 +1,10 @@
 # PAGE TO CHOOSE USER TYPE
+import os
 def user_type():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    time.sleep(1)
     print(
-        "Welcome to Brickfields Kuala Lumpur Community Library:\n"
+        "Welcome to Brickfields Kuala Lumpur Community Library login page:\n"
         "Please Select A User Type:\n"
         "   1. System Administrator\n"
         "   2. Librarian\n"
@@ -11,68 +14,140 @@ def user_type():
         try:
             user_choice = int(input("Enter your user type (1/2/3):")) # REQUEST INPUT FROM USER
             if user_choice == 1:
-                system_admin_page()
+                admin_login()
             elif user_choice == 2:
-                librarian_page()
+                librarian_login()
             elif user_choice == 3:
-                library_member_page()
+                member_login()
             else:
                 print("Please choose 1, 2 or 3.")
         except ValueError:
             print("Invalid input. Please enter a number.")
 
+import time
+from adminpage import system_admin_page
+def admin_login():
+    with open("admin.txt", 'r') as info:
+        lines = info.readlines()
 
-import os
-# SYSTEM ADMIN PAGE
-def system_admin_page():
-    os.system('cls' if os.name == 'nt' else 'clear') # CLEAR THE TERMINAL HISTORY
-    print("Welcome to Brickfields Kuala Lumpur Community Library Admin Page:\n"
-          "-------------------------------------------------------------------\n"
-          "Member Information Management:\n"
-          " 1. Add New Member Information\n"
-          " 2. View All Member Information\n"
-          " 3. Search Member Information\n"
-          " 4. Edit Member Information\n"
-          " 5. Remove Member Information\n\n"   
-          "Librarian Information Management:\n"
-          " 6. Add New Librarian\n"
-          " 7. View All Librarian Information\n"
-          " 8. Search Librarian Information\n"
-          " 9. Edit Librarian Information\n"
-          " 10. Remove Librarian\n"
-          " 11. Logout"
-          )
-    admin_choice = input("Enter your choice: ")
+        if len(lines) >= 4:
+            name_line = lines[1].strip()
+            username_line = lines[2].strip()
+            password_line = lines[3].strip()
+        else:
+            return
 
+        saved_username = username_line[16:]
+        saved_password = password_line[10:]
 
-# LIBRARIAN PAGE
-def librarian_page():
-    os.system('cls' if os.name == 'nt' else 'clear') # CLEAR THE TERMINAL HISTORY
-    print("Welcome to Brickfields Kuala Lumpur Community Library Librarian Page:\n"
-          "-----------------------------------------------------------------------\n"
-          "Book Catalogue Management:\n"
-          " 1. Add New Book\n"
-          " 2. View All Existing Book In Catalogue\n"
-          " 3. Search Book From The Catalogue\n"
-          " 4. Edit Book Information\n"
-          " 5. Remove Book From Catalogue\n\n"
-          " 6. Perform Book Loan Process\n"
-          " 7. Logout\n"
-          )
-    librarian_choice = input("Enter your choice: ")
+    username = input("Please enter your username: ").strip()
+
+    # Check if the entered credentials match the registered info
+    if username == saved_username:
+        count = 0
+        while True:
+            password = input("Please enter your password: ").strip()
+            if password == saved_password and count < 3:
+                print(f"Welcome!{name_line[11:]}.")
+                system_admin_page()
+            elif count >= 3:
+                print("Too many attempts. Returning to main login page...")
+                time.sleep(3)
+                user_type()
+            else:
+                count +=1
+                print(f"Incorrect password! Please try again [{3 - count} attempt(s) left].")
+    else:
+        print("User doesn't exist. Returning to main login page...")
+        time.sleep(3)
+        user_type()
 
 
 
-# LIBRARY MEMBER PAGE
-def library_member_page():
-    os.system('cls' if os.name == 'nt' else 'clear') # CLEAR THE TERMINAL HISTORY
-    print("Welcome to Brickfields Kuala Lumpur Community Library Member Page:\n"
-          "-----------------------------------------------------------------------\n"
-          " 1. View Current Loaned Book\n"
-          " 2. Update Profile Information\n"
-          " 3. Search Book Catalogues\n\n"
-          " 4. Logout\n"
-          )
-    librarian_member_choice = input("Enter your choice: ")
+import time
+from adminpage import system_admin_page
+def admin_login():
+    with open("admin.txt", 'r') as admin:
+        lines = admin.readlines()
 
-user_type()
+        if len(lines) >= 4:
+            name_line = lines[1].strip()
+            username_line = lines[2].strip()
+            password_line = lines[3].strip()
+        else:
+            return
+
+        saved_username = username_line[16:]
+        saved_password = password_line[10:]
+
+    username = input("Please enter your username: ").strip()
+
+    # Check if the entered credentials match the registered info
+    if username == saved_username:
+        count = 0
+        while True:
+            password = input("Please enter your password: ").strip()
+            if password == saved_password and count < 3:
+                print(f"Welcome!{name_line[11:]}.")
+                system_admin_page()
+            elif count >= 3:
+                print("Too many attempts. Returning to main login page...")
+                time.sleep(3)
+                user_type()
+            else:
+                count +=1
+                print(f"Incorrect password! Please try again [{3 - count} attempt(s) left].")
+    else:
+        print("User doesn't exist. Returning to main login page...")
+        time.sleep(3)
+        user_type()
+
+
+def librarian_login():
+    with open("librarian.txt", 'r') as librarian:
+        lines = librarian.readlines()
+
+        if len(lines) >= 4:
+            name_line = lines[1].strip()
+            username_line = lines[2].strip()
+            password_line = lines[3].strip()
+        else:
+            return
+
+        saved_username = username_line[16:]
+        saved_password = password_line[10:]
+
+    username = input("Please enter your username: ").strip()
+
+    # Check if the entered credentials match the registered info
+    if username == saved_username:
+        count = 0
+        while True:
+            password = input("Please enter your password: ").strip()
+            if password == saved_password and count < 3:
+                print(f"Welcome!{name_line[11:]}.")
+                system_admin_page()
+            elif count >= 3:
+                print("Too many attempts. Returning to main login page...")
+                time.sleep(3)
+                user_type()
+            else:
+                count +=1
+                print(f"Incorrect password! Please try again [{3 - count} attempt(s) left].")
+    else:
+        print("User doesn't exist. Returning to main login page...")
+        time.sleep(3)
+        user_type()
+
+
+def member_login():
+    with open('member.txt', 'r') as member:
+        lines = member.readlines()
+
+
+
+def main():
+    user_type()
+
+if __name__ == "__main__":
+    main()

@@ -1,12 +1,11 @@
 import os
 from datetime import datetime
-# ADD NEW MEMBER FUCNTION()
+# ADD NEW MEMBER FUNCTION()
 def add_member_to_database():
     
     # CLEAR TERMINAL HISTORY
     os.system('cls' if os.name == 'nt' else 'clear')
-
-    # PRINT SENTENCES  
+ 
     print('Please Enter the Member Details:')
     print('='*40)
 
@@ -21,232 +20,268 @@ def add_member_to_database():
 
     # GET MEMBER DETAILS FROM USERS
     while True:
-        Member_Name = input("Enter the member's name: ").strip()
-        if all(x.isalpha() or x.isspace() for x in Member_Name):
+        member_Name = input("Enter the member's name: ").strip()
+        if all(x.isalpha() or x.isspace() for x in member_Name):
             break
         else:
             print("Please enter a valid name.")
 
     while True:
-        Member_Age = input("Enter the member's age: ").strip()
-        if Member_Age.isdigit() and int(Member_Age) > 0:
+        member_Age = input("Enter the member's age: ").strip()
+        if member_Age.isdigit() and int(member_Age) > 0:
             break
         else:
             print("Please enter a valid age.")
 
     while True:
-        Member_DOB = input("Enter the member's date of birth (YYYY-MM-DD): ").strip()
+        member_DOB = input("Enter the member's date of birth (YYYY-MM-DD): ").strip()
         try:
-            datetime.strptime(Member_DOB, "%Y-%m-%d")
+            datetime.strptime(member_DOB, "%Y-%m-%d")
             break
         except ValueError:
             print("Please enter the date according to the format.")
 
     while True:
-        Member_Register_Date = input("Enter the member's registration date (YYYY-MM-DD): ").strip()
+        member_Register_Date = input("Enter the member's registration date (YYYY-MM-DD): ").strip()
         try:
-            datetime.strptime(Member_Register_Date, "%Y-%m-%d")
+            datetime.strptime(member_Register_Date, "%Y-%m-%d")
             break
         except ValueError:
             print("Please enter the date according to the format.")
 
     while True:
-        Member_IC = input("Enter the member's IC: ").strip()
-        if Member_IC.isdigit():
+        member_IC = input("Enter the member's IC: ").strip()
+        if member_IC.isdigit():
             break
         else:
             print("Please enter a valid 12 digit IC number.")
 
     # ADD BOOK INFORMATIONS GIVEN BY LIBRARIAN INTO FILE
     with open('memberdatabase.txt','a') as database:
-        database.write(f"{Member_Name}:{Member_Age}:{Member_DOB}:{Member_Register_Date}:{Member_IC}\n")
+        database.write(f"{member_Name}:{member_Age}:{member_DOB}:{member_Register_Date}:{member_IC}\n")
     
     print("Member successfully registered!")
 
-add_member_to_database()
-
 
 
 import os
-
-# VIEW ALL EXISTING BOOK IN CATALOGUE
-def view_book_in_catalogue():
-    # CLEAR TERMINAL HISTORY
+# VIEW ALL EXISTING MEMBER IN database
+def view_member_in_database():
     os.system('cls' if os.name == 'nt' else 'clear')
-
-    # CHECK IF THE FILE EXISTS
-    if not os.path.exists('catalogue.txt'):
-        print('Catalogue does not exist.')
+    if not os.path.exists('memberdatabase.txt'):
+        print('Member Is Not Registered.')
         return
 
-    # CHECK IF THE FILE IS EMPTY
-    elif os.path.getsize('catalogue.txt') == 0:
-        print('Catalogue is empty.')
+    elif os.path.getsize('memberdatabase.txt') == 0:
+        print('Record is empty.')
         return
     
     else:
         try:
-            # READ ALL LINES IN CATALOGUE.TXT
-            with open('catalogue.txt', 'r') as catalogue:
-                lines = catalogue.readlines()
-                
-                headers = lines[0].strip().split(':')
-                print("|".join(headers))
-                print("-"*50)
+            # READ ALL LINES IN DATABASE.TXT
+            with open('memberdatabase.txt', 'r') as database:
+                lines = database.readlines()
+                header = lines[0].strip()
+                print('Member List:\n')
+                print(header)
+                #PRINT DIVIDER '=' ACCORDING TO LENGTH
+                longest_line = max(lines, key=len)
+                length_of_longest_line = len(longest_line)
+                print('=' * length_of_longest_line)
 
-                # SORT BOOKS BY THE FIRST ALPHABET OF GENRE
-                sorted_book = sorted(lines[1:], key=lambda x: x.strip().split(':')[-1][0].lower())
-                current_genre = ""
-                for line in sorted_book:
-                    book_details = line.strip().split(':')
-                    genre = book_details[-1]
+                # SORT MEMBER BY NAME
+                sorted_by_name = sorted(lines[1:], key = lambda x: x.strip().split(":")[-1].lower())
+                current_name = ""
+                for line in sorted_by_name:
+                    member_details = line.strip()
+                    name = member_details.split(':')[-1]
                     
-                    if genre[0].lower() != current_genre:
-                        current_genre = genre[0].lower()
-                    print("|".join(book_details))
+                    if name != current_name:
+                        current_name = name
+
+                    print(f"{member_details}")
 
         except Exception as e:
-            print("Error reading catalogue file:", e)
+            print("Error Reading Database File:", e)
     
-view_book_in_catalogue()
 
 
+import os
+# SEARCH MEMBER
+def search_member_from_database():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    if not os.path.exists('memberdatabase.txt'): 
+        print('Member Is Not Registered.')
+        return
+    elif os.path.getsize('memberdatabase.txt') == 0:
+        print('Record Is Empty.')
+        return
+
+    while True:
+        with open('memberdatabase.txt', 'r') as database:
+            lines = database.readlines()
+        keyword = input('Please Enter A Keyword:').lower().strip()
+
+        found_member = []
+        for line in lines[1:]:
+            lower_member_details = line.strip().lower()
+            normal_member_details = line.strip()
+            if keyword in lower_member_details:
+                found_member.append(normal_member_details)
+
+        if len(found_member) == 0:
+            print(f"\nFound 0 Result(s) for '{keyword}'")
+            continue_search = input("Do you wish to continue searching? (yes/no): ").strip().lower()
+            if continue_search == 'yes':
+                continue
+            else:
+                return None
+
+        else:
+            print(f'\nFound {len(found_member)} Result(s):')
+            headers = lines[0].strip()
+            print(headers)
+            print('=' * len(headers))
+
+            # SET INDEX FOR MEMBER IN FOUND MEMBER []
+            for index, member in enumerate(found_member, start=1):
+                print(f"{index}. {member}")
+            return found_member
 
 
 
 
 import os
-# SEARCH BOOK FROM CATALOGUE
-def search_book_from_catalogue():
-    # CLEAR TERMINAL HISTORY
+from datetime import datetime
+# EDIT INFORMATION
+def edit_member_information():
     os.system('cls' if os.name == 'nt' else 'clear')
+    if not os.path.exists('memberdatabase.txt'): 
+        print('Member Is Not Registered.')
+        return
 
-    # CHECK IS THE FILE EXISTS
-    if not os.path.exists('catalogue.txt'): 
-        print('Catalogue does not exist.')
-        return None
-
-    # CHECK IS THE FILE EMPTY
-    elif os.path.getsize('catalogue.txt') == 0:
-        print('Catalogue is empty.')
-        return None
+    elif os.path.getsize('memberdatabase.txt') == 0:
+        print('Record Is Empty.')
+        return
     
     else:
-        try:
-            # READ ALL LINES IN CATALOGUE.TXT
-            with open('catalogue.txt','r') as catalogue:
-                lines = catalogue.readlines()
-                headers = lines[0].strip().split(':')
+        found_member = search_member_from_database()
+        if found_member is None:
+            return
 
-                # GET SEARCH TERM FROM LIBRARIAN
-                search_term = input('Enter the search term: ').strip().lower()
-                search_words = search_term.split()
-                print('Searching for results related to', search_term,'....')
-                print('-'*50)
+        while True:
+            try:
+                edit_index = int(input('\nPlease Enter The Index Of Member To Edit:'))
+                #TO EXCLUDE HEADER AND TO LIMIT INPUTS ON INDEX SHOWN ONLY
+                member_id = edit_index - 1
+                if 0 <= member_id < len(found_member):
+                        break
+                
+                else:
+                    print("Please choose a valid index as shown.")
 
-                # SEARCH FOR BOOKS MATCHING SEARCH TERM
-                found_books = []
-                for line in lines[1:]:
-                    book_details = line.strip().split(':')
-                    combined_details = ' '.join(book_details).lower()
+            except ValueError:
+                print("Invalid input. Please enter numerical index only.")
 
-                    for word in search_words:
-                        if word not in combined_details:
+
+        with open('memberdatabase.txt', 'r') as database:
+            lines = database.readlines()
+
+        original_member = found_member[member_id]
+        member_details = original_member.split(':')
+        line_index = lines.index(original_member + '\n')
+
+        fields = ['Name', 'Age', 'Date Of Birth', 'Registration date', 'IC']
+        new_details = []
+
+        for i, field in enumerate(fields):
+            if field == 'Name':
+                while True:
+                    new_value = input(f'Enter New {field} (Press Enter To Keep Current Value): ').strip()
+                    if new_value:
+                        if all(x.isalpha() or x.isspace() for x in new_value):
+                            new_details.append(new_value)
                             break
+                        else:
+                            print("Please enter a valid name.")
                     else:
-                        found_books.append(book_details)
-                
-                # DISPLAY SEARCH RESULTS
-                if found_books:
-                    print(f"Found {len(found_books)} result(s)")
-                    print('|'.join(headers))
-                    print('-'*50)
-                    for book in found_books:
-                        print('|'.join(book))
-                else:
-                    print("No results found for", search_term)
-                
-                return lines
+                        new_details.append(member_details[i].strip())
+                        break
+            elif field == 'Age' or field == 'IC':
+                while True:
+                    new_value1 = input(f'Enter New {field} (Press Enter To Keep Current Value): ').strip()
+                    if new_value1:
+                        if new_value1.isdigit() and int(new_value1) > 0:
+                            new_details.append(new_value1)
+                            break
+                        else:
+                            print("Please enter numerical values only.")
+                    else:
+                        new_details.append(member_details[i].strip())
+                        break
+            else:
+                while True:
+                    new_value2 = input(f'Enter New {field} in YYYY-MM-DD (Press Enter To Keep Current Value): ').strip()
+                    if new_value2:
+                        try:
+                            datetime.strptime(new_value2, "%Y-%m-%d")
+                            new_details.append(new_value2)
+                            break
+                        except ValueError:
+                            print("Please enter the date according to the format YYYY-MM-DD.")
+                    else:
+                        new_details.append(member_details[i].strip())
+                        break
 
-        except FileNotFoundError:
-            print("No catalogue found!")
-        except Exception as e:
-            print("Error reading catalogue file:", e)
+        updated_member = ':'.join(new_details) + '\n'
+        lines[line_index] = updated_member
 
-search_book_from_catalogue()
+        # WRITE BACK THE UPDATED LINES IN THE DATABASE
+        with open('memberdatabase.txt', 'w') as database:
+            database.writelines(lines)
+
+        print('Member Information Updated Successfully!')
 
 
-import os 
-def edit_book_information(): 
-    # CLEAR TERMINAL HSITORY  
+
+import os
+# REMOVE
+def remove_member_from_database():
     os.system('cls' if os.name == 'nt' else 'clear')
-
-    # CHECK IS THE FILE EXISTS
-    if not os.path.exists('catalogue.txt'): 
-        print('Catalogue does not exist.')
+    if not os.path.exists('memberdatabase.txt'): 
+        print('Member Is Not Registered.')
         return
-
-    # CHECK IS THE FILE EMPTY
-    elif os.path.getsize('catalogue.txt') == 0:
-        print('Catalogue is empty.')
+    elif os.path.getsize('memberdatabase.txt') == 0:
+        print('Record Is Empty.')
         return
-
     else:
-        try:
-            # SEARCH THE BOOK THAT WANT TO EDIT (search_book_from_catalogue)
-            lines = search_book_from_catalogue()
+        found_member = search_member_from_database()
+        if found_member is None:
+            return
 
-            # DISPLAY THE BOOKS WITH IDs STARTING FROM 1
-            print('Books in Catalogue')
-            for index, line in enumerate(lines[1:], start = 1):
-                print(f'{index}.{line.strip()}')
 
-            while True:
-                book_id_input = input("Based on your search term, please enter the book ID you want to edit: ")
-                
-                if not book_id_input.isdigit():
-                    print("Invalid input. Please enter a valid book ID.")
-                    continue
-                
-                book_id = int(book_id_input)-1
-
-                if book_id < 1 or book_id >= len(lines)-1:
-                    print("Invalid book ID")
-                else:
+        while True:
+            try:
+                remove_index = int(input('\nPlease Enter The Index Of Member To Remove: '))
+                member_id = remove_index - 1
+                if 0 <= member_id < len(found_member):
                     break
+                else:
+                    print("Invalid Index. Please Try Again.")
+            except ValueError:
+                print("Invalid Input. Please Enter a Number.")
 
-                book_details = lines[book_id + 1].strip().split()
-                print('Current Details:')
-                print('|'.join(book_details))
+        member_to_remove = found_member[member_id]
 
-                new_title = input("Enter new title (leave blank to keep current): ").strip()
-                new_author = input("Enter new author (leave blank to keep current): ").strip()
-                new_publisher = input("Enter new publisher (leave blank to keep current): ").strip()
-                new_publication_date = input("Enter new publication date (leave blank to keep current): ").strip()
-                new_isbn = input("Enter new ISBN (leave blank to keep current): ").strip()
-                new_genre = input("Enter new genre (leave blank to keep current): ").strip()
+        with open('memberdatabase.txt', 'r') as database:
+            lines = database.readlines()
+                    
+        # REMOVE THE SELECTED MEMBER
+        lines = [line for line in lines if line.strip() != member_to_remove]
 
-                if new_title:
-                    book_details[0] = new_title
-                if new_author:
-                    book_details[1] = new_author
-                if new_publisher:
-                    book_details[2] = new_publisher
-                if new_publication_date:
-                    book_details[3] = new_publication_date
-                if new_isbn:
-                    book_details[4] = new_isbn
-                if new_genre:
-                    book_details[5] = new_genre
+        # WRITE BACK THE UPDATED LINES IN THE DATABASE
+        with open('memberdatabase.txt', 'w') as database:
+            database.writelines(lines)
 
-                lines[book_id + 1] = ':'.join(book_details)+ "\n"
+        print(f"Member '{member_to_remove.split(':')[0]}' has been removed from the database.")
 
-                with open('catalogue.txt','w' ) as catalogue:
-                    catalogue.writelines(lines)
-
-                print('Book Information Update Successfully')
-
-        except Exception as e:
-            print("Error reading catalogue file:", e)
-
-    pass
