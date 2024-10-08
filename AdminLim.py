@@ -286,5 +286,3 @@ def remove_librarian_from_database():
             database.writelines(lines)
 
         print(f"Member '{librarian_to_remove.split(':')[0]}' has been removed from the database.")
-
-add_librarian_to_database()
