@@ -1,0 +1,2 @@
+Name: Age: Date Of Birth: Registration Date: IC
+SOHAI:20:2000-09-20:2020-09-11:000011112222

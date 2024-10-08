@@ -1,12 +1,11 @@
 import os
 from datetime import datetime
-# ADD NEW LIBRARIAN FUCNTION()
+# ADD NEW LIBRARIAN FUNCTION()
 def add_librarian_to_database():
     
     # CLEAR TERMINAL HISTORY
     os.system('cls' if os.name == 'nt' else 'clear')
-
-    # PRINT SENTENCES  
+ 
     print('Please Enter the Librarian Details:')
     print('='*40)
 
@@ -21,229 +20,234 @@ def add_librarian_to_database():
 
     # GET LIBRARIAN DETAILS FROM USERS
     while True:
-        Librarian_Name = input("Enter the librarian's name: ").strip()
-        if all(x.isalpha() or x.isspace() for x in Librarian_Name):
+        librarian_name = input("Enter the librarian's name: ").strip()
+        if all(x.isalpha() or x.isspace() for x in librarian_name):
             break
         else:
             print("Please enter a valid name.")
 
     while True:
-        Librarian_Age = input("Enter the librarian's age: ").strip()
-        if Librarian_Age.isdigit() and int(Librarian_Age) > 0:
+        librarian_age = input("Enter the librarian's age: ").strip()
+        if librarian_age.isdigit() and int(librarian_age) > 0:
             break
         else:
             print("Please enter a valid age.")
 
     while True:
-        Librarian_DOB = input("Enter the librarian's date of birth (YYYY-MM-DD): ").strip()
+        librarian_DOB = input("Enter the librarian's date of birth (YYYY-MM-DD): ").strip()
         try:
-            datetime.strptime(Librarian_DOB, "%Y-%m-%d")
+            datetime.strptime(librarian_DOB, "%Y-%m-%d")
             break
         except ValueError:
             print("Please enter the date according to the format.")
 
     while True:
-        Librarian_Register_Date = input("Enter the librarian's registration date (YYYY-MM-DD): ").strip()
+        librarian_register_date = input("Enter the librarian's registration date (YYYY-MM-DD): ").strip()
         try:
-            datetime.strptime(Librarian_Register_Date, "%Y-%m-%d")
+            datetime.strptime(librarian_register_date, "%Y-%m-%d")
             break
         except ValueError:
             print("Please enter the date according to the format.")
 
     while True:
-        Librarian_IC = input("Enter the librarian's IC: ").strip()
-        if Librarian_IC.isdigit():
+        librarian_IC = input("Enter the librarian's IC: ").strip()
+        if librarian_IC.isdigit():
             break
         else:
             print("Please enter a valid 12 digit IC number.")
 
     # ADD LIBRARIAN INFORMATIONS GIVEN BY LIBRARIAN INTO FILE
     with open('librariandatabase.txt','a') as database:
-        database.write(f"{Librarian_Name}:{Librarian_Age}:{Librarian_DOB}:{Librarian_Register_Date}:{Librarian_IC}\n")
+        database.write(f"{librarian_name}:{librarian_age}:{librarian_DOB}:{librarian_register_date}:{librarian_IC}\n")
     
-    print("Member successfully registered!")
-
-add_librarian_to_database()
+    print("Librarian successfully registered!")
 
 
 
 import os
-
-# VIEW ALL EXISTING LIBRARIAN IN CATALOGUE
-def view_librarian_in_catalogue():
-    # CLEAR TERMINAL HISTORY
+# VIEW ALL EXISTING LIBRARIAN IN database
+def view_librarian_in_database():
     os.system('cls' if os.name == 'nt' else 'clear')
-
-    # CHECK IF THE FILE EXISTS
     if not os.path.exists('librariandatabase.txt'):
-        print('Catalogue does not exist.')
+        print('Librarian Is Not Registered.')
         return
 
-    # CHECK IF THE FILE IS EMPTY
     elif os.path.getsize('librariandatabase.txt') == 0:
-        print('Catalogue is empty.')
+        print('Record is empty.')
         return
     
     else:
         try:
-            # READ ALL LINES IN LIBRARIAN.TXT
-            with open('librariandatabase.txt', 'r') as catalogue:
-                lines = catalogue.readlines()
-                
-                headers = lines[0].strip().split(':')
-                print("| ".join(headers))  
-                print("-" * 50)  
+            # READ ALL LINES IN DATABASE.TXT
+            with open('librariandatabase.txt', 'r') as database:
+                lines = database.readlines()
+                header = lines[0].strip()
+                print('Librarian List:\n')
+                print(header)
+                #PRINT DIVIDER '=' ACCORDING TO LENGTH
+                longest_line = max(lines, key=len)
+                length_of_longest_line = len(longest_line)
+                print('=' * length_of_longest_line)
 
-                # SORT LIBRARIAN BY THE FIRST ALPHABET OF GENRE
-                sorted_librarians = sorted(lines[1:], key=lambda x: x.split(':')[0].strip().lower())
-                for line in sorted_librarians:
-                    librarian_details = line.strip().split(':')
-                    print("| ".join(librarian_details))
+                # SORT LIBRARIAN BY NAME
+                sorted_by_name = sorted(lines[1:], key = lambda x: x.strip().split(":")[-1].lower())
+                current_name = ""
+                for line in sorted_by_name:
+                    librarian_detail = line.strip()
+                    name = librarian_detail.split(':')[-1]
                     
-        except Exception as e:
-            print("Error reading catalogue file:", e)
-    
-view_librarian_in_catalogue()
+                    if name != current_name:
+                        current_name = name
 
+                    print(f"{librarian_detail}")
+
+        except Exception as e:
+            print("Error Reading Database File:", e)
+    
+
+
+
+import os
+# SEARCH LIBRARIAN
+def search_librarian_from_database():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    if not os.path.exists('librariandatabase.txt'): 
+        print('Librarian Is Not Registered.')
+        return
+    elif os.path.getsize('librariandatabase.txt') == 0:
+        print('Record Is Empty.')
+        return
+
+    while True:
+        with open('librariandatabase.txt', 'r') as database:
+            lines = database.readlines()
+        keyword = input('Please Enter A Keyword:').lower().strip()
+
+        found_librarian = []
+        for line in lines[1:]:
+            lower_librarian_detail = line.strip().lower()
+            normal_librarian_detail = line.strip()
+            if keyword in lower_librarian_detail:
+                found_librarian.append(normal_librarian_detail)
+
+        if len(found_librarian) == 0:
+            print(f"\nFound 0 Result(s) for '{keyword}'")
+            continue_search = input("Do you wish to continue searching? (yes/no): ").strip().lower()
+            if continue_search == 'yes':
+                continue
+            else:
+                return None
+
+        else:
+            print(f'\nFound {len(found_librarian)} Result(s):')
+            headers = lines[0].strip()
+            print(headers)
+            print('=' * len(headers))
+
+            # SET INDEX FOR LIBRARIAN IN FOUND MEMBER []
+            for index, member in enumerate(found_librarian, start=1):
+                print(f"{index}. {member}")
+            return found_librarian
 
 
 
 
 
 import os
-# SEARCH LIBRARIAN FROM CATALOGUE
-def search_librarian_from_database():
-    # CLEAR TERMINAL HISTORY
+from datetime import datetime
+# EDIT INFORMATION
+def edit_librarian_information():
     os.system('cls' if os.name == 'nt' else 'clear')
-
-    # CHECK IS THE FILE EXISTS
     if not os.path.exists('librariandatabase.txt'): 
-        print('Catalogue does not exist.')
-        return None
+        print('Librarian Is Not Registered.')
+        return
 
-    # CHECK IS THE FILE EMPTY
     elif os.path.getsize('librariandatabase.txt') == 0:
-        print('Catalogue is empty.')
-        return None
+        print('Record Is Empty.')
+        return
     
     else:
-        try:
-            # READ ALL LINES IN CATALOGUE.TXT
-            with open('librariandatabase.txt','r') as catalogue:
-                lines = catalogue.readlines()
-                headers = lines[0].strip().split(':')
+        found_librarian = search_librarian_from_database()
+        if found_librarian is None:
+            return
 
-                # GET SEARCH TERM FROM LIBRARIAN
-                search_term = input('Enter the search term: ').strip().lower()
-                search_words = search_term.split()
-                print('Searching for results related to', search_term,'....')
-                print('-'*50)
+        while True:
+            try:
+                edit_index = int(input('\nPlease Enter The Index Of Librarian To Edit:'))
+                #TO EXCLUDE HEADER AND TO LIMIT INPUTS ON INDEX SHOWN ONLY
+                librarian_id = edit_index - 1
+                if 0 <= librarian_id < len(found_librarian):
+                        break
+                
+                else:
+                    print("Please choose a valid index as shown.")
 
-                # SEARCH FOR BOOKS MATCHING SEARCH TERM
-                found_librarian = []
-                for line in lines[1:]:
-                    librarian_details = line.strip().split(':')
-                    combined_details = ' '.join(librarian_details).lower()
+            except ValueError:
+                print("Invalid input. Please enter numerical index only.")
 
-                    for word in search_words:
-                        if word not in combined_details:
+
+        with open('librariandatabase.txt', 'r') as database:
+            lines = database.readlines()
+
+        original_librarian = found_librarian[librarian_id]
+        librarian_detail = original_librarian.split(':')
+        line_index = lines.index(original_librarian + '\n')
+
+        fields = ['Name', 'Age', 'Date Of Birth', 'Registration date', 'IC']
+        new_details = []
+
+        for i, field in enumerate(fields):
+            if field == 'Name':
+                while True:
+                    new_value = input(f'Enter New {field} (Press Enter To Keep Current Value): ').strip()
+                    if new_value:
+                        if all(x.isalpha() or x.isspace() for x in new_value):
+                            new_details.append(new_value)
                             break
+                        else:
+                            print("Please enter a valid name.")
                     else:
-                        found_librarian.append(librarian_details)
-                
-                # DISPLAY SEARCH RESULTS
-                if found_librarian:
-                    print(f"Found {len(found_librarian)} result(s)")
-                    print('|'.join(headers))
-                    print('-'*50)
-                    for librarian in found_librarian:
-                        print('|'.join(librarian))
-                else:
-                    print("No results found for", search_term)
-                
-                return lines
+                        new_details.append(librarian_detail[i].strip())
+                        break
+            elif field == 'Age' or field == 'IC':
+                while True:
+                    new_value1 = input(f'Enter New {field} (Press Enter To Keep Current Value): ').strip()
+                    if new_value1:
+                        if new_value1.isdigit() and int(new_value1) > 0:
+                            new_details.append(new_value1)
+                            break
+                        else:
+                            print("Please enter numerical values only.")
+                    else:
+                        new_details.append(librarian_detail[i].strip())
+                        break
+            else:
+                while True:
+                    new_value2 = input(f'Enter New {field} in YYYY-MM-DD (Press Enter To Keep Current Value): ').strip()
+                    if new_value2:
+                        try:
+                            datetime.strptime(new_value2, "%Y-%m-%d")
+                            new_details.append(new_value2)
+                            break
+                        except ValueError:
+                            print("Please enter the date according to the format YYYY-MM-DD.")
+                    else:
+                        new_details.append(librarian_detail[i].strip())
+                        break
 
-        except FileNotFoundError:
-            print("No catalogue found!")
-        except Exception as e:
-            print("Error reading catalogue file:", e)
+        updated_librarian = ':'.join(new_details) + '\n'
+        lines[line_index] = updated_librarian
 
-search_librarian_from_database()
+        # WRITE BACK THE UPDATED LINES IN THE DATABASE
+        with open('librariandatabase.txt', 'w') as database:
+            database.writelines(lines)
 
-
-import os 
-def edit_librarian_information(): 
-    # CLEAR TERMINAL HSITORY  
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-    # CHECK IS THE FILE EXISTS
-    if not os.path.exists('librariandatabase.txt'): 
-        print('Catalogue does not exist.')
-        return
-
-    # CHECK IS THE FILE EMPTY
-    elif os.path.getsize('librariandatabase.txt') == 0:
-        print('Catalogue is empty.')
-        return
-
-    else:
-        try:
-            # SEARCH THE LIBRARIAN THAT WANT TO EDIT (search_librarian_from_database)
-            lines = search_librarian_from_database()
-
-            # DISPLAY THE BOOKS WITH IDs STARTING FROM 1
-            print('Librarian in Catalogue')
-            for index, line in enumerate(lines[1:], start = 1):
-                print(f'{index}.{line.strip()}')
-
-            while True:
-                librarian_name_input = input("Based on your search term, please enter the librarian you want to edit: ")
-                
-                if not librarian_name.isalpha():
-                    print("Invalid input. Please enter a valid librarian name.")
-                    continue
-                
-                librarian_name = str(librarian_name_input)-1
-
-                if librarian_name < 1 or librarian_name >= len(lines)-1:
-                    print("Invalid librarian name")
-                else:
-                    break
-
-                librarian_details = lines[librarian_name + 1].strip().split()
-                print('Current Details:')
-                print('|'.join(librarian_details))
-
-                new_librarian = input("Enter new librarian (leave blank to keep current): ").strip()
-                new_librarian_age = input("Enter librarian age (leave blank to keep current): ").strip()
-                new_librarian_DOB = input("Enter new librarian DOB  (leave blank to keep current): ").strip()
-                new_librarian_registration__date = input("Enter new librarian registration date (leave blank to keep current): ").strip()
-                new_librarian_ic = input("Enter new librarian IC (leave blank to keep current): ").strip()
-                
-                if new_librarian:
-                    librarian_details[0] = new_librarian
-                if new_librarian_age:
-                    librarian_details[1] = new_librarian_age
-                if new_librarian_DOB:
-                    librarian_details[2] = new_librarian_DOB
-                if new_librarian_registration__date:
-                    librarian_details[3] = new_librarian_registration__date
-                if new_librarian_ic:
-                    librarian_details[4] = new_librarian_ic
-
-                lines[librarian_details + 1] = ':'.join(librarian_details)+ "\n"
-
-                with open('catalogue.txt','w' ) as catalogue:
-                    catalogue.writelines(lines)
-
-                print('Book Information Update Successfully')
-
-        except Exception as e:
-            print("Error reading catalogue file:", e)
-
-    pass
+        print('Librarian Information Updated Successfully!')
 
 
+
+import os
+# REMOVE
 def remove_librarian_from_database():
     os.system('cls' if os.name == 'nt' else 'clear')
     if not os.path.exists('librariandatabase.txt'): 
@@ -274,11 +278,13 @@ def remove_librarian_from_database():
         with open('librariandatabase.txt', 'r') as database:
             lines = database.readlines()
                     
-        # REMOVE THE SELECTED MEMBER
+        # REMOVE THE SELECTED LIBRARIAN
         lines = [line for line in lines if line.strip() != librarian_to_remove]
 
         # WRITE BACK THE UPDATED LINES IN THE DATABASE
         with open('librariandatabase.txt', 'w') as database:
             database.writelines(lines)
 
-        print(f"Librarian '{librarian_to_remove.split(':')[0]}' has been removed from the database.")
+        print(f"Member '{librarian_to_remove.split(':')[0]}' has been removed from the database.")
+
+add_librarian_to_database()
