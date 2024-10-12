@@ -1,5 +1,0 @@
-name:username:password:bookcount
-HYH:user1:aaa:1
-LYH:user2:bbb:0
-LHM:user3:ccc:3
-TKW:user4:ddd:5

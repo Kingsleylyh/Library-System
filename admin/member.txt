@@ -1,0 +1,5 @@
+name:username:password:bookcount
+HYH:user1:aaa:3
+LYH:user2:bbb:1
+LHM:user3:ccc:0
+TKW:user4:ddd:0

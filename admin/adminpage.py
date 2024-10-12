@@ -1,5 +1,5 @@
 import os
-from AdminMIM import *
+from admin.AdminMIM import *
 # SYSTEM ADMIN PAGE
 def system_admin_page():
     os.system('cls' if os.name == 'nt' else 'clear')

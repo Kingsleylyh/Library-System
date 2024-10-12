@@ -1,5 +1,0 @@
-Title: Author: Publisher: Publication Date: ISBN: Genre
-test:jamie oliver:TheStar:2024:2345:Cooking
-Hell Kitchen:Jamie:The Star:2023:2345:2233
-google manual:james:The sun:2024-03-08:12345678:science
-python:joshua:The Star:2024-08-09:1234-5678:The cooking

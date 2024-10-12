@@ -25,7 +25,7 @@ def user_type():
             print("Invalid input. Please enter a number.")
 
 import time
-from adminpage import system_admin_page
+from admin.adminpage import system_admin_page
 def admin_login():
     with open("admin.txt", 'r') as info:
         lines = info.readlines()
@@ -65,7 +65,7 @@ def admin_login():
 
 
 import time
-from adminpage import system_admin_page
+from admin.adminpage import system_admin_page
 def admin_login():
     with open("admin.txt", 'r') as admin:
         lines = admin.readlines()
@@ -103,6 +103,7 @@ def admin_login():
         user_type()
 
 
+from librarian.librarianpage import librarian_page
 def librarian_login():
     with open("librarian.txt", 'r') as librarian:
         lines = librarian.readlines()
@@ -126,7 +127,7 @@ def librarian_login():
             password = input("Please enter your password: ").strip()
             if password == saved_password and count < 3:
                 print(f"Welcome!{name_line[11:]}.")
-                system_admin_page()
+                librarian_page()
             elif count >= 3:
                 print("Too many attempts. Returning to main login page...")
                 time.sleep(3)

@@ -1,4 +1,4 @@
-from Librarian import *
+from librarian.Librarian import *
 # LIBRARIAN PAGE
 def librarian_page():
     os.system('cls' if os.name == 'nt' else 'clear') # CLEAR THE TERMINAL HISTORY
@@ -22,3 +22,13 @@ def librarian_page():
         search_book_from_catalogue()
     elif librarian_choice == 4:
         edit_book_information()
+    elif librarian_choice == 5:
+        remove_book()
+    elif librarian_choice == 6:
+        check_username()
+
+def main():
+    librarian_page()
+
+if __name__ == "__main__":
+    main()
