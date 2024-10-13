@@ -1,9 +1,0 @@
-Title: Author: Publisher: Publication Date: ISBN: Genre: Availability
-A Brief History of Humankind: Yuval Noah Harari: Harper: 2015-02-10: 978-0062316110: Anthropology: Yes
-Educated: Tara Westover: Random House: 2018-02-20: 978-0399590504: Memoir:No
-The Midnight Library: Matt Haig: Viking: 2020-09-29: 978-0525559474: Fiction: Yes
-Becoming: Michelle Obama: Crown: 2018-11-13: 978-1524763138: Memoir:No
-The Silent Patient: Alex Michaelides: Celadon Book: 2019-02-05: 978-1250301697: Mystery: Yes
-Atomic Habits:James Clear:Avery:2018-10-16:978-073521129:Psychology:No
-hell:Jamie:TheStar:2024-09-08:123:cooking:No
-Hell kitchen2:gordan:star:2023-08-08:1234:cooking:Yes
