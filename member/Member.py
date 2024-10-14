@@ -20,28 +20,28 @@ def view_loaned_books(member, books):
         try:
             # View the member's loaned books with due dates and overdue fees
             with open('catalogue.txt', 'r') as catalogue:
-            lines = catalogue.readlines()
-            header = lines[0].strip()
-    
-            loaned_books = []
-            for book in books:
-                if book['member_id'] == member['id']:
-                    loaned_books.append(book)
-            if loaned_books:
-                print("Your loaned books: ")
-                for book in loaned_books:
-                    print(f"Tile: {book['title']}")
-                    print(f"Author: {book['author']}")
-                    print(f"Publisher: {book['publisher']}")
-                    print(f"Publication Date: {book['publication date']}")
-                    print(f"ISBN: {book['isbn']}")
-                    print(f"Genre: {book['genre']}")
-                    print(f"Due Date: {book['due date']}")
-                    print(f"Availability: {'Available' if book['available'] else 'Not Available'}")
-                    if book['due date'] < datetime.date.today():
-                        print(f"Overdue Fees: {calculate_overdue_fees(book)}")
-            else:
-                print("You have no loaned books.")
+                lines = catalogue.readlines()
+                header = lines[0].strip()
+        
+                loaned_books = []
+                for book in books:
+                    if book['member_id'] == member['id']:
+                        loaned_books.append(book)
+                if loaned_books:
+                    print("Your loaned books: ")
+                    for book in loaned_books:
+                        print(f"Tile: {book['title']}")
+                        print(f"Author: {book['author']}")
+                        print(f"Publisher: {book['publisher']}")
+                        print(f"Publication Date: {book['publication date']}")
+                        print(f"ISBN: {book['isbn']}")
+                        print(f"Genre: {book['genre']}")
+                        print(f"Due Date: {book['due date']}")
+                        print(f"Availability: {'Available' if book['available'] else 'Not Available'}")
+                        if book['due date'] < datetime.date.today():
+                            print(f"Overdue Fees: {calculate_overdue_fees(book)}")
+                else:
+                    print("You have no loaned books.")
 
         except FileNotFoundError:
             print("No catalogue found!")

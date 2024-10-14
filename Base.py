@@ -120,8 +120,6 @@ def librarian_login():
         saved_username = columns[2].strip()
         saved_password = columns[3].strip()
 
-        print(f"Comparing input '{username}' with saved '{saved_username}'")
-
         if username == saved_username:
             found = True
             count = 0
@@ -147,10 +145,47 @@ def librarian_login():
         time.sleep(3)
         user_type()
 
-
+from member.memberpage import library_member_page
 def member_login():
-    with open('admin/member.txt', 'r') as member:
-        lines = member.readlines()
+    try:
+        with open("admin/member.txt", 'r') as member:
+            lines = member.readlines()
+    except FileNotFoundError:
+        print("File not found. Returning to main login page...")
+
+    username = input("Please enter your username: ").strip()
+    found = False
+
+    for line in lines[1:]:
+        columns = line.strip().split(":")
+        name = columns[0].strip()
+        saved_username = columns[1].strip()
+        saved_password = columns[2].strip()
+
+        if username == saved_username:
+            found = True
+            count = 0
+
+            while count < 3:
+                password = input("Please enter your password: ").strip()
+                if password == saved_password:
+                    print(f"Welcome! {name}.")
+                    library_member_page()
+                    return
+                    
+                else:
+                    count += 1
+                    print(f"Incorrect password! Please try again [{3 - count} attempt(s) left].")
+
+            print("Too many attempts. Returning to main login page...")
+            time.sleep(3)
+            user_type()
+            return
+
+    if not found:
+        print("User doesn't exist. Returning to main login page...")
+        time.sleep(3)
+        user_type()
 
 def main():
     user_type()
