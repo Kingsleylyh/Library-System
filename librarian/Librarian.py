@@ -468,7 +468,7 @@ def book_loan(username):
 
         # If the book is found but not available, inform the user and stop the process
         elif not book_available:
-            print(f"The book '{book_title}' is currently borrowed by others and cannot be loaned.")
+            print(f"The book '{book_title}' is currently borrowed.")
             end_choice()
         
     # Get the current date and calculate the due date (14 days from now)
@@ -519,7 +519,7 @@ def check_overdue(username):
                 current_date = datetime.now()  # Get the current date
 
                 # Calculate the number of overdue days by comparing current date and borrow date
-                overdue_days = (current_date - due_date).days  # Subtract 14 days (loan period)
+                overdue_days = (current_date - due_date).days 
                 overdue_days = max(0, overdue_days)  # Ensure overdue_days is non-negative (no negative overdue)
 
                 # Calculate overdue fee based on the number of overdue days
@@ -593,7 +593,7 @@ def check_username():
                         print("Overdue Fees Verification:")
                         check_overdue(username) # Call the function to check overdue fees
                         return
-                    
+
                     # If the user has borrowed 5 books, they cannot borrow more
                     else:
                         print("User borrowed 5 books already.")
