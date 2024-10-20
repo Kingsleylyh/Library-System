@@ -97,46 +97,47 @@ def add_book_to_catalogue():
 """Function to view all existing book in catalogue"""
 def view_book_in_catalogue():
     # Clear the terminal screen for better visibility
-    os.system('cls' if os.name == 'nt' else 'clear')
+    os.system('cls' if os.name == 'nt' else 'clear')  
 
     # Check if the catalogue file exists
     if not os.path.exists('librarian/catalogue.txt'):
         print('Catalogue Does Not Exist.')
-        end_choice()
+        end_choice() 
 
     # Check if the catalogue file is empty
     elif os.path.getsize('librarian/catalogue.txt') == 0:
         print('Catalogue Is Empty.')
-        end_choice()
+        end_choice() 
     
     else:
         try:
             # Read all lines from the catalogue file
             with open('librarian/catalogue.txt', 'r') as catalogue:
-                lines = catalogue.readlines()
+                lines = catalogue.readlines() # Load all lines into memory
 
             # Extract and print the header (first line)
-            header = lines[0].strip()
+            header = lines[0].strip() # Extract and clean the header (removes trailing spaces/newlines)
             print('Catalogue List:\n')
-            print(header)
+            print(header) # Print the header as the title of the catalogue
 
             # Print a separator line based on the longest line in the file
-            longest_line = max(lines, key=len)  # Find the longest line in the file for consistent separation
-            print('=' * len(longest_line))
+            longest_line = max(lines, key=len) # Find the longest line in the file to create a consistent separator
+            print('=' * len(longest_line)) # Print the separator (equal sign) based on longest line length
 
             # Sort books by genre (last field in each line)
-            sorted_books = sorted(lines[1:], key=lambda x: x.strip().split(":")[5].lower())  # Sort books alphabetically by genre
+            sorted_books = sorted(lines[1:], key=lambda x: x.strip().split(":")[5].lower()) # Sort alphabetically by genre
             
-            # Initialize variable to track the current genre for grouping books
+            # Initialize a variable to track the current genre for grouping books
             current_genre = ""
             for line in sorted_books:
-                book_details = line.strip()  # Remove extra spaces and newlines from the book details
-                genre = book_details.split(':')[5].strip()  # Extract the genre from the line
+                book_details = line.strip() # Clean the book details from extra spaces/newlines
+                genre = book_details.split(':')[5] # Extract the genre from the 6th field of each line
+                genre_lower = genre.lower() # Convert genre to lowercase for comparison
 
                 # If a new genre is encountered, print it as a header
-                if genre != current_genre:
-                    current_genre = genre  # Update current genre to the new one
-                    print(f"\n{genre}:")
+                if genre_lower != current_genre:
+                    current_genre = genre_lower # Update the current genre to the new one
+                    print(f"\n{genre}:") # Print the genre as a section header
                 
                 # Print the book details under the current genre
                 print(f"{book_details}")
@@ -144,15 +145,16 @@ def view_book_in_catalogue():
         except Exception as e:
             # Handle any errors during file reading
             print("Error Reading Catalogue File:", e)
-            end_choice()
+            end_choice() # End function if an error occurs
     
-    # Run end_choice fucntion
+    # Run end_choice function after displaying the catalogue
     end_choice()
 
 
 """Function to search books"""
 def search_catalogue():
 
+    # Check if catalogue file exists 
     if not os.path.exists('librarian/catalogue.txt'): 
         print('Catalogue Does Not Exist.')
         end_choice()
@@ -160,12 +162,12 @@ def search_catalogue():
     # Check if the catalogue file is empty
     elif os.path.getsize('librarian/catalogue.txt') == 0:
         print('Catalogue Is Empty.')
-        end_choice()
+        end_choice() 
     
     else:
         # Read all lines from the catalogue file
         with open('librarian/catalogue.txt', 'r') as catalogue:
-            lines = catalogue.readlines()
+            lines = catalogue.readlines() 
 
         # Get search term from user input and normalize it (convert to lowercase and remove extra spaces)
         search_term = input('Please Enter Your Search Term:')
@@ -188,24 +190,36 @@ def search_catalogue():
 
 """Function to display search results"""
 def search_display_catalogue_books():
+    # Clear the terminal screen for better visibility
     os.system('cls' if os.name == 'nt' else 'clear')
 
+    # Welcome message for the search book page
     print("Welcome To Search Book Page:")
 
+    # Call the search_catalogue function to get the header and found books
     header, found_books = search_catalogue()
+    
+    # Check if any books were found
     if found_books:
+        # Print the number of books found
         print(f'Found {len(found_books)} book(s):')
 
+        # Print the header for the book list
         print(header.strip())
+        # Print a separator line based on the length of the header
         print('=' * len(header.strip()))
 
+        # Enumerate through the found books and print them with an index
         for index, book in enumerate(found_books, start=1):
             print(f"{index}. {book}")
 
     else:
+        # If no books were found, inform the user
         print("No books found matching your search.")
+        # Call end_choice function to handle end of the operation
         end_choice()
     
+    # Call end_choice function to finish the search operation
     end_choice()
 
 
@@ -558,7 +572,7 @@ def check_overdue(username):
 
     # Otherwise, inform the user of their total overdue fees
     else:
-        print(f"Total overdue fees for {username} is RM{total_overdue_fees:.2f}")
+        print(f"\nTotal overdue fees for {username} is RM{total_overdue_fees:.2f}")
         print("Please pay all the overdue fees before continue borrowing books.")
         end_choice()
 
