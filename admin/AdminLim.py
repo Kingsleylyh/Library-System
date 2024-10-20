@@ -13,8 +13,8 @@ def add_librarian_to_database():
     headers = ("Name: Age: Date Of Birth: Registration Date: IC") # DEFINE COLUMN HEADERS
 
     # CHECK IF THE FILE EXISTS OR IT IS EMPTY
-    if not os.path.exists('librariandatabase.txt') or os.path.getsize('librariandatabase.txt') == 0: 
-        with open('librariandatabase.txt', 'w') as database:
+    if not os.path.exists('admin/librariandatabase.txt') or os.path.getsize('admin/librariandatabase.txt') == 0: 
+        with open('admin/librariandatabase.txt', 'w') as database:
             database.write(f"{headers}\n")
 
 
@@ -57,7 +57,7 @@ def add_librarian_to_database():
             print("Please enter a valid 12 digit IC number.")
 
     # ADD LIBRARIAN INFORMATIONS GIVEN BY LIBRARIAN INTO FILE
-    with open('librariandatabase.txt','a') as database:
+    with open('admin/librariandatabase.txt','a') as database:
         database.write(f"{librarian_name}:{librarian_age}:{librarian_DOB}:{librarian_register_date}:{librarian_IC}\n")
     
     print("Librarian successfully registered!")
@@ -68,18 +68,18 @@ import os
 # VIEW ALL EXISTING LIBRARIAN IN database
 def view_librarian_in_database():
     os.system('cls' if os.name == 'nt' else 'clear')
-    if not os.path.exists('librariandatabase.txt'):
+    if not os.path.exists('admin/librariandatabase.txt'):
         print('Librarian Is Not Registered.')
         return
 
-    elif os.path.getsize('librariandatabase.txt') == 0:
+    elif os.path.getsize('admin/librariandatabase.txt') == 0:
         print('Record is empty.')
         return
     
     else:
         try:
             # READ ALL LINES IN DATABASE.TXT
-            with open('librariandatabase.txt', 'r') as database:
+            with open('admin/librariandatabase.txt', 'r') as database:
                 lines = database.readlines()
                 header = lines[0].strip()
                 print('Librarian List:\n')
@@ -108,46 +108,62 @@ def view_librarian_in_database():
 
 
 import os
-# SEARCH LIBRARIAN
-def search_librarian_from_database():
-    os.system('cls' if os.name == 'nt' else 'clear')
-    if not os.path.exists('librariandatabase.txt'): 
-        print('Librarian Is Not Registered.')
-        return
-    elif os.path.getsize('librariandatabase.txt') == 0:
-        print('Record Is Empty.')
-        return
+"""Function to search librarians"""
+def search_librarian():
 
-    while True:
-        with open('librariandatabase.txt', 'r') as database:
-            lines = database.readlines()
-        keyword = input('Please Enter A Keyword:').lower().strip()
+    if not os.path.exists('admin/librariandatabase.txt'): 
+        print('Catalogue Does Not Exist.')
+        end_choice()
 
+    # Check if the catalogue file is empty
+    elif os.path.getsize('admin/librariandatabase.txt') == 0:
+        print('Catalogue Is Empty.')
+        end_choice()
+    
+    else:
+        # Read all lines from the catalogue file
+        with open('admin/librariandatabase.txt', 'r') as catalogue:
+            lines = catalogue.readlines()
+
+        # Get search term from user input and normalize it (convert to lowercase and remove extra spaces)
+        search_term = input('Please Enter Your Search Term:')
+        search_term = search_term.lower().strip()
+
+        # Initialize a list to store the found librarians
         found_librarian = []
+        
+        # Loop through the catalogue lines (skip the first line, which is the header)
         for line in lines[1:]:
-            lower_librarian_detail = line.strip().lower()
-            normal_librarian_detail = line.strip()
-            if keyword in lower_librarian_detail:
-                found_librarian.append(normal_librarian_detail)
+            librarian_detail = line.strip().lower()  # Convert librarian details to lowercase for case-insensitive search
 
-        if len(found_librarian) == 0:
-            print(f"\nFound 0 Result(s) for '{keyword}'")
-            continue_search = input("Do you wish to continue searching? (yes/no): ").strip().lower()
-            if continue_search == 'yes':
-                continue
-            else:
-                return None
+            # Check if the search term is found in the librarian details
+            if search_term in librarian_detail:
+                found_librarian.append(librarian_detail)  # Add the librarian to the found_librarian list
+        
+        return lines[0], found_librarian
 
-        else:
-            print(f'\nFound {len(found_librarian)} Result(s):')
-            headers = lines[0].strip()
-            print(headers)
-            print('=' * len(headers))
 
-            # SET INDEX FOR LIBRARIAN IN FOUND MEMBER []
-            for index, member in enumerate(found_librarian, start=1):
-                print(f"{index}. {member}")
-            return found_librarian
+"""Function to display search results"""
+def search_display_librarian():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+    print("Welcome To Search Librarian Page:")
+
+    header, found_librarian = search_librarian()
+    if found_librarian:
+        print(f'Found {len(found_librarian)} librarian(s):')
+
+        print(header.strip())
+        print('=' * len(header.strip()))
+
+        for index, librarian in enumerate(found_librarian, start=1):
+            print(f"{index}. {librarian}")
+
+    else:
+        print("No librarians found matching your search.")
+        end_choice()
+    
+    end_choice()
 
 
 
@@ -158,16 +174,16 @@ from datetime import datetime
 # EDIT INFORMATION
 def edit_librarian_information():
     os.system('cls' if os.name == 'nt' else 'clear')
-    if not os.path.exists('librariandatabase.txt'): 
+    if not os.path.exists('admin/librariandatabase.txt'): 
         print('Librarian Is Not Registered.')
         return
 
-    elif os.path.getsize('librariandatabase.txt') == 0:
+    elif os.path.getsize('admin/librariandatabase.txt') == 0:
         print('Record Is Empty.')
         return
     
     else:
-        found_librarian = search_librarian_from_database()
+        found_librarian = search_librarian()
         if found_librarian is None:
             return
 
@@ -186,7 +202,7 @@ def edit_librarian_information():
                 print("Invalid input. Please enter numerical index only.")
 
 
-        with open('librariandatabase.txt', 'r') as database:
+        with open('admin/librariandatabase.txt', 'r') as database:
             lines = database.readlines()
 
         original_librarian = found_librarian[librarian_id]
@@ -239,7 +255,7 @@ def edit_librarian_information():
         lines[line_index] = updated_librarian
 
         # WRITE BACK THE UPDATED LINES IN THE DATABASE
-        with open('librariandatabase.txt', 'w') as database:
+        with open('admin/librariandatabase.txt', 'w') as database:
             database.writelines(lines)
 
         print('Librarian Information Updated Successfully!')
@@ -250,14 +266,14 @@ import os
 # REMOVE
 def remove_librarian_from_database():
     os.system('cls' if os.name == 'nt' else 'clear')
-    if not os.path.exists('librariandatabase.txt'): 
+    if not os.path.exists('admin/librariandatabase.txt'): 
         print('Librarian Is Not Registered.')
         return
-    elif os.path.getsize('librariandatabase.txt') == 0:
+    elif os.path.getsize('admin/librariandatabase.txt') == 0:
         print('Record Is Empty.')
         return
     else:
-        found_librarian = search_librarian_from_database()
+        found_librarian = search_librarian()
         if found_librarian is None:
             return
 
@@ -275,14 +291,14 @@ def remove_librarian_from_database():
 
         librarian_to_remove = found_librarian[librarian_id]
 
-        with open('librariandatabase.txt', 'r') as database:
+        with open('admin/librariandatabase.txt', 'r') as database:
             lines = database.readlines()
                     
         # REMOVE THE SELECTED LIBRARIAN
         lines = [line for line in lines if line.strip() != librarian_to_remove]
 
         # WRITE BACK THE UPDATED LINES IN THE DATABASE
-        with open('librariandatabase.txt', 'w') as database:
+        with open('admin/librariandatabase.txt', 'w') as database:
             database.writelines(lines)
 
         print(f"Member '{librarian_to_remove.split(':')[0]}' has been removed from the database.")
