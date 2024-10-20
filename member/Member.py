@@ -50,7 +50,7 @@ def view_book_in_catalogue():
 
         except Exception as e:
             # Handle any errors during file reading
-            print("Error reading catalogue file:", e)
+            print("Error reading catalogue file: ", e)
 
 # Update member information
 def update_member_information():
@@ -121,11 +121,10 @@ def update_member_information():
                 memberfile.writelines(edited_profile)
 
         except Exception as e:
-            print("Error reading memberdatabase file:", e)
-
+            print("Error reading memberdatabase file: ", e)
 
 # Search book
-def search_book_from_database():
+def search_catalogue():
     # Check if catalogue file exists 
     if not os.path.exists('librarian/catalogue.txt'): 
         print('Catalogue does not exist.')
@@ -142,7 +141,7 @@ def search_book_from_database():
             lines = catalogue.readlines() 
 
         # Get search term from user input and normalize it (convert to lowercase and remove extra spaces)
-        search_term = input('Please enter your search term:')
+        search_term = input('Please enter your search term: ')
         search_term = search_term.lower().strip()
 
         # Initialize a list to store the found books
@@ -159,9 +158,37 @@ def search_book_from_database():
         
         return lines[0], found_books
 
+# Display search book result
+def search_display_catalogue_books():
+    # Clear the terminal screen for better visibility
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+    # Welcome message for the search book page
+    print("Welcome to search book page:")
+
+    # Call the search_catalogue function to get the header and found books
+    header, found_books = search_catalogue()
+    
+    # Check if any books were found
+    if found_books:
+        # Print the number of books found
+        print(f'Found {len(found_books)} book(s):')
+
+        # Print the header for the book list
+        print(header.strip())
+        # Print a separator line based on the length of the header
+        print('=' * len(header.strip()))
+
+        # Enumerate through the found books and print them with an index
+        for index, book in enumerate(found_books, start=1):
+            print(f"{index}. {book}")
+
+    else:
+        # If no books were found, inform the user
+        print("No books found matching your search term.")
 
 def main():
-    update_member_information()
+    search_display_catalogue_books()
 
 if __name__ == "__main__":
     main()
