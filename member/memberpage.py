@@ -13,7 +13,7 @@ def library_member_page():
           )
       while True:
             try:
-                  member_choice = input("Enter your choice: ")
+                  member_choice = int(input("Enter your choice: "))
                   if member_choice == 1:
                         view_loaned_books()
                   elif member_choice == 2:
@@ -25,10 +25,11 @@ def library_member_page():
                         print("Loading...")
                         time.sleep(3)
                         os.system('cls' if os.name == 'nt' else 'clear')
-                        import Base
-                        Base.user_type()
+                        from Base import user_type
+                        user_type()
                   else:
                         print("Please choose numbers within 1 ~ 4.")
+
             except ValueError:
                   print("Invalid input. Please enter a number.")
     

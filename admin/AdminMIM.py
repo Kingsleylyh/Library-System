@@ -13,8 +13,8 @@ def add_member_to_database():
     headers = ("Name: Age: Date Of Birth: Registration Date: IC") # DEFINE COLUMN HEADERS
 
     # CHECK IF THE FILE EXISTS OR IT IS EMPTY
-    if not os.path.exists('memberdatabase.txt') or os.path.getsize('memberdatabase.txt') == 0: 
-        with open('memberdatabase.txt', 'w') as database:
+    if not os.path.exists('admin/memberdatabase.txt') or os.path.getsize('admin/memberdatabase.txt') == 0: 
+        with open('admin/memberdatabase.txt', 'w') as database:
             database.write(f"{headers}\n")
 
 
@@ -57,10 +57,17 @@ def add_member_to_database():
             print("Please enter a valid 12 digit IC number.")
 
     # ADD BOOK INFORMATIONS GIVEN BY LIBRARIAN INTO FILE
-    with open('memberdatabase.txt','a') as database:
+    with open('admin/memberdatabase.txt','a') as database:
         database.write(f"{member_Name}:{member_Age}:{member_DOB}:{member_Register_Date}:{member_IC}\n")
     
     print("Member successfully registered!")
+    proceed = input("\nWould you like to proceed with another operation? (y/n): ").lower().strip()
+    if proceed == 'y':
+        import admin.adminpage
+        admin.adminpage.system_admin_page()
+    else:
+        import Base
+        Base.user_type()
 
 
 
@@ -68,18 +75,18 @@ import os
 # VIEW ALL EXISTING MEMBER IN database
 def view_member_in_database():
     os.system('cls' if os.name == 'nt' else 'clear')
-    if not os.path.exists('memberdatabase.txt'):
+    if not os.path.exists('admin/memberdatabase.txt'):
         print('Member Is Not Registered.')
         return
 
-    elif os.path.getsize('memberdatabase.txt') == 0:
+    elif os.path.getsize('admin/memberdatabase.txt') == 0:
         print('Record is empty.')
         return
     
     else:
         try:
             # READ ALL LINES IN DATABASE.TXT
-            with open('memberdatabase.txt', 'r') as database:
+            with open('admin/memberdatabase.txt', 'r') as database:
                 lines = database.readlines()
                 header = lines[0].strip()
                 print('Member List:\n')
@@ -101,6 +108,14 @@ def view_member_in_database():
 
                     print(f"{member_details}")
 
+            proceed = input("\nWould you like to proceed with another operation? (y/n): ").lower().strip()
+            if proceed == 'y':
+                import admin.adminpage
+                admin.adminpage.system_admin_page()
+            else:
+                import Base
+                Base.user_type()
+
         except Exception as e:
             print("Error Reading Database File:", e)
     
@@ -110,15 +125,15 @@ import os
 # SEARCH MEMBER
 def search_member_from_database():
     os.system('cls' if os.name == 'nt' else 'clear')
-    if not os.path.exists('memberdatabase.txt'): 
+    if not os.path.exists('admin/memberdatabase.txt'): 
         print('Member Is Not Registered.')
         return
-    elif os.path.getsize('memberdatabase.txt') == 0:
+    elif os.path.getsize('admin/memberdatabase.txt') == 0:
         print('Record Is Empty.')
         return
 
     while True:
-        with open('memberdatabase.txt', 'r') as database:
+        with open('admin/memberdatabase.txt', 'r') as database:
             lines = database.readlines()
         keyword = input('Please Enter A Keyword:').lower().strip()
 
@@ -133,8 +148,10 @@ def search_member_from_database():
             print(f"\nFound 0 Result(s) for '{keyword}'")
             continue_search = input("Do you wish to continue searching? (yes/no): ").strip().lower()
             if continue_search == 'yes':
-                continue
+                search_member_from_database()
             else:
+                import admin.adminpage
+                admin.adminpage.system_admin_page()
                 return None
 
         else:
@@ -147,6 +164,7 @@ def search_member_from_database():
             for index, member in enumerate(found_member, start=1):
                 print(f"{index}. {member}")
             return found_member
+            
 
 
 
@@ -156,11 +174,11 @@ from datetime import datetime
 # EDIT INFORMATION
 def edit_member_information():
     os.system('cls' if os.name == 'nt' else 'clear')
-    if not os.path.exists('memberdatabase.txt'): 
+    if not os.path.exists('admin/memberdatabase.txt'): 
         print('Member Is Not Registered.')
         return
 
-    elif os.path.getsize('memberdatabase.txt') == 0:
+    elif os.path.getsize('admin/memberdatabase.txt') == 0:
         print('Record Is Empty.')
         return
     
@@ -168,79 +186,87 @@ def edit_member_information():
         found_member = search_member_from_database()
         if found_member is None:
             return
+        else:
+            while True:
+                try:
+                    edit_index = int(input('\nPlease Enter The Index Of Member To Edit:'))
+                    #TO EXCLUDE HEADER AND TO LIMIT INPUTS ON INDEX SHOWN ONLY
+                    member_id = edit_index - 1
+                    if 0 <= member_id < len(found_member):
+                            break
+                    
+                    else:
+                        print("Please choose a valid index as shown.")
 
-        while True:
-            try:
-                edit_index = int(input('\nPlease Enter The Index Of Member To Edit:'))
-                #TO EXCLUDE HEADER AND TO LIMIT INPUTS ON INDEX SHOWN ONLY
-                member_id = edit_index - 1
-                if 0 <= member_id < len(found_member):
-                        break
-                
+                except ValueError:
+                    print("Invalid input. Please enter numerical index only.")
+
+
+            with open('admin/memberdatabase.txt', 'r') as database:
+                lines = database.readlines()
+
+            original_member = found_member[member_id]
+            member_details = original_member.split(':')
+            line_index = lines.index(original_member + '\n')
+
+            fields = ['Name', 'Age', 'Date Of Birth', 'Registration date', 'IC']
+            new_details = []
+
+            for i, field in enumerate(fields):
+                if field == 'Name':
+                    while True:
+                        new_value = input(f'Enter New {field} (Press Enter To Keep Current Value): ').strip()
+                        if new_value:
+                            if all(x.isalpha() or x.isspace() for x in new_value):
+                                new_details.append(new_value)
+                                break
+                            else:
+                                print("Please enter a valid name.")
+                        else:
+                            new_details.append(member_details[i].strip())
+                            break
+                elif field == 'Age' or field == 'IC':
+                    while True:
+                        new_value1 = input(f'Enter New {field} (Press Enter To Keep Current Value): ').strip()
+                        if new_value1:
+                            if new_value1.isdigit() and int(new_value1) > 0:
+                                new_details.append(new_value1)
+                                break
+                            else:
+                                print("Please enter numerical values only.")
+                        else:
+                            new_details.append(member_details[i].strip())
+                            break
                 else:
-                    print("Please choose a valid index as shown.")
-
-            except ValueError:
-                print("Invalid input. Please enter numerical index only.")
-
-
-        with open('memberdatabase.txt', 'r') as database:
-            lines = database.readlines()
-
-        original_member = found_member[member_id]
-        member_details = original_member.split(':')
-        line_index = lines.index(original_member + '\n')
-
-        fields = ['Name', 'Age', 'Date Of Birth', 'Registration date', 'IC']
-        new_details = []
-
-        for i, field in enumerate(fields):
-            if field == 'Name':
-                while True:
-                    new_value = input(f'Enter New {field} (Press Enter To Keep Current Value): ').strip()
-                    if new_value:
-                        if all(x.isalpha() or x.isspace() for x in new_value):
-                            new_details.append(new_value)
-                            break
+                    while True:
+                        new_value2 = input(f'Enter New {field} in YYYY-MM-DD (Press Enter To Keep Current Value): ').strip()
+                        if new_value2:
+                            try:
+                                datetime.strptime(new_value2, "%Y-%m-%d")
+                                new_details.append(new_value2)
+                                break
+                            except ValueError:
+                                print("Please enter the date according to the format YYYY-MM-DD.")
                         else:
-                            print("Please enter a valid name.")
-                    else:
-                        new_details.append(member_details[i].strip())
-                        break
-            elif field == 'Age' or field == 'IC':
-                while True:
-                    new_value1 = input(f'Enter New {field} (Press Enter To Keep Current Value): ').strip()
-                    if new_value1:
-                        if new_value1.isdigit() and int(new_value1) > 0:
-                            new_details.append(new_value1)
+                            new_details.append(member_details[i].strip())
                             break
-                        else:
-                            print("Please enter numerical values only.")
-                    else:
-                        new_details.append(member_details[i].strip())
-                        break
-            else:
-                while True:
-                    new_value2 = input(f'Enter New {field} in YYYY-MM-DD (Press Enter To Keep Current Value): ').strip()
-                    if new_value2:
-                        try:
-                            datetime.strptime(new_value2, "%Y-%m-%d")
-                            new_details.append(new_value2)
-                            break
-                        except ValueError:
-                            print("Please enter the date according to the format YYYY-MM-DD.")
-                    else:
-                        new_details.append(member_details[i].strip())
-                        break
 
         updated_member = ':'.join(new_details) + '\n'
         lines[line_index] = updated_member
 
         # WRITE BACK THE UPDATED LINES IN THE DATABASE
-        with open('memberdatabase.txt', 'w') as database:
+        with open('admin/memberdatabase.txt', 'w') as database:
             database.writelines(lines)
 
         print('Member Information Updated Successfully!')
+        proceed = input("\nWould you like to proceed with another operation? (y/n): ").lower().strip()
+        if proceed == 'y':
+            import admin.adminpage
+            admin.adminpage.system_admin_page()
+        else:
+            import Base
+            Base.user_type()
+
 
 
 
@@ -248,10 +274,10 @@ import os
 # REMOVE
 def remove_member_from_database():
     os.system('cls' if os.name == 'nt' else 'clear')
-    if not os.path.exists('memberdatabase.txt'): 
+    if not os.path.exists('admin/memberdatabase.txt'): 
         print('Member Is Not Registered.')
         return
-    elif os.path.getsize('memberdatabase.txt') == 0:
+    elif os.path.getsize('admin/memberdatabase.txt') == 0:
         print('Record Is Empty.')
         return
     else:
@@ -273,15 +299,21 @@ def remove_member_from_database():
 
         member_to_remove = found_member[member_id]
 
-        with open('memberdatabase.txt', 'r') as database:
+        with open('admin/memberdatabase.txt', 'r') as database:
             lines = database.readlines()
                     
         # REMOVE THE SELECTED MEMBER
         lines = [line for line in lines if line.strip() != member_to_remove]
 
         # WRITE BACK THE UPDATED LINES IN THE DATABASE
-        with open('memberdatabase.txt', 'w') as database:
+        with open('admin/memberdatabase.txt', 'w') as database:
             database.writelines(lines)
 
         print(f"Member '{member_to_remove.split(':')[0]}' has been removed from the database.")
-
+        proceed = input("\nWould you like to proceed with another operation? (y/n): ").lower().strip()
+        if proceed == 'y':
+            import admin.adminpage
+            admin.adminpage.system_admin_page()
+        else:
+            import Base
+            Base.user_type()
