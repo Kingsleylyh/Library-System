@@ -1,25 +1,25 @@
 import os
 import datetime
 
-def view_loaned_books(member, books):
+def view_loaned_books(books, member):
 
     # Clear terminal history
     os.system('cls' if os.name == 'nt' else 'clear')
 
     # Check if the file exists
-    if not os.path.exists('catalogue.txt'):
+    if not os.path.exists('librarian/catalogue.txt'):
         print('Catalogue does not exist.')
         return
 
     # Check if the file is empty
-    elif os.path.getsize('catalogue.txt') == 0:
+    elif os.path.getsize('librarian/catalogue.txt') == 0:
         print('Catalogue is empty.')
         return
     
     else:
         try:
             # View the member's loaned books with due dates and overdue fees
-            with open('catalogue.txt', 'r') as catalogue:
+            with open('librarian/catalogue.txt', 'r') as catalogue:
                 lines = catalogue.readlines()
                 header = lines[0].strip()
         
@@ -62,12 +62,12 @@ def update_member_information():
     os.system('cls' if os.name == 'nt' else 'clear')
 
     # Check if the file exists
-    if not os.path.exists('memberdatabase.txt'):
+    if not os.path.exists('admin/memberdatabase.txt'):
         print('Member is not registered.')
         return
 
     # Check if the file is empty
-    elif os.path.getsize('memberdatabase.txt') == 0:
+    elif os.path.getsize('admin/memberdatabase.txt') == 0:
         print('Record is empty.')
         return
     
@@ -75,7 +75,7 @@ def update_member_information():
         try:
             username = input("Enter Name: ")
             edited_profile = []
-            with open("memberdatabase.txt", "r") as memberfile:
+            with open("admin/memberdatabase.txt", "r") as memberfile:
                 members = memberfile.readlines()
             
             for credentials in members:
@@ -121,7 +121,7 @@ def update_member_information():
                 else:
                     edited_profile.append(credentials)
 
-            with open("memberdatabase.txt", "w") as memberfile:
+            with open("admin/memberdatabase.txt", "w") as memberfile:
                 memberfile.writelines(edited_profile)
 
         except Exception as e:
@@ -131,15 +131,15 @@ def update_member_information():
 # Search member
 def search_member_from_database():
     os.system('cls' if os.name == 'nt' else 'clear')
-    if not os.path.exists('memberdatabase.txt'): 
+    if not os.path.exists('admin/memberdatabase.txt'): 
         print('Member Is Not Registered.')
         return
-    elif os.path.getsize('memberdatabase.txt') == 0:
+    elif os.path.getsize('admin/memberdatabase.txt') == 0:
         print('Record Is Empty.')
         return
 
     while True:
-        with open('memberdatabase.txt', 'r') as database:
+        with open('admin/memberdatabase.txt', 'r') as database:
             lines = database.readlines()
         keyword = input('Please Enter A Keyword:').lower().strip()
 
@@ -169,7 +169,6 @@ def search_member_from_database():
                 print(f"{index}. {member}")
             return found_member
 
-search_member_from_database()
 
 
 # def main():

@@ -4,7 +4,7 @@ from admin.AdminMIM import *
 
 # SYSTEM ADMIN PAGE
 def system_admin_page():
-    time.sleep(3)
+    time.sleep(1)
     os.system('cls' if os.name == 'nt' else 'clear')
     time.sleep(0.5)
     print("Welcome to Brickfields Kuala Lumpur Community Library Admin Page:\n"
