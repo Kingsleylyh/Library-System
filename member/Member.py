@@ -51,6 +51,8 @@ def view_loaned_book():
         except Exception as e:
             # Handle any errors during file reading
             print("Error reading loans file: ", e)
+    
+    member_end_choice()
 
 # Update member information
 def update_member_information():
@@ -122,6 +124,7 @@ def update_member_information():
 
         except Exception as e:
             print("Error reading memberdatabase file: ", e)
+    
 
 # Search book
 def search_catalogue():

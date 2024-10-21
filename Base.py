@@ -161,15 +161,14 @@ def member_login():
                     print(f"Incorrect password! Please try again [{3 - count} attempt(s) left].")
 
             print("Too many attempts. Returning to main login page...")
-            time.sleep(3)
+            time.sleep(1)
             user_type()
             return
 
     if not found:
         print("User doesn't exist. Returning to main login page...")
-        time.sleep(3)
+        time.sleep(1)
         user_type()
-
 
 """Function to handle the logout process."""
 def logout():

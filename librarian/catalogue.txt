@@ -8,4 +8,4 @@ The Silent Echo:Sarah Blake:HarperCollins:2023-03-12:978-0062983690:Mystery:Yes
 Beneath a Crimson Sky:Jonathan Hayes:Simon & Schuster:2022-10-10:978-1501163432:Historical Fiction:Yes
 The Quantum Paradox:Emily Carter:Hachette Book Group:2020-02-18:978-0316494912:Science Fiction:Yes
 The Midnight Garden:Laura Bennett:Macmillan Publishers:2019-05-21:978-1250318029:Fantasy:Yes
-Shadows in the Fog:Thomas Harper:Blackstone Publishing:2021-08-14:978-1982602036:mystery:Yes
+Shadows in the Fog:Thomas Harper:Blackstone Publishing:2024-08-14:978-1982602036:mystery:No
