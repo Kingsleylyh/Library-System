@@ -2,7 +2,11 @@
 import os
 import time
 from member.Member import *
+<<<<<<< HEAD
 
+=======
+from login import *
+>>>>>>> YongHeng
 
 def library_member_page():
       os.system('cls' if os.name == 'nt' else 'clear')
@@ -23,7 +27,7 @@ def library_member_page():
                   elif member_choice == 3:
                         search_display_catalogue_books()
                   elif member_choice == 4:
-                        member_logout()
+                        logout()
                   else:
                         print("Please choose numbers within 1 ~ 4.")
 
@@ -32,6 +36,12 @@ def library_member_page():
     
 def main():
       library_member_page()
+<<<<<<< HEAD
 
 if "__name__" == "__main__":
       main()
+=======
+      
+if "__name__" == "__main__":
+      main()
+>>>>>>> YongHeng

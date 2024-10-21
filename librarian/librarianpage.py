@@ -17,6 +17,7 @@ def librarian_page():
           " 6. Perform Book Loan Process\n"
           " 7. Logout\n"
           )
+    
     while True:
         try:
             librarian_choice = int(input("Enter your choice: "))
@@ -33,7 +34,7 @@ def librarian_page():
             elif librarian_choice == 6:
                 check_username()
             elif librarian_choice == 7:
-                from Base import logout
+                from login import logout
                 logout()
             else:
                 print("Please choose numbers within 1 ~ 7.")

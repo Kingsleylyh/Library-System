@@ -1,9 +1,9 @@
 import os
-import time
 
 def view_loaned_book():
+    from login import member_login
     # Clear the terminal screen for better visibility
-    os.system('cls' if os.name == 'nt' else 'clear')  
+    os.system('cls' if os.name == 'nt' else 'clear') 
 
     # Check if the catalogue file exists
     if not os.path.exists('librarian/loans.txt'):
@@ -17,27 +17,35 @@ def view_loaned_book():
     
     else:
         try:
+            username = member_login() 
+
             # Read all lines from the catalogue file
-            with open('librarian/loans.txt', 'r') as catalogue:
-                lines = catalogue.readlines() # Load all lines into memory
+            with open('librarian/loans.txt', 'r') as loans:
+                lines = loans.readlines().strip().split(':') # Load all lines into memory
 
-            # Extract and print the header (first line)
-            header = lines[0].strip() # Extract and clean the header (removes trailing spaces/newlines)
+            stored_line = []
+            for line in lines[1:]:
+                if username == line[0]:
+                    stored_line.append(line)
+
+            combined_line = ':'.join(stored_line + '\n')
+
+            header = lines[0].strip() 
             print('Loaned book list:\n')
-            print(header) # Print the header as the title of the catalogue
+            print(header)
+            longest_line = max(lines, key=len) 
+            print('=' * len(longest_line)) 
+            print(combined_line)
 
-            # Print a separator line based on the longest line in the file
-            longest_line = max(lines, key=len) # Find the longest line in the file to create a consistent separator
-            print('=' * len(longest_line)) # Print the separator (equal sign) based on longest line length
-
-            # Sort books by genre (last field in each line)
-            sorted_books = sorted(lines[1:], key=lambda x: x.strip().split(":")[5].lower()) # Sort alphabetically by genre
+          
+            """# Sort books by genre (last field in each line)
+            sorted_books = sorted(lines[1:], key=lambda x: x.strip().split(":")[0].lower()) # Sort alphabetically by genre
             
             # Initialize a variable to track the current genre for grouping books
             current_genre = ""
             for line in sorted_books:
                 book_details = line.strip() # Clean the book details from extra spaces/newlines
-                genre = book_details.split(':')[5] # Extract the genre from the 6th field of each line
+                genre = book_details.split(':')[0] # Extract the genre from the 6th field of each line
                 genre_lower = genre.lower() # Convert genre to lowercase for comparison
 
                 # If a new genre is encountered, print it as a header
@@ -46,7 +54,7 @@ def view_loaned_book():
                     print(f"\n{genre}:") # Print the genre as a section header
                 
                 # Print the book details under the current genre
-                print(f"{book_details}")
+                print(f"{book_details}") """
 
         except Exception as e:
             # Handle any errors during file reading
@@ -186,7 +194,6 @@ def search_display_catalogue_books():
         for index, book in enumerate(found_books, start=1):
             print(f"{index}. {book}")
         
-
     else:
         # If no books were found, inform the user
         print("No books found matching your search term.")
@@ -194,24 +201,18 @@ def search_display_catalogue_books():
     member_end_choice()
 
 def member_end_choice():
+    from login import logout
+    from member.memberpage import library_member_page
     while True:
         end_choice = input("\nDo you want carry out other functions ? (y/n)")
         if end_choice.lower() == 'y':
-            from member.memberpage import library_member_page
             library_member_page()
         elif end_choice.lower() == 'n':
-            member_logout()
+            print("Thanks for visiting. Hope to see you again!")
+            logout()
         else:
             print("Invalid choice. Please choose y or n.")
-    
 
-def member_logout():
-    print("Thanks for visiting. Hope to see you again!")
-    print("Logging out ...")
-    time.sleep(1.5)
-    os.system('cls' if os.name == 'nt' else 'clear')
-    from Base import user_type
-    user_type()
 
 def main():
     search_display_catalogue_books()
