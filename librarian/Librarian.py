@@ -732,22 +732,12 @@ def end_choice():
             from librarian.librarianpage import librarian_page
             librarian_page()
             break
-
         elif end_choice.lower() == 'n':
-            librarian_logout()
+            from Base import logout
+            logout()
             break
-
         else:
             print("Invalid choice. Please choose y or n.")
-
-
-
-"""Function to handle the librarian logout process."""
-def librarian_logout():
-    from Base import user_type # Avoid circular import issues
-    print("Logging out...")
-    time.sleep(2) 
-    user_type()
 
 
 def main():

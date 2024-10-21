@@ -33,7 +33,8 @@ def librarian_page():
             elif librarian_choice == 6:
                 check_username()
             elif librarian_choice == 7:
-                librarian_logout()
+                from Base import logout
+                logout()
             else:
                 print("Please choose numbers within 1 ~ 7.")
         except ValueError:
