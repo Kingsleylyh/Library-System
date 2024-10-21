@@ -15,7 +15,7 @@ def library_member_page():
             try:
                   member_choice = int(input("Enter your choice: "))
                   if member_choice == 1:
-                        view_book_in_catalogue()
+                        view_loaned_book()
                   elif member_choice == 2:
                         update_member_information()
                   elif member_choice == 3:

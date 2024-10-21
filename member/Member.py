@@ -1,29 +1,29 @@
 import os
 import datetime
 
-def view_book_in_catalogue():
+def view_loaned_book():
     # Clear the terminal screen for better visibility
     os.system('cls' if os.name == 'nt' else 'clear')  
 
     # Check if the catalogue file exists
-    if not os.path.exists('librarian/catalogue.txt'):
-        print('Catalogue does not exist.')
+    if not os.path.exists('librarian/loans.txt'):
+        print('Loaned book file does not exist.')
         return
 
     # Check if the catalogue file is empty
-    elif os.path.getsize('librarian/catalogue.txt') == 0:
-        print('Catalogue is empty.')
+    elif os.path.getsize('librarian/loans.txt') == 0:
+        print('Loaned book file is empty.')
         return 
     
     else:
         try:
             # Read all lines from the catalogue file
-            with open('librarian/catalogue.txt', 'r') as catalogue:
+            with open('librarian/loans.txt', 'r') as catalogue:
                 lines = catalogue.readlines() # Load all lines into memory
 
             # Extract and print the header (first line)
             header = lines[0].strip() # Extract and clean the header (removes trailing spaces/newlines)
-            print('Catalogue list:\n')
+            print('Loaned book list:\n')
             print(header) # Print the header as the title of the catalogue
 
             # Print a separator line based on the longest line in the file
@@ -50,7 +50,7 @@ def view_book_in_catalogue():
 
         except Exception as e:
             # Handle any errors during file reading
-            print("Error reading catalogue file: ", e)
+            print("Error reading loans file: ", e)
 
 # Update member information
 def update_member_information():
