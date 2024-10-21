@@ -3,7 +3,7 @@ from librarian.Librarian import *
 
 # LIBRARIAN PAGE
 def librarian_page():
-    time.sleep(3)
+    time.sleep(1)
     os.system('cls' if os.name == 'nt' else 'clear') # CLEAR THE TERMINAL HISTORY
     time.sleep(0.5)
     print("Welcome to Brickfields Kuala Lumpur Community Library Librarian Page:\n"
