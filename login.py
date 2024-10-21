@@ -5,6 +5,7 @@ from admin.adminpage import system_admin_page
 from librarian.librarianpage import librarian_page
 from member.memberpage import library_member_page
 
+"""Menu to choose the role"""
 def user_type():
     os.system('cls' if os.name == 'nt' else 'clear')
     time.sleep(1)
@@ -39,6 +40,7 @@ def user_type():
 
 
 
+"""Admin login function"""
 def admin_login():
     
     with open("admin/admin.txt", 'r') as admin:
@@ -81,6 +83,7 @@ def admin_login():
 
 
 
+"""Admin login function"""
 def librarian_login():
     h1 = "LibrarianID: Name: Username: Password"
 
@@ -119,15 +122,17 @@ def librarian_login():
             print("Too many attempts. Returning to main login page...")
             time.sleep(3)
             user_type()
-            return
 
     if not found:
         print("User doesn't exist. Returning to main login page...")
         time.sleep(3)
         user_type()
 
+    return
 
 
+
+"""Admin login function"""
 def member_login():
     h2 = "Name: Username: Password"
     if not os.path.exists('admin/member.txt') or os.path.getsize('admin/member.txt') == 0: 
@@ -163,25 +168,17 @@ def member_login():
             print("Too many attempts. Returning to main login page...")
             time.sleep(3)
             user_type()
-            return
 
     if not found:
         print("User doesn't exist. Returning to main login page...")
         time.sleep(3)
         user_type()
 
+    return username
 
-"""Function to handle the logout process."""
+
+"""Logout function"""
 def logout():
     print("Logging out...")
     time.sleep(2) 
     user_type()
-
-
-def main():
-    user_type()
-
-if __name__ == "__main__":
-    main()
-
-

@@ -2,6 +2,8 @@
 import os
 import time
 from member.Member import *
+from login import *
+
 def library_member_page():
       os.system('cls' if os.name == 'nt' else 'clear')
       print("Welcome to Brickfields Kuala Lumpur Community Library Member Page:\n"
@@ -21,10 +23,15 @@ def library_member_page():
                   elif member_choice == 3:
                         search_display_catalogue_books()
                   elif member_choice == 4:
-                        member_logout()
+                        logout()
                   else:
                         print("Please choose numbers within 1 ~ 4.")
 
             except ValueError:
                   print("Invalid input. Please enter a number.")
     
+def main():
+      library_member_page()
+      
+if "__name__" == "__main__":
+      main()
