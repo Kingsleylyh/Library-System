@@ -29,36 +29,27 @@ def system_admin_page():
             admin_choice = int(input("Enter the index of your choice: "))
             if admin_choice == 1:
                 add_member_to_database()
-
             elif admin_choice == 2:
                 view_member_in_database()
-
             elif admin_choice == 3:
                 search_display_members()
-
             elif admin_choice == 4:
                 edit_member_information()
-
             elif admin_choice == 5:
                 remove_member_from_database()
-
             elif admin_choice == 6:
                 add_librarian_to_database()
-
             elif admin_choice == 7:
                 view_librarian_in_database()
-
             elif admin_choice == 8:
                 search_display_librarian()
-
             elif admin_choice == 9:
                 edit_librarian_information()
-
             elif admin_choice == 10:
                 remove_librarian_from_database()
-
             elif admin_choice == 11:
-                admin_logout()
+                from Base import logout
+                logout()
 
             else:
                 print("Please choose numbers within 1 ~ 11.")

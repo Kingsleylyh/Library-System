@@ -1,5 +1,5 @@
 import os
-import datetime
+import time
 
 def view_loaned_book():
     # Clear the terminal screen for better visibility
@@ -182,10 +182,33 @@ def search_display_catalogue_books():
         # Enumerate through the found books and print them with an index
         for index, book in enumerate(found_books, start=1):
             print(f"{index}. {book}")
+        
 
     else:
         # If no books were found, inform the user
         print("No books found matching your search term.")
+    
+    member_end_choice()
+
+def member_end_choice():
+    while True:
+        end_choice = input("\nDo you want carry out other functions ? (y/n)")
+        if end_choice.lower() == 'y':
+            from member.memberpage import library_member_page
+            library_member_page()
+        elif end_choice.lower() == 'n':
+            member_logout()
+        else:
+            print("Invalid choice. Please choose y or n.")
+    
+
+def member_logout():
+    print("Thanks for visiting. Hope to see you again!")
+    print("Logging out ...")
+    time.sleep(1.5)
+    os.system('cls' if os.name == 'nt' else 'clear')
+    from Base import user_type
+    user_type()
 
 def main():
     search_display_catalogue_books()
