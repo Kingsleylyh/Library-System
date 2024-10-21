@@ -40,8 +40,9 @@ def user_type():
 
 
 def admin_login():
-    with open("admin/admin.txt", 'r') as info:
-        lines = info.readlines()
+    
+    with open("admin/admin.txt", 'r') as admin:
+        lines = admin.readlines()
 
         if len(lines) >= 4:
             name_line = lines[1].strip()
@@ -81,11 +82,15 @@ def admin_login():
 
 
 def librarian_login():
-    try:
-        with open("admin/librarian.txt", 'r') as librarian:
-            lines = librarian.readlines()
-    except FileNotFoundError:
-        print("File not found. Returning to main login page...")
+    h1 = "LibrarianID: Name: Username: Password"
+
+    # Create the librarian file if it doesn't exist or is empty
+    if not os.path.exists('admin/librarian.txt') or os.path.getsize('admin/librarian.txt') == 0: 
+        with open('admin/librarian.txt', 'w') as create:
+            # Write headers to the file if it's newly created
+            create.write(f"{h1}\n")
+    with open("admin/librarian.txt", 'r') as librarian:
+        lines = librarian.readlines()
 
     username = input("Please enter your username: ").strip()
     found = False
@@ -124,11 +129,12 @@ def librarian_login():
 
 
 def member_login():
-    try:
-        with open("admin/member.txt", 'r') as member:
-            lines = member.readlines()
-    except FileNotFoundError:
-        print("File not found. Returning to main login page...")
+    h2 = "Name: Username: Password"
+    if not os.path.exists('admin/member.txt') or os.path.getsize('admin/member.txt') == 0: 
+        with open('admin/member.txt', 'w') as create:
+            create.write(f"{h2}\n")    
+    with open("admin/member.txt", 'r') as member:
+        lines = member.readlines()
 
     username = input("Please enter your username: ").strip()
     found = False
@@ -147,8 +153,8 @@ def member_login():
                 password = input("Please enter your password: ").strip()
                 if password == saved_password:
                     print(f"Welcome! {name}.")
+                    time.sleep(1)
                     library_member_page()
-                    return
                     
                 else:
                     count += 1
@@ -164,6 +170,12 @@ def member_login():
         time.sleep(3)
         user_type()
 
+
+"""Function to handle the logout process."""
+def logout():
+    print("Logging out...")
+    time.sleep(2) 
+    user_type()
 
 
 def main():

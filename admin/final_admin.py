@@ -2,6 +2,8 @@ import os
 import time
 from datetime import datetime
 
+
+#ADMIN MEMBER INFORMATION MANAGEMENT
 """Function to add members"""
 def add_member_to_database():
     
@@ -362,18 +364,7 @@ def remove_member_from_database():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+# ADMIN LIBRARIAN INFORMATION MANAGEMENT
 """Function to add librarian"""
 def add_librarian_to_database():
     
@@ -743,21 +734,11 @@ def admin_end_choice():
         if end_choice.lower() == 'y':
             from admin.adminpage import system_admin_page
             system_admin_page()
-
         elif end_choice.lower() == 'n':
-            admin_logout()
-
+            from Base import logout
+            logout()
         else:
             print("Invalid choice. Please choose y or n.")
-
-
-
-"""Function to handle the admin logout process."""
-def admin_logout():
-    from Base import user_type 
-    print("Logging out...")
-    time.sleep(2) 
-    user_type()
 
 
 
