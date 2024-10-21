@@ -1,5 +1,1 @@
-name:username:password:bookcount
-HYH:user1:aaa:0
-LYH:user2:bbb:0
-LHM:user3:ccc:0
-TKW:user4:ddd:0
+LibrarianID: Name: Username: Password

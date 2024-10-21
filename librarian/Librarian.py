@@ -285,17 +285,116 @@ def edit_book_information():
         fields = ['title', 'author', 'publisher', 'publication date', 'ISBN', 'genre', 'availability']
         new_details = []
 
-        # Loop through each field and ask for new value (press Enter to skip)
         for i, field in enumerate(fields):
-            new_value = input(f'Enter New {field} (Press Enter To Keep Current Value): ').strip()
+            if field == 'title':
+                while True:
+                    new_title = input(f'Enter New {field} (Press Enter To Keep Current Value): ').strip()
+                    if new_title:
+                        # Ensure the book title is not empty or only spaces
+                        if not new_title.isspace():
+                            new_details.append(new_title)
+                            break
+                        else:
+                            print("Please Enter A Valid Book Title.")
+                    else:
+                        new_details.append(book_details[i].strip())
+                        break
 
-            # If a new value is provided, use it, otherwise keep the old value
-            if new_value:
-                new_details.append(new_value)
+            elif field == 'author':
+                while True:
+                    new_author = input(f'Enter New {field} (Press Enter To Keep Current Value): ').strip()
+                    if new_author:
 
-            # Keep the original value if empty  
+                        # Ensure the author's name contains only letters or spaces
+                        if all(x.isalpha() or x.isspace() for x in new_author):
+                            new_details.append(new_author)
+                            break
+                        else:
+                            print("Please Enter A Valid Book Author.")
+                    else:
+                        new_details.append(book_details[i].strip())
+                        break
+
+            elif field == 'publisher':
+                # Get book publisher from user (non-empty input required)
+                while True:
+                    new_publisher = input(f'Enter New {field} (Press Enter To Keep Current Value): ').strip()
+                    if new_publisher:
+                        # Ensure the publisher's name is not empty
+                        if not new_publisher.isspace():
+                            new_details.append(new_publisher)
+                            break
+                        else:
+                            print("Please Enter A Valid Book Publisher.")
+                    else:
+                        new_details.append(book_details[i].strip())
+                        break
+
+            elif field == 'publication date':
+                # Get publication date from user (must be in YYYY-MM-DD format and cannot over current date)
+                while True:
+                    new_publication_date = input(f'Enter New {field} (Press Enter To Keep Current Value): ').strip()
+                    if new_publication_date:
+                        try:
+                            # Ensure the input follows the correct date format
+                            book_date = datetime.strptime(new_publication_date, "%Y-%m-%d") 
+
+                            # Check if the date is today or in the past
+                            if book_date <= datetime.now(): 
+                                new_details.append(new_publication_date)
+                                break
+                            else:
+                                print("The date cannot be in the future. Please enter a past or current date.")
+
+                        except ValueError:
+                            print("Please Enter The Date According To The Format.")
+
+                    else:
+                        new_details.append(book_details[i].strip())
+                        break
+
+            elif field == 'ISBN':
+                # Get ISBN from user (must be digits, can include hyphens)
+                while True:
+                    new_isbn = input(f'Enter New {field} (Press Enter To Keep Current Value): ').strip()
+                    if new_isbn:
+                        # Ensure the ISBN contains only digits or hyphens
+                        if new_isbn.replace('-', '').isdigit():
+                            new_details.append(new_isbn)
+                            break
+                        else:
+                            print("Please Enter A Valid Book ISBN. Avoid Enter Character or Spaces.")
+                    else:
+                        new_details.append(book_details[i].strip())
+                        break
+        
+            elif field == 'genre':
+                # Get book genre from user (alphabetic characters and spaces only)
+                while True:
+                    new_genre = input(f'Enter New {field} (Press Enter To Keep Current Value): ').strip()
+                    if new_genre:
+                        # Ensure the genre contains only letters or spaces
+                        if all(x.isalpha() or x.isspace() for x in new_genre):
+                            new_details.append(new_genre)
+                            break
+                        else:
+                            print("Please Enter A Valid Book Genre.")
+                    else:
+                        new_details.append(book_details[i].strip())
+                        break
+            
             else:
-                new_details.append(book_details[i].strip()) 
+                while True:
+                    new_availability = input(f'Enter New {field} (Press Enter To Keep Current Value): ').strip()
+                    if new_availability:
+                        if new_availability == "yes" or new_availability == "no":
+                            new_details.append(new_availability)
+                            break
+                        else:
+                            print("Please Enter A Valid Availability (yes/no).")
+                    else:
+                        new_details.append(book_details[i].strip())
+                        break
 
         # Create an updated book entry by joining the new details
         updated_book = ':'.join(new_details) + '\n'
@@ -627,16 +726,20 @@ def check_username():
 
 """Function to prompt the user for their choice to carry out additional functions or to log out""" 
 def end_choice():
-    end_choice = input("\nDo you want carry out other functions ? (y/n)")
-    if end_choice.lower() == 'y':
-        from librarian.librarianpage import librarian_page
-        librarian_page()
+    while True:
+        end_choice = input("\nDo you want carry out other functions ? (y/n)")
+        if end_choice.lower() == 'y':
+            from librarian.librarianpage import librarian_page
+            librarian_page()
+            break
 
-    elif end_choice.lower() == 'n':
-        librarian_logout()
+        elif end_choice.lower() == 'n':
+            librarian_logout()
+            break
 
-    else:
-        print("Invalid choice. Please choose y or n.")
+        else:
+            print("Invalid choice. Please choose y or n.")
+
 
 
 """Function to handle the librarian logout process."""
