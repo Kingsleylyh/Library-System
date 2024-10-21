@@ -85,8 +85,8 @@ def add_member_to_database():
     with open('admin/memberdatabase.txt','a') as database:
         database.write(f"{member_name}:{member_age}:{member_dob}:{member_register_date}:{member_ic}\n")
 
-    with open('admin/member.txt','a') as database:
-        database.write(f"{member_name}:{member_username}:{member_password}:{initial_book_count}\n")
+    with open('admin/member.txt','a') as member:
+        member.write(f"{member_name}:{member_username}:{member_password}:{initial_book_count}\n")
     
     print("Member successfully registered!")
     
