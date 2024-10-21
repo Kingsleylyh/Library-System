@@ -170,6 +170,9 @@ def member_login():
         time.sleep(1)
         user_type()
 
+    return username
+
+
 """Function to handle the logout process."""
 def logout():
     print("Logging out...")
