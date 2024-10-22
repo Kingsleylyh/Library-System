@@ -1,138 +1,185 @@
 import os
+import time
+from datetime import datetime, timedelta
+
+def member_login():
+    h2 = "Name: Username: Password"
+    if not os.path.exists('admin/member.txt') or os.path.getsize('admin/member.txt') == 0: 
+        with open('admin/member.txt', 'w') as create:
+            create.write(f"{h2}\n")    
+
+    with open("admin/member.txt", 'r') as member:
+        lines = member.readlines()
+    global username
+    username = input("Please enter your username: ").strip()
+    found = False
+
+    for line in lines[1:]:
+        columns = line.strip().split(":")
+        name = columns[0].strip()
+        saved_username = columns[1].strip()
+        saved_password = columns[2].strip()
+
+        if username == saved_username:
+            found = True
+            count = 0
+
+            while count < 3:
+                password = input("Please enter your password: ").strip()
+                if password == saved_password:
+                    print(f"Welcome! {name}.")
+                    time.sleep(1)
+                    from member.memberpage import library_member_page
+                    library_member_page()
+                    
+                else:
+                    count += 1
+                    print(f"Incorrect password! Please try again [{3 - count} attempt(s) left].")
+
+            print("Too many attempts. Returning to main login page...")
+            time.sleep(1)
+            from Base import user_type
+            user_type()
+            return
+
+    if not found:
+        print("User doesn't exist. Returning to main login page...")
+        time.sleep(1)
+        user_type()
+
+    return username
 
 def view_loaned_book():
     from login import member_login
     # Clear the terminal screen for better visibility
-    os.system('cls' if os.name == 'nt' else 'clear') 
+    os.system('cls' if os.name == 'nt' else 'clear')
+    
+    current_user = username
 
-    # Check if the catalogue file exists
+    # Check if the loans file exists
     if not os.path.exists('librarian/loans.txt'):
-        print('Loaned book file does not exist.')
+        print('Loans file does not exist.')
         return
 
-    # Check if the catalogue file is empty
+    # Check if the loans file is empty
     elif os.path.getsize('librarian/loans.txt') == 0:
-        print('Loaned book file is empty.')
+        print('Loans file is empty.')
         return 
     
     else:
         try:
-            username = member_login() 
-
-            # Read all lines from the catalogue file
+            # Read all lines from the loans file
             with open('librarian/loans.txt', 'r') as loans:
-                lines = loans.readlines().strip().split(':') # Load all lines into memory
+                lines = loans.readlines() # Load all lines into memory
 
-            stored_line = []
-            for line in lines[1:]:
-                if username == line[0]:
-                    stored_line.append(line)
+            # Extract and print the header (first line)
+            header = lines[0].strip() # Extract and clean the header (removes trailing spaces/newlines)
+            print('Loans list:\n')
+            print(header) # Print the header as the title of the loans
 
-            combined_line = ':'.join(stored_line + '\n')
+            # Print a separator line based on the longest line in the file
+            longest_line = max(lines, key=len) # Find the longest line in the file to create a consistent separator
+            print('=' * len(longest_line)) # Print the separator (equal sign) based on longest line length
 
-            header = lines[0].strip() 
-            print('Loaned book list:\n')
-            print(header)
-            longest_line = max(lines, key=len) 
-            print('=' * len(longest_line)) 
-            print(combined_line)
+            for line in lines[1:]:  # Skip the header line
+                loaned_books_details = line.strip().split(":")
+                current_user = loaned_books_details[0]
+                if current_user == username:
+                    print(f"{line.strip()}")
 
-          
-            """# Sort books by genre (last field in each line)
-            sorted_books = sorted(lines[1:], key=lambda x: x.strip().split(":")[0].lower()) # Sort alphabetically by genre
-            
-            # Initialize a variable to track the current genre for grouping books
-            current_genre = ""
-            for line in sorted_books:
-                book_details = line.strip() # Clean the book details from extra spaces/newlines
-                genre = book_details.split(':')[0] # Extract the genre from the 6th field of each line
-                genre_lower = genre.lower() # Convert genre to lowercase for comparison
-
-                # If a new genre is encountered, print it as a header
-                if genre_lower != current_genre:
-                    current_genre = genre_lower # Update the current genre to the new one
-                    print(f"\n{genre}:") # Print the genre as a section header
-                
-                # Print the book details under the current genre
-                print(f"{book_details}") """
+                    member_end_choice()
 
         except Exception as e:
             # Handle any errors during file reading
             print("Error reading loans file: ", e)
-    
-    member_end_choice()
+
 
 # Update member information
 def update_member_information():
     # Clear terminal history
     os.system('cls' if os.name == 'nt' else 'clear')
 
+    stored_username = username
+
     # Check if the file exists
-    if not os.path.exists('admin/memberdatabase.txt'):
+    if not os.path.exists('admin/member.txt'):
         print('Member is not registered.')
         return
 
     # Check if the file is empty
-    elif os.path.getsize('admin/memberdatabase.txt') == 0:
+    elif os.path.getsize('admin/member.txt') == 0:
         print('Record is empty.')
         return
     
     else:
         try:
-            username = input("Enter Name: ")
-            edited_profile = []
-            with open("admin/memberdatabase.txt", "r") as memberfile:
-                members = memberfile.readlines()
+            with open("admin/member.txt", "r") as memberfile:
+                lines = memberfile.readlines()
             
-            for credentials in members:
-                stored_username, stored_userage, stored_dob, stored_regdate, stored_ic = credentials.strip().split(":")
-                if stored_username == username:
-                    print(f"ID: {stored_username}\nName: {stored_userage}\nPassword: {stored_dob}\nRole: {stored_regdate}\nIC: {stored_ic}")
-                    print("1. ID")
-                    print("2. Name")
-                    print("3. Password")
-                    print("4. Role")
-                    print("5. IC")
-                    print("6. All")
-                    choice = input("What would you like to edit?").strip()
+            edited_profile = []
+            for index, line in enumerate(lines):
+                # Keep the header as it is
+                if index == 0:
+                    edited_profile.append(line)  # Append the header unchanged
+                    continue  # Skip to the next iteration
 
-                    new_username = stored_username
-                    new_userage = stored_userage
-                    new_dob = stored_dob
-                    new_regdate = stored_regdate
-                    new_ic = stored_ic
+            for credentials in lines[1:]:
+                # if stored_username == username:                
+                    stored_name, stored_username, stored_password, stored_bookcount = credentials.strip().split(":")
+                    if stored_username == username:
+                        print(f"Name: {stored_name}\nUsername: {stored_username}\nPassword: {stored_password}\nBookCount: {stored_bookcount}\n")
+                        print("1. Name")
+                        print("2. Username")
+                        print("3. Password")
+                        print("4. All\n")
+                        choice = input("What would you like to edit? ").strip()
+
+                        new_name = stored_name
+                        new_username = stored_username
+                        new_password = stored_password
 
                     if choice == "1":
-                        new_username = input("Enter new id: ")
+                        while True:
+                            new_name = input("Enter new name: ").strip()
+                            # Ensure the name is not empty or only spaces
+                            if new_name == "":
+                                print("Input cannot be empty.")
+                                continue                                
+
                     elif choice == "2":
-                        new_userage = input("Enter new name: ")
+                        while True:
+                            new_username = input("Enter new username: ").strip()
+                            # Ensure the username is not empty or only spaces
+                            if new_username == "":
+                                print("Input cannot be empty.")
+                                continue
+
                     elif choice == "3":
-                        new_dob = input("Enter new password: ")
+                        while True:
+                            new_password = input("Enter new password: ").strip()                                               
+                            # Ensure the password is not empty or only spaces
+                            if new_password == "":
+                                print("Input cannot be empty.")
+                                continue
+
                     elif choice == "4":
-                        new_regdate = input("Enter new role: ")
-                    elif choice == "5":
-                        new_ic = input("Enter new ic: ")
-                    elif choice == "6":
-                        new_username = input("Enter new id: ")
-                        new_userage = input("Enter new name: ")
-                        new_dob = input("Enter new password: ")
-                        new_regdate = input("Enter new role: ")
-                        new_ic = input("Enter new ic: ")
+                        new_name = input("Enter new name: ").strip()
+                        new_username = input("Enter new username: ").strip()
+                        new_password = input("Enter new password: ").strip()
                     else:
                         print("Invalid option.")
                         continue
 
-                    edited_profile.append(f"{new_username}:{new_userage}:{new_dob}:{new_regdate}:{new_ic}\n")
+                    edited_profile.append(f"{new_name}:{new_username}:{new_password}:{stored_bookcount}\n")
                     print("Member information edited.")
-                else:
-                    edited_profile.append(credentials)
 
-            with open("admin/memberdatabase.txt", "w") as memberfile:
+                    member_end_choice()
+
+            with open("admin/member.txt", "w") as memberfile:
                 memberfile.writelines(edited_profile)
 
         except Exception as e:
-            print("Error reading memberdatabase file: ", e)
-    
+            print("Error reading member file: ", e)
 
 # Search book
 def search_catalogue():
@@ -193,12 +240,16 @@ def search_display_catalogue_books():
         # Enumerate through the found books and print them with an index
         for index, book in enumerate(found_books, start=1):
             print(f"{index}. {book}")
-        
+    
+            member_end_choice()
+
     else:
         # If no books were found, inform the user
         print("No books found matching your search term.")
     
-    member_end_choice()
+    
+
+
 
 def member_end_choice():
     from login import logout
@@ -215,7 +266,12 @@ def member_end_choice():
 
 
 def main():
+    member_login()
+    view_loaned_book(username)
+    update_member_information()
     search_display_catalogue_books()
+    member_end_choice()
+    member_logout()
 
 if __name__ == "__main__":
     main()

@@ -3,7 +3,6 @@ import os
 import time
 from admin.adminpage import system_admin_page
 from librarian.librarianpage import librarian_page
-from member.memberpage import library_member_page
 
 """Menu to choose the role"""
 def user_type():
@@ -19,7 +18,7 @@ def user_type():
 
     while True:
         try:
-            user_choice = int(input("Enter your user type (1/2/3):")) # REQUEST INPUT FROM USER
+            user_choice = int(input("Enter your user type (1/2/3): ")) # REQUEST INPUT FROM USER
             if user_choice == 1:
                 admin_login()
                 break
@@ -29,6 +28,7 @@ def user_type():
                 break
 
             elif user_choice == 3:
+                from member.Member import member_login
                 member_login()
                 break
 
@@ -128,53 +128,9 @@ def librarian_login():
         time.sleep(3)
         user_type()
 
-    return
 
 
 
-"""Admin login function"""
-def member_login():
-    h2 = "Name: Username: Password"
-    if not os.path.exists('admin/member.txt') or os.path.getsize('admin/member.txt') == 0: 
-        with open('admin/member.txt', 'w') as create:
-            create.write(f"{h2}\n")    
-    with open("admin/member.txt", 'r') as member:
-        lines = member.readlines()
-
-    username = input("Please enter your username: ").strip()
-    found = False
-
-    for line in lines[1:]:
-        columns = line.strip().split(":")
-        name = columns[0].strip()
-        saved_username = columns[1].strip()
-        saved_password = columns[2].strip()
-
-        if username == saved_username:
-            found = True
-            count = 0
-
-            while count < 3:
-                password = input("Please enter your password: ").strip()
-                if password == saved_password:
-                    print(f"Welcome! {name}.")
-                    time.sleep(1)
-                    library_member_page()
-                    
-                else:
-                    count += 1
-                    print(f"Incorrect password! Please try again [{3 - count} attempt(s) left].")
-
-            print("Too many attempts. Returning to main login page...")
-            time.sleep(3)
-            user_type()
-
-    if not found:
-        print("User doesn't exist. Returning to main login page...")
-        time.sleep(3)
-        user_type()
-
-    return username
 
 
 """Logout function"""
