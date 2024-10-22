@@ -57,7 +57,6 @@ def add_book_to_catalogue():
                 break
             else:
                 print("The date cannot be in the future. Please enter a past or current date.")
-
         except ValueError:
             print("Please Enter The Date According To The Format.")
 
@@ -172,8 +171,8 @@ def search_catalogue():
         return
     
     else:
-        with open('librarian/catalogue.txt', 'r') as catalogue:
-            catalogue_lines = catalogue.readlines()
+        with open('librarian/catalogue.txt', 'r') as catalogue_file:
+            catalogue_lines = catalogue_file.readlines()
             
         keyword = input('Please Enter A Keyword:').lower().strip()
 
@@ -191,27 +190,6 @@ def search_catalogue():
    
     return catalogue_lines[0], found_book, index_list
 
-"""      # Read all lines from the catalogue file
-      with open('librarian/catalogue.txt', 'r') as catalogue:
-            lines = catalogue.readlines() 
-
-        # Get search term from user input and normalize it (convert to lowercase and remove extra spaces)
-        search_term = input('Please Enter Your Search Term:')
-        search_term = search_term.lower().strip()
-
-        # Initialize a list to store the found books
-        found_books = []
-        
-        # Loop through the catalogue lines (skip the first line, which is the header)
-        for line in lines[1:]:
-            lower_book_details = line.strip().lower()  # Convert book details to lowercase for case-insensitive search
-            normal_book_details = line.strip()  # Keep the original format for display
-
-            # Check if the search term is found in the book details
-            if search_term in lower_book_details:
-                found_books.append(normal_book_details)  # Add the book to the found_book list
-        
-        return lines[0], found_books"""
 
 
 """Function to display search results"""
@@ -242,7 +220,6 @@ def search_display_catalogue_books():
 
 """Function to edit book information in catalogue"""
 def edit_book_information():
-    # Clear the terminal screen for better visibility
     os.system('cls' if os.name == 'nt' else 'clear')
 
     print("Welcome To Edit Book Page:")
@@ -286,8 +263,8 @@ def edit_book_information():
             except ValueError:
                 print("Invalid Input. Please Enter a Number.")
 
-        with open('librarian/catalogue.txt', 'r') as catalogue:
-            catalogue_lines = catalogue.readlines()
+        with open('librarian/catalogue.txt', 'r') as catalogue_file:
+            catalogue_lines = catalogue_file.readlines()
 
         original_catalogue = catalogue_lines[remove_index].strip().split(':')
 
@@ -296,7 +273,7 @@ def edit_book_information():
             if new_title == "":  
                 break
             if not new_title.isspace():
-                original_catalogue.append(new_title)
+                original_catalogue[0] = new_title
                 break
             else:
                 print("Please Enter A Valid Book Title.")
@@ -306,7 +283,7 @@ def edit_book_information():
             if new_author == "":  
                 break
             elif all(x.isalpha() or x.isspace() for x in new_author):
-                original_catalogue.append(new_author)
+                original_catalogue[1] = new_author
                 break
             else:
                 print("Please Enter A Valid Book Author.")
@@ -316,7 +293,7 @@ def edit_book_information():
             if new_publisher == "":  
                 break   
             elif not new_publisher.isspace():
-                original_catalogue.append(new_publisher)  
+                original_catalogue[2] = new_publisher
                 break  
             else:
                 print("Please Enter A Valid Book Publisher.")             
@@ -328,7 +305,7 @@ def edit_book_information():
             try:
                 book_date = datetime.strptime(new_publication_date, "%Y-%m-%d") 
                 if book_date <= datetime.now(): 
-                    original_catalogue.append(new_publication_date)
+                    original_catalogue[3] = new_publication_date
                     break
                 else:
                     print("The date cannot be in the future.")
@@ -341,7 +318,7 @@ def edit_book_information():
             if new_isbn == "":  
                 break 
             elif new_isbn.replace('-', '').isdigit():
-                original_catalogue.append(new_isbn)
+                original_catalogue[4] = new_isbn
                 break       
             else:
                 print("Please Enter A Valid Book ISBN. Avoid Enter Character or Spaces.")
@@ -351,7 +328,7 @@ def edit_book_information():
             if new_isbn == "":  
                 break 
             elif all(x.isalpha() or x.isspace() for x in new_genre):
-                original_catalogue.append(new_genre) 
+                original_catalogue[5] = new_genre 
                 break
             else:
                 print("Please Enter A Valid Book Genre.")
@@ -361,7 +338,7 @@ def edit_book_information():
             if new_isbn == "":  
                 break 
             elif new_availability == "yes" or new_availability == "no":
-                original_catalogue.append(new_availability)       
+                original_catalogue[6] = new_availability      
                 break            
             else:
                 print("Please Enter A Valid Availability (yes/no).")
@@ -390,77 +367,68 @@ def remove_book():
     if not os.path.exists('librarian/catalogue.txt'):
         print('Catalogue does not exist.')
         end_choice()
+        return
 
     # Check if the catalogue file is empty
     elif os.path.getsize('librarian/catalogue.txt') == 0:
         print('Catalogue is empty.')
         end_choice()
+        return
 
     else:
-        # Search for books in the catalogue and get the search results
-        header, found_books = search_catalogue()
-
-        if not found_books:
-            print("No books to remove.")
-            end_choice()
+        # Search
+        header, found_books, found_books_index = search_catalogue()
         
-        print(f'Found {len(found_books)} book(s):\n')
-        print(header.strip())  # Print the header (column names)
-        print('=' * len(header.strip()))  # Print a separator line based on the header length
+        if not found_books:
+            end_choice()
+            return
 
-        for index, book in enumerate(found_books, start=1):
-            print(f"{index}. {book}")
+        print(f'Found {len(found_books)} members(s):\n')
+        print(header.strip()) 
+        print('=' * len(header.strip())) 
 
-        # Prompt the user to enter the index of the book they wish to remove
+        # Select 
+        for choice, book in enumerate(found_books, start=1):
+            print(f"{choice}. {book}")
+
         while True:
             try:
-                # Ask user for the index of the book to remove
-                remove_index = int(input('\nPlease Enter The Index Of Book To Remove: '))
-                book_id = remove_index - 1  # Adjust index to be 0-based
-
-                # Validate the index to ensure it's within range
-                if 0 <= book_id < len(found_books):
-                    break  # Exit loop if valid index is provided
+                choice_selected = int(input('\nPlease Enter The Index Of Librarian To Remove: ')) - 1
+                if 0 <= choice_selected < len(found_books):
+                    remove_index = found_books_index[choice_selected]
+                    break
                 else:
-                    print("Invalid Index. Please Try Again.")  # Prompt again for out-of-range index
-
+                    print("Invalid Index. Please Try Again.")
             except ValueError:
-                print("Invalid Input. Please Enter a Number.")  # Handle invalid input (non-integer)
+                print("Invalid Input. Please Enter a Number.")
 
-        # Store the book details to be removed
-        book_to_remove = found_books[book_id]
+        # Delete
+        with open('librarian/catalogue.txt', 'r') as catalogue_file:
+            catalogue_lines = catalogue_file.readlines()
+     
+        # Pop remove line at selected index
+        catalogue_lines.pop(remove_index)
 
-        # Read all lines from the catalogue file
-        with open('librarian/catalogue.txt', 'r') as catalogue:
-            lines = catalogue.readlines()
-
-        # Remove the selected book from the catalogue by filtering out the matching line
-        filter_lines = [line for line in lines if line.strip() != book_to_remove]
-
-        # Write the updated content back to the catalogue file
-        with open('librarian/catalogue.txt', 'w') as catalogue:
-            catalogue.writelines(filter_lines)
-
-        # Inform the user that the selected book has been removed
-        print(f"Book '{book_to_remove.split(':')[0]}' has been removed from the catalogue.")
-
-    # Run end_choice fucntion
+        with open('librarian/catalogue.txt', 'w') as catalogue_file:
+            catalogue_file.writelines(catalogue_lines)
+        
     end_choice()
+    return
 
 
 """Function to update book availability in catalogue"""
 def updated_book_availability(book_title):
     try:
         # Open the catalogue.txt file in read mode to access the current book data
-        with open('librarian/catalogue.txt', 'r') as catalogue:
-            lines = catalogue.readlines()  # Read all lines from the file into a list
+        with open('librarian/catalogue.txt', 'r') as catalogue_file:
+            lines = catalogue_file.readlines()  # Read all lines from the file into a list
 
         updated_lines = []  # Create an empty list to store updated lines
         for index, line in enumerate(lines):
             # Keep the header as it is
             if index == 0:
                 updated_lines.append(line)  # Append the header unchanged
-                continue  # Skip to the next iteration
+                continue
             
             columns = line.strip().split(":")  # Split the line by ':' into columns
             
@@ -472,8 +440,8 @@ def updated_book_availability(book_title):
             updated_lines.append(':'.join(columns) + "\n")
 
         # Open the catalogue.txt file in write mode to save the updated book data
-        with open('librarian/catalogue.txt', 'w') as catalogue:
-            catalogue.writelines(updated_lines)  # Write all updated lines back to the file
+        with open('librarian/catalogue.txt', 'w') as catalogue_file:
+            catalogue_file.writelines(updated_lines)  # Write all updated lines back to the file
 
     except FileNotFoundError:
         print("Error: catalogue.txt not found.")  # Handle the case where the file does not exist
@@ -483,16 +451,16 @@ def updated_book_availability(book_title):
 def updated_book_count(username):
     try:
         # Open the member.txt file in read mode to access the current member data
-        with open('admin/member.txt', 'r') as member:
-            lines = member.readlines()  # Read all lines from the file into a list
+        with open('admin/member.txt', 'r') as member_file:
+            lines = member_file.readlines()  # Read all lines from the file into a list
 
         # Open the member.txt file in write mode to update the member data
-        with open('admin/member.txt', 'w') as member:
+        with open('admin/member.txt', 'w') as member_file:
 
             # Write the header line back to the file 
             for line in lines:
                 if line == lines[0]:  # Check if it's the header line
-                    member.write(line)  # Write the header line unchanged
+                    member_file.write(line)  # Write the header line unchanged
 
             # Loop through the member lines starting from the second line to skip the header
             for line in lines[1:]:
@@ -505,10 +473,10 @@ def updated_book_count(username):
                     columns[3] = str(new_count)  # Update the count in the columns list
 
                     updated_line = ":".join(columns) + "\n"  # Join the updated columns back into a string
-                    member.write(updated_line)  # Write the updated line to the file
+                    member_file.write(updated_line)  # Write the updated line to the file
 
                 else:
-                    member.write(line)  # Write unchanged lines back to the file
+                    member_file.write(line)  # Write unchanged lines back to the file
 
     except FileNotFoundError:
         print("Error: member.txt not found.")  # Handle the case where the file does not exist
@@ -525,8 +493,8 @@ def book_loan(username):
         book_title = input('Enter the Book Title:')  # Get the book title from the user
 
         # Open the catalogue.txt file to search for the entered book title
-        with open('librarian/catalogue.txt', 'r') as catalogue:
-            lines = catalogue.readlines()  # Read all lines from the catalogue
+        with open('librarian/catalogue.txt', 'r') as catalogue_file:
+            lines = catalogue_file.readlines()  # Read all lines from the catalogue
 
             # Loop through the catalogue, skipping the header, to search for the book
             for line in lines[1:]:
@@ -544,11 +512,13 @@ def book_loan(username):
         if not book_found:
             print("The book is not found in the system. Please make sure you key in correctly.")
             end_choice()
+            return
 
         # If the book is found but not available, inform the user and stop the process
         elif not book_available:
             print(f"The book '{book_title}' is currently borrowed.")
             end_choice()
+            return
         
     # Get the current date and calculate the due date (14 days from now)
     borrow_date = datetime.now()  # Borrow date is the current date
@@ -559,8 +529,8 @@ def book_loan(username):
     due_date_str = due_date.strftime("%Y-%m-%d")
 
     # Append the new loan information (username, book title, borrow date, due date) to the loans.txt file
-    with open('librarian/loans.txt', 'a') as loans:
-        loans.write(f"{username}:{book_title}:{borrow_date_str}:{due_date_str}\n")
+    with open('librarian/loans.txt', 'a') as loans_file:
+        loans_file.write(f"{username}:{book_title}:{borrow_date_str}:{due_date_str}\n")
 
     # Call the function to update the user's book count after borrowing
     updated_book_count(username)
@@ -570,6 +540,7 @@ def book_loan(username):
 
     print("Successful Book Loan Process.")
     end_choice()
+    return
     
 
 """Function to check overdue fees in loans.txt"""
@@ -578,14 +549,14 @@ def check_overdue(username):
 
     # Check if loans.txt exists and is not empty. If it's missing or empty, create it with a header
     if not os.path.exists('librarian/loans.txt') or os.path.getsize('librarian/loans.txt') == 0: 
-        with open('librarian/loans.txt', 'w') as loans:
-            loans.write(f"{header}\n")  # Write the header to loans.txt
+        with open('librarian/loans.txt', 'w') as loans_file:
+            loans_file.write(f"{header}\n")  # Write the header to loans.txt
 
     overdue_fees = []  # List to store overdue fees for each book
 
     # Open loans.txt in read mode to check the user's loan records
-    with open('librarian/loans.txt', 'r') as loans:
-        lines = loans.readlines()  # Read all lines from the file
+    with open('librarian/loans.txt', 'r') as loans_file:
+        lines = loans_file.readlines()  # Read all lines from the file
 
         # Loop through each loan record, skipping the header
         for line in lines[1:]:
@@ -640,6 +611,7 @@ def check_overdue(username):
         print(f"\nTotal overdue fees for {username} is RM{total_overdue_fees:.2f}")
         print("Please pay all the overdue fees before continue borrowing books.")
         end_choice()
+        return
 
                        
 """Function to check username in member.txt"""
@@ -656,8 +628,8 @@ def check_username():
 
     try:
          # Open the member.txt file in read mode
-        with open('admin/member.txt', 'r') as member:
-            lines = member.readlines() # Read all lines from the file
+        with open('admin/member.txt', 'r') as member_file:
+            lines = member_file.readlines() # Read all lines from the file
 
             # Iterate through the lines starting from the second one (skip header)
             for line in lines[1:]:
@@ -677,15 +649,18 @@ def check_username():
                     else:
                         print("User borrowed 5 books already.")
                         end_choice()
+                        return
 
             # If no matching username is found, inform the user
             print("Username Doesn't Exist.")
             end_choice()
+            return
 
     # Catch the case where the member.txt file is missing and print an error message
     except FileNotFoundError:
         print("Error: member.txt not found.")
         end_choice()
+        return
 
     return username
 
