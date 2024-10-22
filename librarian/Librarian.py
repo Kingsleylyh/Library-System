@@ -14,9 +14,9 @@ def add_book_to_catalogue():
 
     # Create the catalogue file if it doesn't exist or is empty
     if not os.path.exists('librarian/catalogue.txt') or os.path.getsize('librarian/catalogue.txt') == 0: 
-        with open('librarian/catalogue.txt', 'w') as catalogue:
+        with open('librarian/catalogue.txt', 'w') as catalogue_file:
             # Write headers to the file if it's newly created
-            catalogue.write(f"{headers}\n")
+            catalogue_file.write(f"{headers}\n")
 
     # Get book title from user (non-empty input required)
     while True:
@@ -82,9 +82,9 @@ def add_book_to_catalogue():
     availability = 'Yes'
 
     # Append the new book information to the catalogue file
-    with open('librarian/catalogue.txt', 'a') as catalogue:
+    with open('librarian/catalogue.txt', 'a') as catalogue_file:
         # Write the book details to the file in the correct format
-        catalogue.write(f"{book_title}:{book_author}:{book_publisher}:{book_publication_date}:{book_isbn}:{book_genre}:{availability}\n")
+        catalogue_file.write(f"{book_title}:{book_author}:{book_publisher}:{book_publication_date}:{book_isbn}:{book_genre}:{availability}\n")
     
     # Inform the user that the book has been added successfully
     print("Book Added To Catalogue Successfully!\n")
@@ -114,8 +114,8 @@ def view_book_in_catalogue():
     else:
         try:
             # Read all lines from the catalogue file
-            with open('librarian/catalogue.txt', 'r') as catalogue:
-                lines = catalogue.readlines() # Load all lines into memory
+            with open('librarian/catalogue.txt', 'r') as catalogue_file:
+                lines = catalogue_file.readlines() # Load all lines into memory
 
             # Extract and print the header (first line)
             header = lines[0].strip() # Extract and clean the header (removes trailing spaces/newlines)
