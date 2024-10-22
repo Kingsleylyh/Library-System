@@ -38,7 +38,7 @@ def member_login():
 
             print("Too many attempts. Returning to main login page...")
             time.sleep(1)
-            from Base import user_type
+            from login import user_type
             user_type()
             return
 
@@ -50,7 +50,7 @@ def member_login():
     return username
 
 def view_loaned_book():
-    from login import member_login
+
     # Clear the terminal screen for better visibility
     os.system('cls' if os.name == 'nt' else 'clear')
     
@@ -141,10 +141,12 @@ def update_member_information():
                     if choice == "1":
                         while True:
                             new_name = input("Enter new name: ").strip()
+                            
                             # Ensure the name is not empty or only spaces
                             if new_name == "":
                                 print("Input cannot be empty.")
-                                continue                                
+                                continue   
+                            break                             
 
                     elif choice == "2":
                         while True:
@@ -271,7 +273,6 @@ def main():
     update_member_information()
     search_display_catalogue_books()
     member_end_choice()
-    member_logout()
 
 if __name__ == "__main__":
     main()

@@ -2,11 +2,8 @@
 import os
 import time
 from member.Member import *
-<<<<<<< HEAD
-
-=======
 from login import *
->>>>>>> YongHeng
+
 
 def library_member_page():
       os.system('cls' if os.name == 'nt' else 'clear')
@@ -33,15 +30,3 @@ def library_member_page():
 
             except ValueError:
                   print("Invalid input. Please enter a number.")
-    
-def main():
-      library_member_page()
-<<<<<<< HEAD
-
-if "__name__" == "__main__":
-      main()
-=======
-      
-if "__name__" == "__main__":
-      main()
->>>>>>> YongHeng

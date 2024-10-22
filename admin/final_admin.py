@@ -12,13 +12,13 @@ def add_member_to_database():
 
     member_database_header = ("Name: Age: Date Of Birth: Registration Date: IC") 
     if not os.path.exists('admin/memberdatabase.txt') or os.path.getsize('admin/memberdatabase.txt') == 0: 
-        with open('admin/memberdatabase.txt', 'w') as database:
-            database.write(f"{member_database_header}\n")
+        with open('admin/memberdatabase.txt', 'w') as member_database_file:
+            member_database_file.write(f"{member_database_header}\n")
 
     member_header = ("Name: Username: Password: BookCount")
     if not os.path.exists('admin/member.txt') or os.path.getsize('admin/member.txt') == 0: 
-        with open('admin/member.txt', 'w') as member:
-            member.write(f"{member_header}\n")
+        with open('admin/member.txt', 'w') as member_file:
+            member_file.write(f"{member_header}\n")
 
     while True:
         member_name = input("Enter the member's name: ").strip()
@@ -54,38 +54,37 @@ def add_member_to_database():
                 break
             else:
                 print("The date cannot be in the future. Please enter a past or current date.")
-            break
         except ValueError:
             print("Please enter the date according to the format.")
 
     while True:
         member_ic = input("Enter the member's IC: ").strip()
-        if member_ic.isdigit():
+        if member_ic.isdigit() and len(member_ic) == 12:
             break
         else:
             print("Please enter a valid 12 digit IC number.")
 
     while True:
         member_username = input("Enter the member's username: ").strip()
-        if member_username and not member_username.isspace():
+        if member_username:
             break
         else:
             print("Please enter a valid username without only spaces.")
 
     while True:
         member_password = input("Enter the member's password: ").strip()
-        if member_password and not member_password.isspace():
+        if member_password and len(member_password) == 12:
             break
         else:
             print("Please enter a valid password without only spaces.")
 
     initial_book_count = 0
 
-    with open('admin/memberdatabase.txt','a') as database:
-        database.write(f"{member_name}:{member_age}:{member_dob}:{member_register_date}:{member_ic}\n")
+    with open('admin/memberdatabase.txt','a') as member_database_file:
+        member_database_file.write(f"{member_name}:{member_age}:{member_dob}:{member_register_date}:{member_ic}\n")
 
-    with open('admin/member.txt','a') as member:
-        member.write(f"{member_name}:{member_username}:{member_password}:{initial_book_count}\n")
+    with open('admin/member.txt','a') as member_file:
+        member_file.write(f"{member_name}:{member_username}:{member_password}:{initial_book_count}\n")
     
     print("Member successfully registered!")
     
@@ -101,15 +100,17 @@ def view_member_in_database():
     if not os.path.exists('admin/memberdatabase.txt'):
         print('Member Is Not Registered.')
         admin_end_choice()
+        return
 
     elif os.path.getsize('admin/memberdatabase.txt') == 0:
         print('Record is empty.')
         admin_end_choice()
+        return
     
     else:
         try:
-            with open('admin/memberdatabase.txt', 'r') as database:
-                lines = database.readlines()
+            with open('admin/memberdatabase.txt', 'r') as member_database_file:
+                lines = member_database_file.readlines()
 
             header = lines[0].strip()
             print('Member List:\n')
@@ -135,6 +136,7 @@ def view_member_in_database():
             print("Error Reading Database File:", e)
     
     admin_end_choice()
+    return
 
 
 
@@ -148,8 +150,8 @@ def search_member():
         return None, [],[]
 
     else:
-        with open('admin/memberdatabase.txt', 'r') as database:
-            lines = database.readlines()
+        with open('admin/memberdatabase.txt', 'r') as member_database_file:
+            lines = member_database_file.readlines()
             
         keyword = input('Please Enter A Keyword:').lower().strip()
 
@@ -237,11 +239,11 @@ def edit_member_information():
             except ValueError:
                 print("Invalid Input. Please Enter a Number.")
   
-        with open('admin/memberdatabase.txt', 'r') as database:
-            member_database_lines = database.readlines()
+        with open('admin/memberdatabase.txt', 'r') as member_database_file:
+            member_database_lines = member_database_file.readlines()
 
-        with open('admin/member.txt', 'r') as member:
-            member_lines = member.readlines()
+        with open('admin/member.txt', 'r') as member_file:
+            member_lines = member_file.readlines()
 
         original_member_database = member_database_lines[remove_index].strip().split(':')
         original_member = member_lines[remove_index].strip().split(':')
@@ -304,6 +306,26 @@ def edit_member_information():
                 break
             else:
                 print("Invalid IC. Please enter a valid numeric value.")
+
+        while True:
+            new_username = input(f'Enter New Member username (Press Enter To Keep Current Username): ').strip()
+            if new_username == "":
+                break
+            elif new_username:
+                original_member[1] = new_username
+                break
+            else:
+                print("Invalid username. Please enter a valid username.")
+
+        while True:
+            new_password = input(f'Enter New Member Password (Press Enter To Keep Current Password): ').strip()
+            if new_password == "":
+                break
+            elif new_password and len(new_password) == 12:
+                original_member[2] = new_password
+                break
+            else:
+                print("Invalid username. Please enter a valid password.")
 
         updated_original_member_database = ':'.join(original_member_database) + '\n'
         updated_original_member = ':'.join(original_member) + '\n'
@@ -368,26 +390,34 @@ def remove_member_from_database():
                 print("Invalid Input. Please Enter a Number.")
 
         # Delete
-        with open('admin/memberdatabase.txt', 'r') as database:
-            lines = database.readlines()
+        with open('admin/memberdatabase.txt', 'r') as member_database_file:
+            lines = member_database_file.readlines()
      
         # Pop remove line at selected index
         lines.pop(remove_index)
 
-        with open('admin/memberdatabase.txt', 'w') as database:
-            database.writelines(lines)
+        with open('admin/memberdatabase.txt', 'w') as member_database_file:
+            member_database_file.writelines(lines)
 
-        with open('admin/member.txt', 'r') as member:
-            lines = member.readlines()
+        with open('admin/member.txt', 'r') as member_file:
+            lines = member_file.readlines()
      
         # Pop remove line at selected index
         lines.pop(remove_index)
 
-        with open('admin/member.txt', 'w') as member:
-            member.writelines(lines)
+        with open('admin/member.txt', 'w') as member_file:
+            member_file.writelines(lines)
         
     admin_end_choice()
     return
+
+
+
+
+
+
+
+
 
 
 
@@ -401,13 +431,13 @@ def add_librarian_to_database():
 
     header = ("Name: Age: Date Of Birth: Registration Date: IC") # DEFINE COLUMN HEADERS
     if not os.path.exists('admin/librariandatabase.txt') or os.path.getsize('admin/librariandatabase.txt') == 0: 
-        with open('admin/librariandatabase.txt', 'w') as database:
-            database.write(f"{header}\n")
+        with open('admin/librariandatabase.txt', 'w') as librarian_database_file:
+            librarian_database_file.write(f"{header}\n")
 
     header2 = ("LibrarianID: Name: Username: Password")
     if not os.path.exists('admin/librarian.txt') or os.path.getsize('admin/librarian.txt') == 0: 
-        with open('admin/librarian.txt', 'w') as librarian:
-            librarian.write(f"{header2}\n")
+        with open('admin/librarian.txt', 'w') as librarian_file:
+            librarian_file.write(f"{header2}\n")
 
     while True:
         librarian_name = input("Enter the librarian's name: ").strip()
@@ -451,30 +481,30 @@ def add_librarian_to_database():
 
     while True:
         librarian_ic = input("Enter the librarian's IC: ").strip()
-        if librarian_ic.isdigit():
+        if librarian_ic.isdigit() and len(librarian_ic) == 12:
             break
         else:
             print("Please enter a valid 12 digit IC number.")
 
     while True:
         librarian_username = input("Enter the librarian's username: ").strip()
-        if librarian_username and not librarian_username.isspace():
+        if librarian_username:
             break
         else:
             print("Please enter a valid username without only spaces.")
 
     while True:
         librarian_password = input("Enter the librarian's password: ").strip()
-        if librarian_password and not librarian_password.isspace():
+        if librarian_password and len(librarian_password) == 12:
             break
         else:
             print("Please enter a valid password without only spaces.")
 
-    with open('admin/librariandatabase.txt','a') as database:
-        database.write(f"{librarian_name}:{librarian_age}:{librarian_dob}:{librarian_register_date}:{librarian_ic}\n")
+    with open('admin/librariandatabase.txt','a') as librarian_database_file:
+        librarian_database_file.write(f"{librarian_name}:{librarian_age}:{librarian_dob}:{librarian_register_date}:{librarian_ic}\n")
 
-    with open('admin/librarian.txt','r') as librarian:
-        lines = librarian.readlines()
+    with open('admin/librarian.txt','r') as librarian_file:
+        lines = librarian_file.readlines()
         if lines[1:]:
             last_line = lines[-1].strip()
             last_id = last_line.split(':')[0]
@@ -483,8 +513,8 @@ def add_librarian_to_database():
         else:
             librarian_id = 'L001'
 
-    with open('admin/librarian.txt','a') as librarian:
-        librarian.write(f"{librarian_id}:{librarian_name}:{librarian_username}:{librarian_password}\n")
+    with open('admin/librarian.txt','a') as librarian_file:
+        librarian_file.write(f"{librarian_id}:{librarian_name}:{librarian_username}:{librarian_password}\n")
     
     print("Librarian successfully registered!")
 
@@ -509,8 +539,8 @@ def view_librarian_in_database():
     
     else:
         try:
-            with open('admin/librariandatabase.txt', 'r') as database:
-                lines = database.readlines()
+            with open('admin/librariandatabase.txt', 'r') as librarian_database_file:
+                lines = librarian_database_file.readlines()
                 
             header = lines[0].strip()
             print('Librarian List:\n')
@@ -549,8 +579,8 @@ def search_librarian():
         return None, [],[]
     
     else:
-        with open('admin/librariandatabase.txt', 'r') as database:
-            lines = database.readlines()
+        with open('admin/librariandatabase.txt', 'r') as librarian_database_file:
+            lines = librarian_database_file.readlines()
 
         keyword = input('Please Enter Your Search Term:').lower().strip()
 
@@ -705,6 +735,26 @@ def edit_librarian_information():
                 break
             else:
                 print("Invalid IC. Please enter a valid numeric value.")
+
+        while True:
+            new_username = input(f'Enter New Librarian username (Press Enter To Keep Current Username): ').strip()
+            if new_username == "":
+                break
+            elif new_username:
+                original_librarian[2] = new_username
+                break
+            else:
+                print("Invalid username. Please enter a valid username.")
+
+        while True:
+            new_password = input(f'Enter New Librarian Password (Press Enter To Keep Current Password): ').strip()
+            if new_password == "":
+                break
+            elif new_password and len(new_password) == 12:
+                original_librarian[3] = new_password
+                break
+            else:
+                print("Invalid username. Please enter a valid password.")
 
         updated_original_librarian_database = ':'.join(original_librarian_database) + '\n'
         updated_original_librarian = ':'.join(original_librarian) + '\n'
