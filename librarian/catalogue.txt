@@ -1,6 +1,5 @@
 Title: Author: Publisher: Publication Date: ISBN: Genre: Availability
-Testing Book: Yuval Noah Harari: Harper: 2015-02-10: 978-0062316110:Anthropology:No
-Educated: Tara Westover: Random House: 2018-02-20: 978-0399590504:Memoir:No
+Educated: Tara Westover: Random House: 2018-02-20: 978-0399590504:Memoir:Yes
 The Midnight Library: Matt Haig: Viking: 2020-09-29: 978-0525559474:Fiction:No
 Becoming: Michelle Obama: Crown: 2018-11-13: 978-1524763138:Memoir:Yes
 Atomic Habits:James Clear:Avery:2018-10-16:978-073521129:Psychology:Yes
@@ -8,4 +7,5 @@ The Silent Echo:Sarah Blake:HarperCollins:2023-03-12:978-0062983690:Mystery:Yes
 Beneath a Crimson Sky:Jonathan Hayes:Simon & Schuster:2022-10-10:978-1501163432:Historical Fiction:Yes
 The Quantum Paradox:Emily Carter:Hachette Book Group:2020-02-18:978-0316494912:Science Fiction:Yes
 The Midnight Garden:Laura Bennett:Macmillan Publishers:2019-05-21:978-1250318029:Fantasy:Yes
-Shadows in the Fog:Thomas Harper:Blackstone Publishing:2024-08-14:978-1982602036:mystery:No
+Shadows in the Fog:Thomas Harper:Blackstone Publishing:2024-08-14:978-1982602036:mystery:Yes
+Surrounded by Idiots:Thomas Erikson:TheSun:2021-09-09:1234456788:Psychology:Yes
