@@ -101,135 +101,136 @@ def update_member_information():
     # Clear terminal history
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    line_index = member_login()
-
     # Check if the file exists
     if not os.path.exists('admin/member.txt'):
         print('Member is not registered.')
+        member_end_choice()
         return
 
     # Check if the file is empty
-    elif os.path.getsize('admin/member.txt') == 0:
+    elif os.path.getsize('admin/memberdatabase.txt') == 0:
         print('Record is empty.')
+        member_end_choice()
         return
     
     else:
+        line_index = member_login()
+
         try:
-            with open("admin/member.txt", "r") as memberfile:
-                lines = memberfile.readlines()
+            with open("admin/memberdatabase.txt", "r") as member_database_file:
+                member_database_lines = member_database_file.readlines()
             
             edited_profile = []
-            for index, line in enumerate(lines):
+            for index, line in enumerate(member_database_lines):
                 # Keep the header as it is
                 if index == 0:
                     edited_profile.append(line)  # Append the header unchanged
                     continue  # Skip to the next iteration
 
             if line_index is not None:
-                user_line = lines[line_index].strip()
+                user_line = member_lines[line_index].strip()
+            
+                stored_name, stored_age, stored_dob, stored_reg_date, stored_ic = user_line.strip().split(":")
+                stored_name, stored_username, stored_password, stored_bookcount = 
+                print(f"Name: {stored_name}\nAge: {stored_age}\nDate of Birth: {stored_dob}\nRegistration Date: {stored_reg_date}\nIC: {stored_ic}\n")
+                print("1. Name")
+                print("2. Age")
+                print("3. Date of Birth")
+                print("4. Registration Date")
+                print("5. IC")
+                print("6. All\n")
+                choice = input("What would you like to edit? ").strip()
 
-            for credentials in lines[1:]:             
-                    stored_name, stored_age, stored_dob, stored_reg_date, stored_ic = credentials.strip().split(":")
-                    print(stored_name, stored_age, stored_dob, stored_reg_date, stored_ic == user_information_line)
+                new_name = stored_name
+                new_age = stored_age
+                new_dob = stored_dob
+                new_reg_date = stored_reg_date
+                new_ic = stored_ic
 
-                    print(f"Name: {stored_name}\nAge: {stored_age}\nDate of Birth: {stored_dob}\nRegistration Date: {stored_reg_date}\nIC: {stored_ic}\n")
-                    print("1. Name")
-                    print("2. Age")
-                    print("3. Date of Birth")
-                    print("4. Registration Date")
-                    print("5. IC")
-                    print("6. All\n")
-                    choice = input("What would you like to edit? ").strip()
-
-                    new_name = stored_name
-                    new_age = stored_age
-                    new_dob = stored_dob
-                    new_reg_date = stored_reg_date
-                    new_ic = stored_ic
-
-                    if choice == "1":
-                        while True:
-                            new_name = input("Enter new name: ").strip()                          
-                            # Ensure the name is not empty, contains no spaces, and only consists of alphabets.
-                            if not new_name:
-                                print("Input cannot be empty.")
-                            elif not new_name.isalpha():
-                                print("Input can only contain alphabets.")
-                            elif " " in new_name:
-                                print("Input cannot contain spaces.")
+                if choice == "1":
+                    while True:
+                        new_name = input("Enter new name: ").strip()                          
+                        # Ensure the name is not empty, contains no spaces, and only consists of alphabets.
+                        if not new_name:
+                            print("Input cannot be empty.")
+                        elif not new_name.isalpha():
+                            print("Input can only contain alphabets.")
+                            break
+                        elif " " in new_name:
+                            print("Input cannot contain spaces.")
                             break
 
-                    elif choice == "2":
-                        while True:
-                            new_age = input("Enter new age: ").strip()                                                                       
-                            # Ensure the age is not empty, contains no spaces, and only consists of numbers
-                            if not new_age:
-                                print("Input cannot be empty.")
-                            elif not new_age.isdigit():
-                                print("Input must only contain numbers.")
-                            elif " " in new_age:
-                                print("Input cannot contain spaces.")
-                            else:
-                                break
+                elif choice == "2":
+                    while True:
+                        new_age = input("Enter new age: ").strip()                                                                       
+                        # Ensure the age is not empty, contains no spaces, and only consists of numbers
+                        if not new_age:
+                            print("Input cannot be empty.")
+                        elif not new_age.isdigit():
+                            print("Input must only contain numbers.")
+                        elif " " in new_age:
+                            print("Input cannot contain spaces.")
+                        else:
+                            break
 
-                    elif choice == "3":
-                        while True:
-                            new_dob = input("Enter new date of birth: ").strip()                                               
-                            # Ensure the date of birth is not empty, contains no spaces, and only consists of digits and hyphens
-                            if not new_dob:
-                                print("Input cannot be empty.")
-                            elif " " in new_dob:
-                                print("Input cannot contain spaces.")
-                            elif not new_dob.replace('-', '').isdigit():
-                                print("Input must only contain numbers and hyphens.")
-                            else:
-                                break
+                elif choice == "3":
+                    while True:
+                        new_dob = input("Enter new date of birth: ").strip()                                               
+                        # Ensure the date of birth is not empty, contains no spaces, and only consists of digits and hyphens
+                        if not new_dob:
+                            print("Input cannot be empty.")
+                        elif " " in new_dob:
+                            print("Input cannot contain spaces.")
+                        elif not new_dob.replace('-', '').isdigit():
+                            print("Input must only contain numbers and hyphens.")
+                        else:
+                            break
 
-                    elif choice == "4":
-                        while True:
-                            new_reg_date = input("Enter new registration date: ").strip()                                               
-                            # Ensure the registration date is not empty, contains no spaces, and only consists of digits and hyphens
-                            if not new_reg_date:
-                                print("Input cannot be empty.")
-                            elif " " in new_reg_date:
-                                print("Input cannot contain spaces.")
-                            elif not new_reg_date.replace('-', '').isdigit():
-                                print("Input must only contain numbers and hyphens.")
-                            else:
-                                break
+                elif choice == "4":
+                    while True:
+                        new_reg_date = input("Enter new registration date: ").strip()                                               
+                        # Ensure the registration date is not empty, contains no spaces, and only consists of digits and hyphens
+                        if not new_reg_date:
+                            print("Input cannot be empty.")
+                        elif " " in new_reg_date:
+                            print("Input cannot contain spaces.")
+                        elif not new_reg_date.replace('-', '').isdigit():
+                            print("Input must only contain numbers and hyphens.")
+                        else:
+                            break
 
-                    elif choice == "5":
-                        while True:
-                            new_ic = input("Enter new ic: ").strip()                    
-                            # Ensure the ic is not empty, contains no spaces, and only consists of numbers
-                            if not new_ic:
-                                print("Input cannot be empty.")
-                            elif not new_ic.isdigit():
-                                print("Input must only contain numbers.")
-                            elif " " in new_ic:
-                                print("Input cannot contain spaces.")
-                            else:
-                                break
+                elif choice == "5":
+                    while True:
+                        new_ic = input("Enter new ic: ").strip()                    
+                        # Ensure the ic is not empty, contains no spaces, and only consists of numbers
+                        if not new_ic:
+                            print("Input cannot be empty.")
+                        elif not new_ic.isdigit():
+                            print("Input must only contain numbers.")
+                        elif " " in new_ic:
+                            print("Input cannot contain spaces.")
+                        else:
+                            break
 
-                    elif choice == "6":
-                        new_name = input("Enter new name: ").strip()
-                        new_age = input("Enter new age: ").strip()
-                        new_dob = input("Enter new dob: ").strip()
-                        new_reg_date = input("Enter new registration date: ").strip()
-                        new_ic = input("Enter new ic: ").strip()
+                elif choice == "6":
+                    new_name = input("Enter new name: ").strip()
+                    new_age = input("Enter new age: ").strip()
+                    new_dob = input("Enter new dob: ").strip()
+                    new_reg_date = input("Enter new registration date: ").strip()
+                    new_ic = input("Enter new ic: ").strip()
 
-                    else:
-                        print("Invalid option.")
-                        continue
+                else:
+                    print("Invalid option.")
+                    # continue
 
-                    edited_profile.append(f"{new_name}:{new_age}:{new_dob}:{new_reg_date}:{new_ic}\n")
-                    print("Member information edited.")
+                edited_profile.append(f"{new_name}:{new_age}:{new_dob}:{new_reg_date}:{new_ic}\n")
+                print("Member information edited.")
 
-                    with open("admin/memberdatabase.txt", "w") as memberfile:
-                        memberfile.writelines(edited_profile)
+                with open("admin/memberdatabase.txt", "w") as memberfile:
+                    memberfile.writelines(edited_profile)
 
-                    member_end_choice()
-                    return
+                member_end_choice()
+                return
 
         except Exception as e:
             print("Error reading memberdatabase file: ", e)
