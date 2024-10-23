@@ -125,57 +125,51 @@ def update_member_information():
             for credentials in lines[1:]:
                 # if stored_username == username:                
                     stored_name, stored_username, stored_password, stored_bookcount = credentials.strip().split(":")
-                    if stored_username == username:
-                        print(f"Name: {stored_name}\nUsername: {stored_username}\nPassword: {stored_password}\nBookCount: {stored_bookcount}\n")
-                        print("1. Name")
-                        print("2. Username")
-                        print("3. Password")
-                        print("4. All\n")
-                        choice = input("What would you like to edit? ").strip()
+                    print(stored_username, username, stored_username == username)
+                    if stored_username != username:
+                        continue
+                    print(f"Name: {stored_name}\nUsername: {stored_username}\nPassword: {stored_password}\nBookCount: {stored_bookcount}\n")
+                    print("1. Username")
+                    print("2. Password")
+                    print("3. Both\n")
+                    choice = input("What would you like to edit? ").strip()
 
-                        new_name = stored_name
-                        new_username = stored_username
-                        new_password = stored_password
+                    new_username = stored_username
+                    new_password = stored_password
 
                     if choice == "1":
-                        while True:
-                            new_name = input("Enter new name: ").strip()
-                            # Ensure the name is not empty or only spaces
-                            if new_name == "":
-                                print("Input cannot be empty.")
-                                continue                                
-
-                    elif choice == "2":
                         while True:
                             new_username = input("Enter new username: ").strip()
                             # Ensure the username is not empty or only spaces
                             if new_username == "":
                                 print("Input cannot be empty.")
                                 continue
+                            break
 
-                    elif choice == "3":
+                    elif choice == "2":
                         while True:
                             new_password = input("Enter new password: ").strip()                                               
                             # Ensure the password is not empty or only spaces
                             if new_password == "":
                                 print("Input cannot be empty.")
                                 continue
+                            break
 
-                    elif choice == "4":
-                        new_name = input("Enter new name: ").strip()
+                    elif choice == "3":
                         new_username = input("Enter new username: ").strip()
                         new_password = input("Enter new password: ").strip()
                     else:
                         print("Invalid option.")
                         continue
 
-                    edited_profile.append(f"{new_name}:{new_username}:{new_password}:{stored_bookcount}\n")
+                    edited_profile.append(f"{stored_name}:{new_username}:{new_password}:{stored_bookcount}\n")
                     print("Member information edited.")
 
-                    member_end_choice()
+                    with open("admin/member.txt", "w") as memberfile:
+                        memberfile.writelines(edited_profile)
 
-            with open("admin/member.txt", "w") as memberfile:
-                memberfile.writelines(edited_profile)
+                    member_end_choice()
+                    return
 
         except Exception as e:
             print("Error reading member file: ", e)
