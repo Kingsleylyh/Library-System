@@ -101,24 +101,24 @@ def update_member_information():
     # Clear terminal history
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    print("Welcome to update member information page:")
+    print("Welcome to update member information page:\n"
+          "--------------------------------------------"
+          )
 
     # Check if the file exists
     if not os.path.exists('admin/member.txt'):
         print('Member is not registered.')
-        member_end_choice()
         return
 
     # Check if the file is empty
     elif os.path.getsize('admin/memberdatabase.txt') == 0:
         print('Record is empty.')
-        member_end_choice()
         return
     
+        
     else:
-        line_index = member_login()
-
         try:
+            line_index = member_login()
             with open("admin/memberdatabase.txt", "r") as member_database_file:
                 member_database_lines = member_database_file.readlines()
 
@@ -340,8 +340,9 @@ def member_end_choice():
 
 def main():
     member_login()
-    view_loaned_book(username)
+    view_loaned_book()
     update_member_information()
+    search_catalogue()
     search_display_catalogue_books()
     member_end_choice()
 
