@@ -143,11 +143,9 @@ def update_member_information():
 
                 edited_profile_memberdatabase = []
                 edited_profile_member = []
-            for memberdatabase_credentials in member_database_lines[1:]:
-                stored_name_member_database, stored_age, stored_dob, stored_reg_date, stored_ic = memberdatabase_credentials.strip().split(":")
-            
-            for member_credentials in member_lines[1:]:
-                stored_name_member, stored_username, stored_password, stored_bookcount = member_credentials.strip().split(":")
+
+                stored_name_member_database, stored_age, stored_dob, stored_reg_date, stored_ic = member_database_line.strip().split(":")            
+                stored_name_member, stored_username, stored_password, stored_bookcount = member_line.strip().split(":")
                 
                 print(f"Name: {stored_name_member_database}\nAge: {stored_age}\nDate of Birth: {stored_dob}\nRegistration Date: {stored_reg_date}\nIC: {stored_ic}\n")
                 print("1. Name")
