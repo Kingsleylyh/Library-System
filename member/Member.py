@@ -125,24 +125,24 @@ def update_member_information():
             with open('admin/member.txt', 'r') as member_file:
                 member_lines = member_file.readlines()
 
-            # original_member_database = member_database_lines[remove_index].strip().split(':')
-            # original_member = member_lines[remove_index].strip().split(':')
+            member_database_line = member_database_lines[line_index].strip().split(':')
+            member_line = member_lines[line_index].strip().split(':')
             
 
-            for index, line in enumerate(member_database_lines, member_lines):
+            for index, line in enumerate(member_database_lines):
                 # Keep the header as it is
                 if index == 0:
                     edited_profile_memberdatabase.append(line)  # Append the header unchanged
                     continue  # Skip to the next iteration
 
-            for index, line in enumerate(member_database_lines, member_lines):
+            for index, line in enumerate(member_lines):
                 # Keep the header as it is
                 if index == 0:
                     edited_profile_member.append(line)  # Append the header unchanged
                     continue  # Skip to the next iteration
 
-            edited_profile_memberdatabase = []
-            edited_profile_member = []
+                edited_profile_memberdatabase = []
+                edited_profile_member = []
             for memberdatabase_credentials in member_database_lines[1:]:
                 stored_name_member_database, stored_age, stored_dob, stored_reg_date, stored_ic = memberdatabase_credentials.strip().split(":")
             
