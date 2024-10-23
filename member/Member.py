@@ -101,6 +101,8 @@ def update_member_information():
     # Clear terminal history
     os.system('cls' if os.name == 'nt' else 'clear')
 
+    print("Welcome to update member information page:")
+
     # Check if the file exists
     if not os.path.exists('admin/member.txt'):
         print('Member is not registered.')
@@ -119,20 +121,35 @@ def update_member_information():
         try:
             with open("admin/memberdatabase.txt", "r") as member_database_file:
                 member_database_lines = member_database_file.readlines()
+
+            with open('admin/member.txt', 'r') as member_file:
+                member_lines = member_file.readlines()
+
+            # original_member_database = member_database_lines[remove_index].strip().split(':')
+            # original_member = member_lines[remove_index].strip().split(':')
             
-            edited_profile = []
-            for index, line in enumerate(member_database_lines):
+
+            for index, line in enumerate(member_database_lines, member_lines):
                 # Keep the header as it is
                 if index == 0:
-                    edited_profile.append(line)  # Append the header unchanged
+                    edited_profile_memberdatabase.append(line)  # Append the header unchanged
                     continue  # Skip to the next iteration
 
-            if line_index is not None:
-                user_line = member_lines[line_index].strip()
+            for index, line in enumerate(member_database_lines, member_lines):
+                # Keep the header as it is
+                if index == 0:
+                    edited_profile_member.append(line)  # Append the header unchanged
+                    continue  # Skip to the next iteration
+
+            edited_profile_memberdatabase = []
+            edited_profile_member = []
+            for memberdatabase_credentials in member_database_lines[1:]:
+                stored_name_member_database, stored_age, stored_dob, stored_reg_date, stored_ic = memberdatabase_credentials.strip().split(":")
             
-                stored_name, stored_age, stored_dob, stored_reg_date, stored_ic = user_line.strip().split(":")
-                stored_name, stored_username, stored_password, stored_bookcount = 
-                print(f"Name: {stored_name}\nAge: {stored_age}\nDate of Birth: {stored_dob}\nRegistration Date: {stored_reg_date}\nIC: {stored_ic}\n")
+            for member_credentials in member_lines[1:]:
+                stored_name_member, stored_username, stored_password, stored_bookcount = member_credentials.strip().split(":")
+                
+                print(f"Name: {stored_name_member_database}\nAge: {stored_age}\nDate of Birth: {stored_dob}\nRegistration Date: {stored_reg_date}\nIC: {stored_ic}\n")
                 print("1. Name")
                 print("2. Age")
                 print("3. Date of Birth")
@@ -141,7 +158,8 @@ def update_member_information():
                 print("6. All\n")
                 choice = input("What would you like to edit? ").strip()
 
-                new_name = stored_name
+                new_name = stored_name_member_database
+                new_name = stored_name_member
                 new_age = stored_age
                 new_dob = stored_dob
                 new_reg_date = stored_reg_date
@@ -155,7 +173,6 @@ def update_member_information():
                             print("Input cannot be empty.")
                         elif not new_name.isalpha():
                             print("Input can only contain alphabets.")
-                            break
                         elif " " in new_name:
                             print("Input cannot contain spaces.")
                             break
@@ -223,14 +240,18 @@ def update_member_information():
                     print("Invalid option.")
                     # continue
 
-                edited_profile.append(f"{new_name}:{new_age}:{new_dob}:{new_reg_date}:{new_ic}\n")
-                print("Member information edited.")
+                edited_profile_memberdatabase.append(f"{new_name}:{new_age}:{new_dob}:{new_reg_date}:{new_ic}\n")
+                edited_profile_member.append(f"{new_name}:{stored_username}:{stored_password}:{stored_bookcount}\n")
+                print("Member information updated succesfully.")
 
-                with open("admin/memberdatabase.txt", "w") as memberfile:
-                    memberfile.writelines(edited_profile)
+                with open("admin/memberdatabase.txt", "w") as member_database_file:
+                    member_database_file.writelines(edited_profile_memberdatabase)              
 
-                member_end_choice()
-                return
+                with open("admin/member.txt", "w") as member_file:
+                    member_file.writelines(edited_profile_member)    
+
+            member_end_choice()
+            return
 
         except Exception as e:
             print("Error reading memberdatabase file: ", e)
