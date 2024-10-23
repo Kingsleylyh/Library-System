@@ -73,7 +73,7 @@ def add_member_to_database():
 
     while True:
         member_password = input("Enter the member's password: ").strip()
-        if member_password and len(member_password) == 12:
+        if member_password and len(member_password) <= 12:
             break
         else:
             print("Please enter a valid password without only spaces.")
@@ -301,7 +301,7 @@ def edit_member_information():
             new_ic = input(f'Enter New IC (Press Enter To Keep Current IC): ').strip()
             if new_ic == "":
                 break
-            elif new_ic.isdigit():
+            elif new_ic.isdigit() and len(new_ic) == 12:
                 original_member_database[4] = new_ic
                 break
             else:
@@ -321,7 +321,7 @@ def edit_member_information():
             new_password = input(f'Enter New Member Password (Press Enter To Keep Current Password): ').strip()
             if new_password == "":
                 break
-            elif new_password and len(new_password) == 12:
+            elif new_password and len(new_password) <= 12:
                 original_member[2] = new_password
                 break
             else:
@@ -495,7 +495,7 @@ def add_librarian_to_database():
 
     while True:
         librarian_password = input("Enter the librarian's password: ").strip()
-        if librarian_password and len(librarian_password) == 12:
+        if librarian_password and len(librarian_password) <= 12:
             break
         else:
             print("Please enter a valid password without only spaces.")
@@ -730,7 +730,7 @@ def edit_librarian_information():
             new_ic = input(f'Enter New IC (Press Enter To Keep Current IC): ').strip()
             if new_ic == "":
                 break
-            elif new_ic.isdigit():
+            elif new_ic.isdigit() and len(new_ic) == 12:
                 original_librarian_database[4] = new_ic
                 break
             else:
@@ -750,7 +750,7 @@ def edit_librarian_information():
             new_password = input(f'Enter New Librarian Password (Press Enter To Keep Current Password): ').strip()
             if new_password == "":
                 break
-            elif new_password and len(new_password) == 12:
+            elif new_password and len(new_password) <= 12:
                 original_librarian[3] = new_password
                 break
             else:
