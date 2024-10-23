@@ -39,6 +39,7 @@ def member_login():
             print("Too many attempts. Returning to main login page...")
             time.sleep(1)
             from login import user_type
+<<<<<<< HEAD
             user_type()
             return
 
@@ -317,6 +318,8 @@ def member_login():
             print("Too many attempts. Returning to main login page...")
             time.sleep(1)
             from Base import user_type
+=======
+>>>>>>> main
             user_type()
             return
 
@@ -328,6 +331,7 @@ def member_login():
     return username
 
 def view_loaned_book():
+
     # Clear the terminal screen for better visibility
     os.system('cls' if os.name == 'nt' else 'clear')
     
@@ -417,6 +421,19 @@ def update_member_information():
 
                     if choice == "1":
                         while True:
+<<<<<<< HEAD
+                            new_name = input("Enter new name: ").strip()
+                            
+                            # Ensure the name is not empty or only spaces
+                            if new_name == "":
+                                print("Input cannot be empty.")
+                                continue   
+                            break                             
+
+                    elif choice == "2":
+                        while True:
+=======
+>>>>>>> HinMen
                             new_username = input("Enter new username: ").strip()
                             # Ensure the username is not empty or only spaces
                             if new_username == "":
@@ -523,24 +540,18 @@ def search_display_catalogue_books():
 
 
 def member_end_choice():
+    from login import logout
+    from member.memberpage import library_member_page
     while True:
         end_choice = input("\nDo you want carry out other functions ? (y/n)")
         if end_choice.lower() == 'y':
-            from member.memberpage import library_member_page
             library_member_page()
         elif end_choice.lower() == 'n':
-            member_logout()
+            print("Thanks for visiting. Hope to see you again!")
+            logout()
         else:
             print("Invalid choice. Please choose y or n.")
-    
 
-def member_logout():
-    print("Thanks for visiting. Hope to see you again!")
-    print("Logging out ...")
-    time.sleep(1.5)
-    os.system('cls' if os.name == 'nt' else 'clear')
-    from Base import user_type
-    user_type()
 
 def main():
     member_login()
@@ -548,7 +559,6 @@ def main():
     update_member_information()
     search_display_catalogue_books()
     member_end_choice()
-    member_logout()
 
 if __name__ == "__main__":
     main()

@@ -1,4 +1,5 @@
 import os
+import time
 from admin.final_admin import *
 
 # SYSTEM ADMIN PAGE
@@ -48,8 +49,9 @@ def system_admin_page():
             elif admin_choice == 10:
                 remove_librarian_from_database()
             elif admin_choice == 11:
-                from Base import logout
+                from login import logout
                 logout()
+                break
 
             else:
                 print("Please choose numbers within 1 ~ 11.")
