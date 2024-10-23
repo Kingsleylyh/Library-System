@@ -421,19 +421,6 @@ def update_member_information():
 
                     if choice == "1":
                         while True:
-<<<<<<< HEAD
-                            new_name = input("Enter new name: ").strip()
-                            
-                            # Ensure the name is not empty or only spaces
-                            if new_name == "":
-                                print("Input cannot be empty.")
-                                continue   
-                            break                             
-
-                    elif choice == "2":
-                        while True:
-=======
->>>>>>> HinMen
                             new_username = input("Enter new username: ").strip()
                             # Ensure the username is not empty or only spaces
                             if new_username == "":
