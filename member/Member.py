@@ -10,11 +10,12 @@ def member_login():
 
     with open("admin/member.txt", 'r') as member:
         lines = member.readlines()
+
     global username
     username = input("Please enter your username: ").strip()
     found = False
 
-    for line in lines[1:]:
+    for index, line in enumerate(lines[1:]):
         columns = line.strip().split(":")
         name = columns[0].strip()
         saved_username = columns[1].strip()
@@ -23,6 +24,7 @@ def member_login():
         if username == saved_username:
             found = True
             count = 0
+            line_index = index  # Store the index of the line where the username is found
 
             while count < 3:
                 password = input("Please enter your password: ").strip()
@@ -47,7 +49,7 @@ def member_login():
         time.sleep(1)
         user_type()
 
-    return username
+    return line_index
 
 def view_loaned_book():
 
@@ -99,7 +101,9 @@ def update_member_information():
     # Clear terminal history
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    stored_username = username
+    print("Welcome to update member information page:\n"
+          "--------------------------------------------"
+          )
 
     # Check if the file exists
     if not os.path.exists('admin/member.txt'):
@@ -107,73 +111,148 @@ def update_member_information():
         return
 
     # Check if the file is empty
-    elif os.path.getsize('admin/member.txt') == 0:
+    elif os.path.getsize('admin/memberdatabase.txt') == 0:
         print('Record is empty.')
         return
     
+        
     else:
         try:
-            with open("admin/member.txt", "r") as memberfile:
-                lines = memberfile.readlines()
+            line_index = member_login()
+            with open("admin/memberdatabase.txt", "r") as member_database_file:
+                member_database_lines = member_database_file.readlines()
+
+            with open('admin/member.txt', 'r') as member_file:
+                member_lines = member_file.readlines()
+
+            member_database_line = member_database_lines[line_index].strip().split(':')
+            member_line = member_lines[line_index].strip().split(':')
             
-            edited_profile = []
-            for index, line in enumerate(lines):
+
+            for index, line in enumerate(member_database_lines):
                 # Keep the header as it is
                 if index == 0:
-                    edited_profile.append(line)  # Append the header unchanged
+                    edited_profile_memberdatabase.append(line)  # Append the header unchanged
                     continue  # Skip to the next iteration
 
-            for credentials in lines[1:]:
-                # if stored_username == username:                
-                    stored_name, stored_username, stored_password, stored_bookcount = credentials.strip().split(":")
-                    print(stored_username, username, stored_username == username)
-                    if stored_username != username:
-                        continue
-                    print(f"Name: {stored_name}\nUsername: {stored_username}\nPassword: {stored_password}\nBookCount: {stored_bookcount}\n")
-                    print("1. Username")
-                    print("2. Password")
-                    print("3. Both\n")
-                    choice = input("What would you like to edit? ").strip()
+            for index, line in enumerate(member_lines):
+                # Keep the header as it is
+                if index == 0:
+                    edited_profile_member.append(line)  # Append the header unchanged
+                    continue  # Skip to the next iteration
 
-                    new_username = stored_username
-                    new_password = stored_password
+                edited_profile_memberdatabase = []
+                edited_profile_member = []
 
-                    if choice == "1":
-                        while True:
-                            new_username = input("Enter new username: ").strip()
-                            # Ensure the username is not empty or only spaces
-                            if new_username == "":
-                                print("Input cannot be empty.")
-                                continue
+                stored_name_member_database, stored_age, stored_dob, stored_reg_date, stored_ic = member_database_line.strip().split(":")            
+                stored_name_member, stored_username, stored_password, stored_bookcount = member_line.strip().split(":")
+                
+                print(f"Name: {stored_name_member_database}\nAge: {stored_age}\nDate of Birth: {stored_dob}\nRegistration Date: {stored_reg_date}\nIC: {stored_ic}\n")
+                print("1. Name")
+                print("2. Age")
+                print("3. Date of Birth")
+                print("4. Registration Date")
+                print("5. IC")
+                print("6. All\n")
+                choice = input("What would you like to edit? ").strip()
+
+                new_name = stored_name_member_database
+                new_name = stored_name_member
+                new_age = stored_age
+                new_dob = stored_dob
+                new_reg_date = stored_reg_date
+                new_ic = stored_ic
+
+                if choice == "1":
+                    while True:
+                        new_name = input("Enter new name: ").strip()                          
+                        # Ensure the name is not empty, contains no spaces, and only consists of alphabets.
+                        if not new_name:
+                            print("Input cannot be empty.")
+                        elif not new_name.isalpha():
+                            print("Input can only contain alphabets.")
+                        elif " " in new_name:
+                            print("Input cannot contain spaces.")
                             break
 
-                    elif choice == "2":
-                        while True:
-                            new_password = input("Enter new password: ").strip()                                               
-                            # Ensure the password is not empty or only spaces
-                            if new_password == "":
-                                print("Input cannot be empty.")
-                                continue
+                elif choice == "2":
+                    while True:
+                        new_age = input("Enter new age: ").strip()                                                                       
+                        # Ensure the age is not empty, contains no spaces, and only consists of numbers
+                        if not new_age:
+                            print("Input cannot be empty.")
+                        elif not new_age.isdigit():
+                            print("Input must only contain numbers.")
+                        elif " " in new_age:
+                            print("Input cannot contain spaces.")
+                        else:
                             break
 
-                    elif choice == "3":
-                        new_username = input("Enter new username: ").strip()
-                        new_password = input("Enter new password: ").strip()
-                    else:
-                        print("Invalid option.")
-                        continue
+                elif choice == "3":
+                    while True:
+                        new_dob = input("Enter new date of birth: ").strip()                                               
+                        # Ensure the date of birth is not empty, contains no spaces, and only consists of digits and hyphens
+                        if not new_dob:
+                            print("Input cannot be empty.")
+                        elif " " in new_dob:
+                            print("Input cannot contain spaces.")
+                        elif not new_dob.replace('-', '').isdigit():
+                            print("Input must only contain numbers and hyphens.")
+                        else:
+                            break
 
-                    edited_profile.append(f"{stored_name}:{new_username}:{new_password}:{stored_bookcount}\n")
-                    print("Member information edited.")
+                elif choice == "4":
+                    while True:
+                        new_reg_date = input("Enter new registration date: ").strip()                                               
+                        # Ensure the registration date is not empty, contains no spaces, and only consists of digits and hyphens
+                        if not new_reg_date:
+                            print("Input cannot be empty.")
+                        elif " " in new_reg_date:
+                            print("Input cannot contain spaces.")
+                        elif not new_reg_date.replace('-', '').isdigit():
+                            print("Input must only contain numbers and hyphens.")
+                        else:
+                            break
 
-                    with open("admin/member.txt", "w") as memberfile:
-                        memberfile.writelines(edited_profile)
+                elif choice == "5":
+                    while True:
+                        new_ic = input("Enter new ic: ").strip()                    
+                        # Ensure the ic is not empty, contains no spaces, and only consists of numbers
+                        if not new_ic:
+                            print("Input cannot be empty.")
+                        elif not new_ic.isdigit():
+                            print("Input must only contain numbers.")
+                        elif " " in new_ic:
+                            print("Input cannot contain spaces.")
+                        else:
+                            break
 
-                    member_end_choice()
-                    return
+                elif choice == "6":
+                    new_name = input("Enter new name: ").strip()
+                    new_age = input("Enter new age: ").strip()
+                    new_dob = input("Enter new dob: ").strip()
+                    new_reg_date = input("Enter new registration date: ").strip()
+                    new_ic = input("Enter new ic: ").strip()
+
+                else:
+                    print("Invalid option.")
+                    # continue
+
+                edited_profile_memberdatabase.append(f"{new_name}:{new_age}:{new_dob}:{new_reg_date}:{new_ic}\n")
+                edited_profile_member.append(f"{new_name}:{stored_username}:{stored_password}:{stored_bookcount}\n")
+                print("Member information updated succesfully.")
+
+                with open("admin/memberdatabase.txt", "w") as member_database_file:
+                    member_database_file.writelines(edited_profile_memberdatabase)              
+
+                with open("admin/member.txt", "w") as member_file:
+                    member_file.writelines(edited_profile_member)    
+
+            member_end_choice()
+            return
 
         except Exception as e:
-            print("Error reading member file: ", e)
+            print("Error reading memberdatabase file: ", e)
 
 # Search book
 def search_catalogue():
@@ -261,8 +340,9 @@ def member_end_choice():
 
 def main():
     member_login()
-    view_loaned_book(username)
+    view_loaned_book()
     update_member_information()
+    search_catalogue()
     search_display_catalogue_books()
     member_end_choice()
 
