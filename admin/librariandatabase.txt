@@ -1,2 +1,3 @@
 Name: Age: Date Of Birth: Registration Date: IC
-howyongheng:19:2005-03-13:2024-10-21:90909090909
+How Yong Heng:19:2005-03-13:2024-10-21:90909090909
+Leong Yu Hang:20:2004-10-24:2024-10-26:051024870075

@@ -5,6 +5,7 @@ from member.Member import *
 from login import *
 
 
+"""Library Member Menu"""
 def library_member_page():
       os.system('cls' if os.name == 'nt' else 'clear')
       print("Welcome to Brickfields Kuala Lumpur Community Library Member Page:\n"

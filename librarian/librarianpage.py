@@ -1,7 +1,8 @@
 import os
+import time
 from librarian.Librarian import *
 
-# LIBRARIAN PAGE
+"""Librarian Menu"""
 def librarian_page():
     time.sleep(1)
     os.system('cls' if os.name == 'nt' else 'clear') # CLEAR THE TERMINAL HISTORY
@@ -42,7 +43,7 @@ def librarian_page():
             print("Invalid input. Please enter a number.")
 
 
-def main():
+"""def main():
     librarian_page()
 if __name__ == "__main__":
-    main()
+    main()"""

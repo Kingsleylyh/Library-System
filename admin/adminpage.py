@@ -2,11 +2,17 @@ import os
 import time
 from admin.final_admin import *
 
-# SYSTEM ADMIN PAGE
+import os
+import time
+
+"""Admin Menu"""
 def system_admin_page():
+    # Clear the screen and pause briefly for better user experience
     time.sleep(1)
     os.system('cls' if os.name == 'nt' else 'clear')
     time.sleep(0.5)
+    
+    # Print the welcome message and the options available for the admin
     print("Welcome to Brickfields Kuala Lumpur Community Library Admin Page:\n"
           "-------------------------------------------------------------------\n"
           "Member Information Management:\n"
@@ -15,7 +21,6 @@ def system_admin_page():
           " 3. Search Member Information\n"
           " 4. Edit Member Information\n"
           " 5. Remove Member Information\n\n" 
-            
           "Librarian Information Management:\n"
           " 6. Add New Librarian\n"
           " 7. View All Librarian Information\n"
@@ -25,9 +30,13 @@ def system_admin_page():
           " 11. Logout"
           )
     
+    # Loop to process the admin's choice
     while True:
         try:
+            # Get user input for choice and convert it to an integer
             admin_choice = int(input("Enter the index of your choice: "))
+            
+            # Handle different choices with corresponding function calls
             if admin_choice == 1:
                 add_member_to_database()
             elif admin_choice == 2:
@@ -49,19 +58,21 @@ def system_admin_page():
             elif admin_choice == 10:
                 remove_librarian_from_database()
             elif admin_choice == 11:
-                from login import logout
-                logout()
+                from login import logout  # Import logout function
+                logout()  # Call logout function and exit the loop
                 break
-
             else:
+                # Prompt for valid choice if the number is out of range
                 print("Please choose numbers within 1 ~ 11.")
 
         except ValueError:
+            # Handle cases where input is not a valid integer
             print("Invalid input. Please enter a number.")
 
 
-def main():
+
+"""def main():
     system_admin_page()
 
 if __name__ == "main":
-    main()
+    main()"""

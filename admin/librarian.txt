@@ -1,2 +1,3 @@
 LibrarianID: Name: Username: Password
-L001:howyongheng:how:0313
+L001:How Yong Heng:how:0313
+L002:Leong Yu Hang:hang:1024
