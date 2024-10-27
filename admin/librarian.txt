@@ -1,3 +1,5 @@
 LibrarianID: Name: Username: Password
 L001:How Yong Heng:how:0313
 L002:Leong Yu Hang:hang:1024
+L003:Lai Hin Men:Lai:Lai
+L004:Tai Kok Wai:Tai:0712
