@@ -7,7 +7,10 @@ from login import *
 
 """Library Member Menu"""
 def library_member_page():
+      time.sleep(1)
       os.system('cls' if os.name == 'nt' else 'clear')
+      time.sleep(0.5)
+
       print("Welcome to Brickfields Kuala Lumpur Community Library Member Page:\n"
           "-----------------------------------------------------------------------\n"
           " 1. View Current Loaned Book\n"

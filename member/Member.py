@@ -47,7 +47,7 @@ def member_login():
 
             # If too many attempts, return to main login page
             print("Too many attempts. Returning to main login page...")
-            time.sleep(1)
+            time.sleep(3)
             from login import user_type
             user_type()  # Redirect to main login page
             return
