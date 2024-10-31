@@ -688,8 +688,6 @@ def check_username():
         end_choice()
         return
 
-    return username
-
 
 
 """Function to prompt the user for their choice to carry out additional functions or to log out""" 
