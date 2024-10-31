@@ -237,12 +237,58 @@ def update_member_information():
 
             elif choice == "6":
                 # Update all fields if "All" option is selected
-                new_name = input("Enter new name: ").strip()
-                new_age = input("Enter new age: ").strip()
-                new_dob = input("Enter new date of birth: ").strip()
-                new_reg_date = input("Enter new registration date: ").strip()
-                new_ic = input("Enter new IC: ").strip()
-
+                while True:
+                    new_name = input("Enter new name: ").strip()
+                    if not new_name:
+                        print("Name cannot be empty.")
+                    elif not all(char.isalpha() or char.isspace() for char in new_name):
+                        print("Input cannot contain numbers or special characters.")
+                    else:
+                        break
+                while True:
+                    new_age = input("Enter new age: ").strip()
+                    if not new_age:
+                        print("Input cannot be empty.")
+                    elif not new_age.isdigit():
+                        print("Input must only contain numbers.")
+                    elif " " in new_age:
+                        print("Input cannot contain spaces.")
+                    else:
+                        break
+                while True:
+                    new_dob = input("Enter new date of birth: ").strip()
+                    if not new_dob:
+                        print("Input cannot be empty.")
+                    try:
+                        dob_date = datetime.strptime(new_dob, "%Y-%m-%d")
+                        if dob_date <= datetime.now(): 
+                            break
+                        else:
+                            print("The date cannot be in the future.")
+                    except ValueError:
+                        print("Invalid date format. Please enter date as YYYY-MM-DD.")
+                while True:
+                    new_reg_date = input("Enter new registration date: ").strip()
+                    if not new_reg_date:
+                        print("Input cannot be empty.")
+                    try:
+                        reg_date = datetime.strptime(new_reg_date, "%Y-%m-%d")
+                        if reg_date <= datetime.now(): 
+                            break
+                        else:
+                            print("The date cannot be in the future.")
+                    except ValueError:
+                        print("Invalid date format. Please enter date as YYYY-MM-DD.")
+                while True:
+                    new_ic = input("Enter new IC: ").strip()
+                    if not new_ic:
+                        print("Input cannot be empty.")
+                    elif " " in new_ic:
+                        print("Input cannot contain spaces.")
+                    elif new_ic.isdigit() and len(new_ic) == 12:
+                        break
+                    else:
+                        print("Invalid IC. Please enter a valid numeric value.")
             else:
                 print("Invalid option.")
                 member_end_choice()
