@@ -184,7 +184,7 @@ def search_catalogue():
             # Check if the keyword is present in the book details (case-insensitive)
             if keyword in book_details.lower():
                 found_book.append(book_details)  # Add the book details to the found list
-                index_list.append(index + 1)  # Store the index of the found book
+                index_list.append(index + 1)  # Store the index of the found book,exclude header
 
         # If no books were found, return None and empty lists
         if not found_book:
@@ -713,16 +713,3 @@ def end_choice():
         else:
             # Handle invalid input
             print("Invalid choice. Please choose y or n.")
-
-
-
-"""def main():
-    add_book_to_catalogue()
-    view_book_in_catalogue()
-    search_display_catalogue_books()
-    edit_book_information()
-    remove_book()
-    check_username()
-
-if "__name__" == "__main__":
-    main()"""

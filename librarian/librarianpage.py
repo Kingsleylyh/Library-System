@@ -41,9 +41,3 @@ def librarian_page():
                 print("Please choose numbers within 1 ~ 7.")
         except ValueError:
             print("Invalid input. Please enter a number.")
-
-
-"""def main():
-    librarian_page()
-if __name__ == "__main__":
-    main()"""

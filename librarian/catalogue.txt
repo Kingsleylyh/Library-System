@@ -1,5 +1,5 @@
 Title: Author: Publisher: Publication Date: ISBN: Genre: Availability
-Educated: Tara Westover: Random House: 2018-02-20: 978-0399590504:Memoir:Yes
+Educated: Tara Westover: Random House: 2018-02-20: 978-0399590504:Memoir:No
 The Midnight Library: Matt Haig: Viking: 2020-09-29: 978-0525559474:Fiction:Yes
 Becoming: Michelle Obama: Crown: 2018-11-13: 978-1524763138:Memoir:Yes
 Atomic Habits:James Clear:Avery:2018-10-16:978-073521129:Psychology:Yes

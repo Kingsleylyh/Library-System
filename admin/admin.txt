@@ -1,4 +1,4 @@
 Super Admin Account Info:
 Admin Name: How Yong Heng
-Admin Username: ww
-Password: yy
+Admin Username: admin
+Password: admin123

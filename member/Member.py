@@ -397,16 +397,3 @@ def member_end_choice():
         else:
             # Prompt for valid input if choice is invalid
             print("Invalid choice. Please choose 'y' or 'n'.")
-
-
-
-"""def main():
-    member_login()
-    view_loaned_book()
-    update_member_information()
-    search_catalogue()
-    search_display_catalogue_books()
-    member_end_choice()
-
-if __name__ == "__main__":
-    main()"""
