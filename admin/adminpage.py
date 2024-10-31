@@ -68,11 +68,3 @@ def system_admin_page():
         except ValueError:
             # Handle cases where input is not a valid integer
             print("Invalid input. Please enter a number.")
-
-
-
-"""def main():
-    system_admin_page()
-
-if __name__ == "main":
-    main()"""

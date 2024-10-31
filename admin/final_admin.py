@@ -968,30 +968,3 @@ def admin_end_choice():
         else:
             # Handle invalid input
             print("Invalid choice. Please choose y or n.")
-
-
-
-
-"""def main():
-    add_member_to_database()
-    view_member_in_database()
-    search_display_members()
-    edit_member_information()
-    remove_member_from_database()
-
-    add_librarian_to_database()
-    view_librarian_in_database()
-    search_display_librarian()
-    edit_librarian_information()
-    remove_librarian_from_database()
-
-if "__name__" == "__main__":
-    main()"""
-
-
-
-
-
-
-
-
