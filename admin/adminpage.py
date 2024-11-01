@@ -2,9 +2,6 @@ import os
 import time
 from admin.final_admin import *
 
-import os
-import time
-
 """Admin Menu"""
 def system_admin_page():
     # Clear the screen and pause briefly for better user experience
